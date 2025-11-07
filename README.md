@@ -1,66 +1,311 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Al-Matar Al-Thari - Digital Marketing Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive Laravel-based digital marketing platform with multi-language support, loyalty points system, affiliate marketing, and QR code generation capabilities.
 
-## About Laravel
+## 🚀 Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Multi-Language Support**: Full English and Arabic localization with RTL support
+- **User Management**: Role-based access control (Admin, Merchant, Customer)
+- **Company Management**: Multi-company support with branches
+- **Digital Cards**: QR code generation and management
+- **Loyalty Points**: Points earning and redemption system
+- **Affiliate Marketing**: Referral tracking and commission management
+- **Coupon System**: Digital coupon generation and usage tracking
+- **Notifications**: Real-time notification system
+- **Analytics**: Comprehensive reporting and analytics
+- **Responsive Design**: Bootstrap 5 based responsive templates
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.1 or higher
+- Composer 2.x
+- MySQL 5.7+ or MariaDB 10.3+
+- Node.js 16.x or higher
+- NPM 8.x or higher
 
-## Learning Laravel
+## 🛠️ Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 1. Clone the Repository
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+git clone https://github.com/your-username/al-matar-al-thari.git
+cd al-matar-al-thari
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. Install PHP Dependencies
 
-## Laravel Sponsors
+```bash
+composer install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### 3. Install Node.js Dependencies
 
-### Premium Partners
+```bash
+npm install
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### 4. Environment Configuration
 
-## Contributing
+Copy the environment file and configure it:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+cp .env.example .env
+```
 
-## Code of Conduct
+Edit the `.env` file with your database credentials and other settings:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```env
+APP_NAME="Al-Matar Al-Thari"
+APP_URL=http://localhost
 
-## Security Vulnerabilities
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=al_matar_al_thari
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+MAIL_MAILER=smtp
+MAIL_HOST=mailpit
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS="noreply@example.com"
+MAIL_FROM_NAME="${APP_NAME}"
+```
 
-## License
+### 5. Generate Application Key
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan key:generate
+```
+
+### 6. Database Setup
+
+Create the database and run migrations:
+
+```bash
+php artisan migrate
+```
+
+Seed the database with initial data:
+
+```bash
+php artisan db:seed
+```
+
+### 7. Storage Link
+
+Create the storage symlink:
+
+```bash
+php artisan storage:link
+```
+
+### 8. Build Assets
+
+```bash
+npm run build
+```
+
+For development with hot reloading:
+
+```bash
+npm run dev
+```
+
+## 🚀 Running the Application
+
+### Development Server
+
+Start the Laravel development server:
+
+```bash
+php artisan serve
+```
+
+The application will be available at `http://localhost:8000`
+
+### Queue Worker (Optional)
+
+For background jobs and notifications:
+
+```bash
+php artisan queue:work
+```
+
+### Scheduled Tasks (Optional)
+
+For automated tasks like cleaning up old notifications:
+
+```bash
+php artisan schedule:work
+```
+
+## 🔧 Additional Setup
+
+### Mail Configuration
+
+For email functionality, configure your mail settings in `.env`. For local development, you can use Mailpit:
+
+1. Install Mailpit: https://github.com/axllent/mailpit
+2. Start Mailpit: `mailpit`
+3. Access mail interface at `http://localhost:8025`
+
+### Permissions
+
+Ensure the following directories are writable:
+
+```bash
+chmod -R 775 storage
+chmod -R 775 bootstrap/cache
+```
+
+### SSL Certificate (Local Development)
+
+For HTTPS local development:
+
+```bash
+php artisan serve --host=localhost --port=8000 --tls
+```
+
+## 🌍 Multi-Language Usage
+
+The platform supports English and Arabic languages:
+
+- **English**: `http://localhost:8000/en`
+- **Arabic**: `http://localhost:8000/ar`
+
+Language can be switched using the language selector in the UI or by visiting the localized URLs.
+
+## 🔑 Default Credentials
+
+After running the database seeder, you can log in with:
+
+- **Admin**: admin@example.com / password
+- **Merchant**: merchant@example.com / password
+- **Customer**: customer@example.com / password
+
+## 📁 Project Structure
+
+```
+al-matar-al-thari/
+├── app/
+│   ├── Models/          # Eloquent models
+│   ├── Http/            # Controllers and middleware
+│   ├── Services/        # Business logic services
+│   ├── Traits/          # Reusable model traits
+│   └── Helpers/         # Helper functions
+├── config/              # Configuration files
+├── database/
+│   ├── migrations/      # Database migrations
+│   └── seeders/         # Database seeders
+├── lang/                # Language files (en, ar)
+├── resources/
+│   ├── views/           # Blade templates
+│   ├── css/             # Stylesheets
+│   └── js/              # JavaScript files
+├── routes/              # Route definitions
+└── storage/             # Storage files
+```
+
+## 🧪 Testing
+
+Run the test suite:
+
+```bash
+php artisan test
+```
+
+Run specific tests:
+
+```bash
+php artisan test --filter=UserTest
+```
+
+## 🚀 Production Deployment
+
+1. Set `APP_ENV=production` in `.env`
+2. Set `APP_DEBUG=false` in `.env`
+3. Run `composer install --no-dev --optimize-autoloader`
+4. Run `npm run build`
+5. Run `php artisan config:cache`
+6. Run `php artisan route:cache`
+7. Run `php artisan view:cache`
+8. Set up proper file permissions
+9. Configure your web server (Apache/Nginx)
+
+## 📝 Common Commands
+
+```bash
+# Clear all caches
+php artisan optimize:clear
+
+# Create a new controller
+php artisan make:controller ControllerName
+
+# Create a new model
+php artisan make:model ModelName
+
+# Create a new migration
+php artisan make:migration create_table_name
+
+# Run migrations
+php artisan migrate
+
+# Rollback migrations
+php artisan migrate:rollback
+
+# Create a new seeder
+php artisan make:seeder SeederName
+
+# Run seeders
+php artisan db:seed
+```
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **Permission Denied**: Ensure storage and bootstrap/cache directories are writable
+2. **Class Not Found**: Run `composer dump-autoload`
+3. **Migration Errors**: Check database connection and credentials
+4. **Asset Issues**: Run `npm run build` or `npm run dev`
+5. **Locale Issues**: Ensure locales are configured in `config/localization.php`
+
+### Debug Mode
+
+Enable debug mode in `.env`:
+
+```env
+APP_DEBUG=true
+```
+
+Check Laravel logs in `storage/logs/laravel.log`
+
+## 🤝 Support
+
+For issues and questions:
+
+1. Check the Laravel documentation: https://laravel.com/docs
+2. Search existing issues on GitHub
+3. Create a new issue with detailed information
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 🙏 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+Please read the contributing guidelines before submitting PRs.
+
+---
+
+**Happy coding! 🎉**
