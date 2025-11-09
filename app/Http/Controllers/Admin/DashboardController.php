@@ -39,7 +39,7 @@ class DashboardController extends Controller
             'total_offers' => Offer::count(),
             'active_offers' => Offer::where('status', 'active')->count(),
             'total_coupons' => Coupon::count(),
-            'used_coupons' => Coupon::whereHas('usage')->count(),
+            'used_coupons' => Coupon::whereHas('couponUsages')->count(),
             'total_transactions' => Transaction::count(),
             'total_revenue' => Transaction::where('status', 'completed')->sum('amount'),
             'pending_companies' => Company::where('status', 'pending')->count(),

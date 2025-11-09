@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolePermissionSeeder::class,
             UserSeeder::class,
+            PointsSettingSeeder::class,
         ]);
 
         // Re-enable foreign key checks

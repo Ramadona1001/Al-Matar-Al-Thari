@@ -1,0 +1,226 @@
+@extends('layouts.dashboard')
+
+@section('title', __('Edit Offer'))
+
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('merchant.offers.index') }}">{{ __('Offers') }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ __('Edit') }}</li>
+@endsection
+
+@section('content')
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">{{ __('Edit Offer') }}</h6>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ route('merchant.offers.update', $offer) }}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="title_en" class="form-label">{{ __('Title (English)') }} <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('title_en') is-invalid @enderror"
+                                       id="title_en" name="title_en" value="{{ old('title_en', $offer->title['en'] ?? '') }}" required>
+                                @error('title_en')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="title_ar" class="form-label">{{ __('Title (Arabic)') }}</label>
+                                <input type="text" class="form-control @error('title_ar') is-invalid @enderror"
+                                       id="title_ar" name="title_ar" value="{{ old('title_ar', $offer->title['ar'] ?? '') }}">
+                                @error('title_ar')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="description_en" class="form-label">{{ __('Description (English)') }}</label>
+                                <textarea class="form-control @error('description_en') is-invalid @enderror"
+                                          id="description_en" name="description_en" rows="3">{{ old('description_en', $offer->description['en'] ?? '') }}</textarea>
+                                @error('description_en')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="description_ar" class="form-label">{{ __('Description (Arabic)') }}</label>
+                                <textarea class="form-control @error('description_ar') is-invalid @enderror"
+                                          id="description_ar" name="description_ar" rows="3">{{ old('description_ar', $offer->description['ar'] ?? '') }}</textarea>
+                                @error('description_ar')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="type" class="form-label">{{ __('Offer Type') }} <span class="text-danger">*</span></label>
+                                <select class="form-select @error('type') is-invalid @enderror" id="type" name="type" required>
+                                    <option value="percentage" {{ old('type', $offer->type) == 'percentage' ? 'selected' : '' }}>{{ __('Percentage Discount') }}</option>
+                                    <option value="fixed" {{ old('type', $offer->type) == 'fixed' ? 'selected' : '' }}>{{ __('Fixed Amount Discount') }}</option>
+                                    <option value="free_shipping" {{ old('type', $offer->type) == 'free_shipping' ? 'selected' : '' }}>{{ __('Free Shipping') }}</option>
+                                    <option value="buy_x_get_y" {{ old('type', $offer->type) == 'buy_x_get_y' ? 'selected' : '' }}>{{ __('Buy X Get Y') }}</option>
+                                </select>
+                                @error('type')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="category_id" class="form-label">{{ __('Category') }}</label>
+                                <select class="form-select @error('category_id') is-invalid @enderror" id="category_id" name="category_id">
+                                    <option value="">{{ __('Select Category') }}</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ old('category_id', $offer->category_id) == $category->id ? 'selected' : '' }}>
+                                            {{ $category->localized_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('category_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" id="discountFields">
+                        <div class="col-md-6" id="percentageField" style="display: none;">
+                            <div class="mb-3">
+                                <label for="discount_percentage" class="form-label">{{ __('Discount Percentage') }} (%)</label>
+                                <input type="number" class="form-control @error('discount_percentage') is-invalid @enderror"
+                                       id="discount_percentage" name="discount_percentage"
+                                       value="{{ old('discount_percentage', $offer->discount_percentage) }}" step="0.01" min="0" max="100">
+                                @error('discount_percentage')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="fixedField" style="display: none;">
+                            <div class="mb-3">
+                                <label for="discount_amount" class="form-label">{{ __('Discount Amount') }}</label>
+                                <input type="number" class="form-control @error('discount_amount') is-invalid @enderror"
+                                       id="discount_amount" name="discount_amount"
+                                       value="{{ old('discount_amount', $offer->discount_amount) }}" step="0.01" min="0">
+                                @error('discount_amount')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="minimum_purchase" class="form-label">{{ __('Minimum Purchase') }}</label>
+                                <input type="number" class="form-control @error('minimum_purchase') is-invalid @enderror"
+                                       id="minimum_purchase" name="minimum_purchase"
+                                       value="{{ old('minimum_purchase', $offer->minimum_purchase) }}" step="0.01" min="0">
+                                @error('minimum_purchase')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="start_date" class="form-label">{{ __('Start Date') }} <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control @error('start_date') is-invalid @enderror"
+                                       id="start_date" name="start_date" value="{{ old('start_date', $offer->start_date->format('Y-m-d')) }}" required>
+                                @error('start_date')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="end_date" class="form-label">{{ __('End Date') }} <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control @error('end_date') is-invalid @enderror"
+                                       id="end_date" name="end_date" value="{{ old('end_date', $offer->end_date->format('Y-m-d')) }}" required>
+                                @error('end_date')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="image" class="form-label">{{ __('Image') }}</label>
+                                @if($offer->image)
+                                    <div class="mb-2">
+                                        <img src="{{ asset('storage/' . $offer->image) }}" alt="{{ $offer->localized_title }}"
+                                             class="img-thumbnail" style="max-width: 120px;">
+                                    </div>
+                                @endif
+                                <input type="file" class="form-control @error('image') is-invalid @enderror"
+                                       id="image" name="image" accept="image/*">
+                                @error('image')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="status" class="form-label">{{ __('Status') }} <span class="text-danger">*</span></label>
+                                <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
+                                    <option value="draft" {{ old('status', $offer->status) == 'draft' ? 'selected' : '' }}>{{ __('Draft') }}</option>
+                                    <option value="active" {{ old('status', $offer->status) == 'active' ? 'selected' : '' }}>{{ __('Active') }}</option>
+                                    <option value="inactive" {{ old('status', $offer->status) == 'inactive' ? 'selected' : '' }}>{{ __('Inactive') }}</option>
+                                </select>
+                                @error('status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" value="1"
+                               {{ old('is_featured', $offer->is_featured) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="is_featured">
+                            {{ __('Mark as Featured') }}
+                        </label>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ route('merchant.offers.index') }}" class="btn btn-secondary">
+                            {{ __('Cancel') }}
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>{{ __('Update Offer') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    function toggleDiscountFields() {
+        const type = document.getElementById('type').value;
+        document.getElementById('percentageField').style.display = type === 'percentage' ? 'block' : 'none';
+        document.getElementById('fixedField').style.display = type === 'fixed' ? 'block' : 'none';
+    }
+
+    document.getElementById('type').addEventListener('change', toggleDiscountFields);
+    toggleDiscountFields();
+</script>
+@endpush
+@endsection

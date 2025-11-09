@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use App\Models\Offer;
 use App\Models\Transaction;
-use App\Models\CustomerLoyaltyPoint;
+use App\Models\LoyaltyPoint;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,23 +36,22 @@ class DashboardController extends Controller
         $user = auth()->user();
         
         return [
-            'total_coupons' => Coupon::whereHas('usage', function($query) use ($user) {
+            'total_coupons' => Coupon::whereHas('couponUsages', function($query) use ($user) {
                 $query->where('user_id', $user->id);
             })->count(),
-            'active_coupons' => Coupon::whereHas('usage', function($query) use ($user) {
+            'active_coupons' => Coupon::whereHas('couponUsages', function($query) use ($user) {
                 $query->where('user_id', $user->id);
             })->where('status', 'active')->count(),
             'total_transactions' => Transaction::where('user_id', $user->id)->count(),
             'total_spent' => Transaction::where('user_id', $user->id)
                 ->where('status', 'completed')
                 ->sum('amount'),
-            'loyalty_points_balance' => CustomerLoyaltyPoint::where('user_id', $user->id)
-                ->where('status', 'active')
+            'loyalty_points_balance' => $user->loyalty_points_balance,
+            'loyalty_points_earned' => LoyaltyPoint::where('user_id', $user->id)
+                ->where('type', 'earned')
                 ->sum('points'),
-            'loyalty_points_earned' => CustomerLoyaltyPoint::where('user_id', $user->id)
-                ->sum('points'),
-            'loyalty_points_redeemed' => CustomerLoyaltyPoint::where('user_id', $user->id)
-                ->where('status', 'redeemed')
+            'loyalty_points_redeemed' => LoyaltyPoint::where('user_id', $user->id)
+                ->where('type', 'redeemed')
                 ->sum('points'),
             'favorite_companies' => Transaction::where('user_id', $user->id)
                 ->distinct('company_id')
@@ -73,10 +72,10 @@ class DashboardController extends Controller
 
     private function getMyCoupons($limit = 5)
     {
-        return Coupon::whereHas('usage', function($query) {
+        return Coupon::whereHas('couponUsages', function($query) {
                 $query->where('user_id', auth()->id());
             })
-            ->with(['offer.company', 'usage'])
+            ->with(['offer.company', 'couponUsages'])
             ->latest()
             ->limit($limit)
             ->get();
@@ -93,7 +92,7 @@ class DashboardController extends Controller
 
     private function getLoyaltyPoints()
     {
-        return CustomerLoyaltyPoint::where('user_id', auth()->id())
+        return LoyaltyPoint::where('user_id', auth()->id())
             ->with(['company'])
             ->latest()
             ->limit(5)
@@ -126,7 +125,7 @@ class DashboardController extends Controller
         ->orderBy('date')
         ->pluck('total', 'date');
 
-        $loyaltyPointsData = CustomerLoyaltyPoint::select(
+        $loyaltyPointsData = LoyaltyPoint::select(
             DB::raw('DATE(created_at) as date'),
             DB::raw('SUM(points) as points')
         )

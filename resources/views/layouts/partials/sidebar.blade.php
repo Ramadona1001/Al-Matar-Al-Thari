@@ -50,6 +50,16 @@
             <i class="fas fa-cog me-2"></i>{{ __('Settings') }}
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('admin.points.*') ? 'active' : '' }}" href="{{ route('admin.points.edit') }}">
+            <i class="fas fa-star me-2"></i>{{ __('Points') }}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('admin.affiliates.*') ? 'active' : '' }}" href="{{ route('admin.affiliates.index') }}">
+            <i class="fas fa-hands-helping me-2"></i>{{ __('Affiliates') }}
+        </a>
+    </li>
 
 @elseif($userRole === 'merchant')
     <!-- Merchant Sidebar -->
@@ -59,8 +69,8 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('merchant.company.*') ? 'active' : '' }}" href="{{ route('merchant.company.edit') }}">
-            <i class="fas fa-building me-2"></i>{{ __('My Company') }}
+        <a class="nav-link {{ request()->routeIs('merchant.branches.*') ? 'active' : '' }}" href="{{ route('merchant.branches.index') }}">
+            <i class="fas fa-code-branch me-2"></i>{{ __('Branches') }}
         </a>
     </li>
     <li class="nav-item">
@@ -71,6 +81,11 @@
     <li class="nav-item">
         <a class="nav-link {{ request()->routeIs('merchant.coupons.*') ? 'active' : '' }}" href="{{ route('merchant.coupons.index') }}">
             <i class="fas fa-ticket-alt me-2"></i>{{ __('Coupons') }}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('merchant.affiliates.*') ? 'active' : '' }}" href="{{ route('merchant.affiliates.index') }}">
+            <i class="fas fa-hands-helping me-2"></i>{{ __('Affiliates') }}
         </a>
     </li>
     <li class="nav-item">
@@ -107,6 +122,16 @@
         </a>
     </li>
     <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('customer.scan.*') ? 'active' : '' }}" href="{{ route('customer.scan.index') }}">
+            <i class="fas fa-qrcode me-2"></i>{{ __('Scan QR Code') }}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('customer.digital-card.*') ? 'active' : '' }}" href="{{ route('customer.digital-card.index') }}">
+            <i class="fas fa-credit-card me-2"></i>{{ __('My Digital Card') }}
+        </a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link {{ request()->routeIs('customer.offers.*') ? 'active' : '' }}" href="{{ route('customer.offers.index') }}">
             <i class="fas fa-tags me-2"></i>{{ __('Offers') }}
         </a>
@@ -124,6 +149,11 @@
     <li class="nav-item">
         <a class="nav-link {{ request()->routeIs('customer.loyalty.*') ? 'active' : '' }}" href="{{ route('customer.loyalty.index') }}">
             <i class="fas fa-star me-2"></i>{{ __('Loyalty Points') }}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('customer.affiliate.*') ? 'active' : '' }}" href="{{ route('customer.affiliate.index') }}">
+            <i class="fas fa-hands-helping me-2"></i>{{ __('Affiliate Program') }}
         </a>
     </li>
     <li class="nav-item">

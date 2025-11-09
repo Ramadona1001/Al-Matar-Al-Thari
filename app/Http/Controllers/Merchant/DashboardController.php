@@ -7,7 +7,7 @@ use App\Models\Company;
 use App\Models\Offer;
 use App\Models\Coupon;
 use App\Models\Transaction;
-use App\Models\CustomerLoyaltyPoint;
+use App\Models\LoyaltyPoint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -46,7 +46,7 @@ class DashboardController extends Controller
             })->count(),
             'used_coupons' => Coupon::whereHas('offer', function($query) use ($company) {
                 $query->where('company_id', $company->id);
-            })->whereHas('usage')->count(),
+            })->whereHas('couponUsages')->count(),
             'total_transactions' => Transaction::where('company_id', $company->id)->count(),
             'total_revenue' => Transaction::where('company_id', $company->id)
                 ->where('status', 'completed')
@@ -58,10 +58,11 @@ class DashboardController extends Controller
             'total_customers' => Transaction::where('company_id', $company->id)
                 ->distinct('user_id')
                 ->count('user_id'),
-            'loyalty_points_issued' => CustomerLoyaltyPoint::where('company_id', $company->id)
+            'loyalty_points_issued' => LoyaltyPoint::where('company_id', $company->id)
+                ->where('type', 'earned')
                 ->sum('points'),
-            'loyalty_points_redeemed' => CustomerLoyaltyPoint::where('company_id', $company->id)
-                ->where('status', 'redeemed')
+            'loyalty_points_redeemed' => LoyaltyPoint::where('company_id', $company->id)
+                ->where('type', 'redeemed')
                 ->sum('points'),
         ];
     }
