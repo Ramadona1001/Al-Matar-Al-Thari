@@ -18,7 +18,7 @@ class AffiliateController extends Controller
         $affiliates = Affiliate::with(['user', 'company'])
             ->when($request->filled('status'), fn ($q) => $q->where('status', $request->status))
             ->latest()
-            ->paginate(20);
+            ->get();
 
         return view('admin.affiliates.index', compact('affiliates'));
     }

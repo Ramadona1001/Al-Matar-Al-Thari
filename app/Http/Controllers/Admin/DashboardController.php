@@ -25,8 +25,9 @@ class DashboardController extends Controller
         $recentCompanies = $this->getRecentCompanies();
         $recentTransactions = $this->getRecentTransactions();
         $chartData = $this->getChartData();
+        $cmsStats = $this->getCmsStats();
 
-        return view('admin.dashboard', compact('stats', 'recentUsers', 'recentCompanies', 'recentTransactions', 'chartData'));
+        return view('admin.dashboard', compact('stats', 'recentUsers', 'recentCompanies', 'recentTransactions', 'chartData', 'cmsStats'));
     }
 
     private function getDashboardStats()
@@ -109,5 +110,84 @@ class DashboardController extends Controller
         $notification->markAsRead();
         
         return response()->json(['success' => true]);
+    }
+
+    private function getCmsStats()
+    {
+        $stats = [];
+        
+        // Sections
+        if (class_exists(\App\Models\Section::class)) {
+            $stats['total_sections'] = \App\Models\Section::count();
+            $stats['visible_sections'] = \App\Models\Section::where('is_visible', true)->count();
+        } else {
+            $stats['total_sections'] = 0;
+            $stats['visible_sections'] = 0;
+        }
+        
+        // Banners
+        if (class_exists(\App\Models\Banner::class)) {
+            $stats['total_banners'] = \App\Models\Banner::count();
+            $stats['active_banners'] = \App\Models\Banner::where('is_active', true)->count();
+        } else {
+            $stats['total_banners'] = 0;
+            $stats['active_banners'] = 0;
+        }
+        
+        // Menus
+        if (class_exists(\App\Models\Menu::class)) {
+            $stats['total_menus'] = \App\Models\Menu::count();
+            $stats['active_menus'] = \App\Models\Menu::where('is_active', true)->count();
+        } else {
+            $stats['total_menus'] = 0;
+            $stats['active_menus'] = 0;
+        }
+        
+        // Services
+        if (class_exists(\App\Models\Service::class)) {
+            $stats['total_services'] = \App\Models\Service::count();
+            $stats['active_services'] = \App\Models\Service::where('is_active', true)->count();
+        } else {
+            $stats['total_services'] = 0;
+            $stats['active_services'] = 0;
+        }
+        
+        // Blogs
+        if (class_exists(\App\Models\Blog::class)) {
+            $stats['total_blogs'] = \App\Models\Blog::count();
+            $stats['published_blogs'] = \App\Models\Blog::where('is_published', true)->count();
+        } else {
+            $stats['total_blogs'] = 0;
+            $stats['published_blogs'] = 0;
+        }
+        
+        // Testimonials
+        if (class_exists(\App\Models\Testimonial::class)) {
+            $stats['total_testimonials'] = \App\Models\Testimonial::count();
+            $stats['active_testimonials'] = \App\Models\Testimonial::where('is_active', true)->count();
+        } else {
+            $stats['total_testimonials'] = 0;
+            $stats['active_testimonials'] = 0;
+        }
+        
+        // Statistics
+        if (class_exists(\App\Models\Statistic::class)) {
+            $stats['total_statistics'] = \App\Models\Statistic::count();
+            $stats['active_statistics'] = \App\Models\Statistic::where('is_active', true)->count();
+        } else {
+            $stats['total_statistics'] = 0;
+            $stats['active_statistics'] = 0;
+        }
+        
+        // Pages
+        if (class_exists(\App\Models\Page::class)) {
+            $stats['total_pages'] = \App\Models\Page::count();
+            $stats['published_pages'] = \App\Models\Page::where('is_published', true)->count();
+        } else {
+            $stats['total_pages'] = 0;
+            $stats['published_pages'] = 0;
+        }
+        
+        return $stats;
     }
 }

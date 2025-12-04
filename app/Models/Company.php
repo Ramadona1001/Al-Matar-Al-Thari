@@ -31,6 +31,8 @@ class Company extends Model
         'status',
         'affiliate_commission_rate',
         'user_id',
+        'network_id',
+        'can_display_cards_on_homepage',
     ];
 
     /**
@@ -41,6 +43,9 @@ class Company extends Model
     protected $casts = [
         'affiliate_commission_rate' => 'decimal:2',
         'status' => 'string',
+        // Store multilingual fields as JSON arrays
+        'name' => 'array',
+        'description' => 'array',
     ];
 
     /**
@@ -49,6 +54,16 @@ class Company extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function network(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Network::class);
+    }
+
+    public function loyaltyCards(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\LoyaltyCard::class);
     }
 
     /**
@@ -113,6 +128,58 @@ class Company extends Model
     public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class);
+    }
+
+    /**
+     * Get name for current locale.
+     */
+    public function getLocalizedNameAttribute(): string
+    {
+        $locale = app()->getLocale();
+        return $this->name[$locale] ?? $this->name['en'] ?? (is_string($this->getRawOriginal('name')) ? $this->getRawOriginal('name') : '');
+    }
+
+    /**
+     * Get description for current locale.
+     */
+    public function getLocalizedDescriptionAttribute(): string
+    {
+        $locale = app()->getLocale();
+        return $this->description[$locale] ?? $this->description['en'] ?? (is_string($this->getRawOriginal('description')) ? $this->getRawOriginal('description') : '');
+    }
+
+    /**
+     * Set name as JSON if array provided.
+     */
+    public function setNameAttribute($value): void
+    {
+        $this->attributes['name'] = is_array($value) ? json_encode($value) : $value;
+    }
+
+    /**
+     * Set description as JSON if array provided.
+     */
+    public function setDescriptionAttribute($value): void
+    {
+        $this->attributes['description'] = is_array($value) ? json_encode($value) : $value;
+    }
+
+    /**
+     * Get name as array when stored JSON; fallback empty array.
+     */
+    public function getNameAttribute($value): array
+    {
+        $decoded = json_decode($value, true);
+        return is_array($decoded) ? $decoded : [];
+    }
+
+    /**
+     * Get description as array when stored JSON; fallback empty array.
+     */
+    public function getDescriptionAttribute($value): array
+    {
+        $decoded = json_decode($value, true);
+        return is_array($decoded) ? $decoded : [];
     }
 
     /**

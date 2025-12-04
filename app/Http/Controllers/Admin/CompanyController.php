@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\Network;
 use App\Models\User;
 use App\Notifications\CompanyStatusChangedNotification;
 use Illuminate\Http\Request;
@@ -60,8 +61,8 @@ class CompanyController extends Controller
         $merchants = User::whereHas('roles', function($query) {
             $query->where('name', 'merchant');
         })->whereDoesntHave('company')->get();
-
-        return view('admin.companies.create', compact('merchants'));
+        $networks = Network::query()->orderBy('name')->get();
+        return view('admin.companies.create', compact('merchants', 'networks'));
     }
 
     /**
@@ -70,10 +71,12 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+            'name_ar' => 'nullable|string|max:255',
             'email' => 'required|email|unique:companies,email',
             'phone' => 'nullable|string|max:20',
-            'description' => 'nullable|string',
+            'description_en' => 'nullable|string',
+            'description_ar' => 'nullable|string',
             'website' => 'nullable|url|max:255',
             'address' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:100',
@@ -84,11 +87,26 @@ class CompanyController extends Controller
             'status' => 'required|in:pending,approved,rejected',
             'affiliate_commission_rate' => 'nullable|numeric|min:0|max:100',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'network_id' => 'nullable|exists:networks,id',
+            'can_display_cards_on_homepage' => 'boolean',
         ]);
 
         if ($request->hasFile('logo')) {
             $validated['logo'] = $request->file('logo')->store('companies/logos', 'public');
         }
+
+        // Prepare multilingual fields
+        $validated['name'] = [
+            'en' => $validated['name_en'],
+            'ar' => $validated['name_ar'] ?? $validated['name_en'],
+        ];
+        $validated['description'] = [
+            'en' => $validated['description_en'] ?? '',
+            'ar' => $validated['description_ar'] ?? $validated['description_en'] ?? '',
+        ];
+
+        // Remove temporary input keys
+        unset($validated['name_en'], $validated['name_ar'], $validated['description_en'], $validated['description_ar']);
 
         $company = Company::create($validated);
 
@@ -123,8 +141,8 @@ class CompanyController extends Controller
         $merchants = User::whereHas('roles', function($query) {
             $query->where('name', 'merchant');
         })->get();
-
-        return view('admin.companies.edit', compact('company', 'merchants'));
+        $networks = Network::query()->orderBy('name')->get();
+        return view('admin.companies.edit', compact('company', 'merchants', 'networks'));
     }
 
     /**
@@ -133,10 +151,12 @@ class CompanyController extends Controller
     public function update(Request $request, Company $company)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+            'name_ar' => 'nullable|string|max:255',
             'email' => 'required|email|unique:companies,email,' . $company->id,
             'phone' => 'nullable|string|max:20',
-            'description' => 'nullable|string',
+            'description_en' => 'nullable|string',
+            'description_ar' => 'nullable|string',
             'website' => 'nullable|url|max:255',
             'address' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:100',
@@ -147,6 +167,8 @@ class CompanyController extends Controller
             'status' => 'required|in:pending,approved,rejected',
             'affiliate_commission_rate' => 'nullable|numeric|min:0|max:100',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'network_id' => 'nullable|exists:networks,id',
+            'can_display_cards_on_homepage' => 'boolean',
         ]);
 
         if ($request->hasFile('logo')) {
@@ -156,6 +178,19 @@ class CompanyController extends Controller
             }
             $validated['logo'] = $request->file('logo')->store('companies/logos', 'public');
         }
+
+        // Prepare multilingual fields
+        $validated['name'] = [
+            'en' => $validated['name_en'],
+            'ar' => $validated['name_ar'] ?? $validated['name_en'],
+        ];
+        $validated['description'] = [
+            'en' => $validated['description_en'] ?? '',
+            'ar' => $validated['description_ar'] ?? $validated['description_en'] ?? '',
+        ];
+
+        // Remove temporary input keys
+        unset($validated['name_en'], $validated['name_ar'], $validated['description_en'], $validated['description_ar']);
 
         $company->update($validated);
 

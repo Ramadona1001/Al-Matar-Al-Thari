@@ -21,12 +21,29 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="name" class="form-label">{{ __('Company Name') }} <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('name') is-invalid @enderror" 
-                                       id="name" name="name" value="{{ old('name') }}" required>
-                                @error('name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                <label class="form-label">{{ __('Company Name') }} <span class="text-danger">*</span></label>
+                                <ul class="nav nav-tabs" id="nameTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="name-en-tab" data-bs-toggle="tab" data-bs-target="#name-en" type="button" role="tab" aria-controls="name-en" aria-selected="true">{{ __('English') }}</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="name-ar-tab" data-bs-toggle="tab" data-bs-target="#name-ar" type="button" role="tab" aria-controls="name-ar" aria-selected="false">{{ __('Arabic') }}</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content border border-top-0 p-3" id="nameTabsContent">
+                                    <div class="tab-pane fade show active" id="name-en" role="tabpanel" aria-labelledby="name-en-tab">
+                                        <input type="text" class="form-control @error('name_en') is-invalid @enderror" id="name_en" name="name_en" value="{{ old('name_en') }}" required>
+                                        @error('name_en')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="tab-pane fade" id="name-ar" role="tabpanel" aria-labelledby="name-ar-tab">
+                                        <input type="text" class="form-control @error('name_ar') is-invalid @enderror" id="name_ar" name="name_ar" value="{{ old('name_ar') }}">
+                                        @error('name_ar')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -73,13 +90,56 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="network_id" class="form-label">{{ __('Network') }}</label>
+                                <select class="form-select @error('network_id') is-invalid @enderror"
+                                        id="network_id" name="network_id">
+                                    <option value="">{{ __('Unassigned') }}</option>
+                                    @foreach($networks as $network)
+                                        <option value="{{ $network->id }}" {{ old('network_id') == $network->id ? 'selected' : '' }}>
+                                            {{ $network->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('network_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mt-4">
+                                <input type="checkbox" class="form-check-input" id="can_display_cards_on_homepage" name="can_display_cards_on_homepage" value="1" {{ old('can_display_cards_on_homepage') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="can_display_cards_on_homepage">{{ __('Can display cards on homepage') }}</label>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="mb-3">
-                        <label for="description" class="form-label">{{ __('Description') }}</label>
-                        <textarea class="form-control @error('description') is-invalid @enderror" 
-                                  id="description" name="description" rows="3">{{ old('description') }}</textarea>
-                        @error('description')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <label class="form-label">{{ __('Description') }}</label>
+                        <ul class="nav nav-tabs" id="descriptionTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="description-en-tab" data-bs-toggle="tab" data-bs-target="#description-en" type="button" role="tab" aria-controls="description-en" aria-selected="true">{{ __('English') }}</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="description-ar-tab" data-bs-toggle="tab" data-bs-target="#description-ar" type="button" role="tab" aria-controls="description-ar" aria-selected="false">{{ __('Arabic') }}</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content border border-top-0 p-3" id="descriptionTabsContent">
+                            <div class="tab-pane fade show active" id="description-en" role="tabpanel" aria-labelledby="description-en-tab">
+                                <textarea class="form-control @error('description_en') is-invalid @enderror" id="description_en" name="description_en" rows="3">{{ old('description_en') }}</textarea>
+                                @error('description_en')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="tab-pane fade" id="description-ar" role="tabpanel" aria-labelledby="description-ar-tab">
+                                <textarea class="form-control @error('description_ar') is-invalid @enderror" id="description_ar" name="description_ar" rows="3">{{ old('description_ar') }}</textarea>
+                                @error('description_ar')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">

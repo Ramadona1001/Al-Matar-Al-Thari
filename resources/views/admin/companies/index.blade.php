@@ -126,7 +126,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered datatable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         @if(request('status') == 'pending')
@@ -154,7 +154,7 @@
                             @endif
                             <td>
                                 @if($company->logo)
-                                    <img src="{{ asset('storage/' . $company->logo) }}" alt="{{ $company->name }}" 
+            <img src="{{ asset('storage/' . $company->logo) }}" alt="{{ $company->localized_name }}"
                                          class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
                                 @else
                                     <div class="bg-secondary text-white rounded d-flex align-items-center justify-content-center" 
@@ -163,7 +163,7 @@
                                     </div>
                                 @endif
                             </td>
-                            <td>{{ $company->name }}</td>
+            <td>{{ $company->localized_name }}</td>
                             <td>{{ $company->email }}</td>
                             <td>{{ $company->phone ?? '-' }}</td>
                             <td>

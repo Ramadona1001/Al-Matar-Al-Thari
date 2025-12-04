@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class StatisticTranslation extends Model
+{
+    public $timestamps = false;
+    
+    protected $fillable = [
+        'statistic_id',
+        'locale',
+        'label',
+        'description',
+    ];
+}

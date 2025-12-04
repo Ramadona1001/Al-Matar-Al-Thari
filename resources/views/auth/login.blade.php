@@ -1,47 +1,217 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@extends('layouts.new-design')
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+@section('meta_title', __('Login'))
+@section('meta_description', __('Sign in to your account'))
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">
+@endsection
+
+@section('content')
+    <!-- Login Section -->
+    <section class="auth-section">
+        <div class="auth-container">
+            <div class="auth-wrapper">
+                <!-- Left Side - Branding (Desktop Only) -->
+                <div class="auth-branding d-none d-lg-flex">
+                    <div class="branding-content">
+                        <div class="brand-logo">
+                            <i class="bi bi-cloud-rain"></i>
+                        </div>
+                        <h1 class="brand-title">{{ __('Welcome Back') }}</h1>
+                        <p class="brand-subtitle">{{ __('Sign in to continue to your account and access all features') }}</p>
+                        <div class="brand-features">
+                            <div class="feature-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>{{ __('Secure & Safe') }}</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-bolt"></i>
+                                <span>{{ __('Fast Access') }}</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>{{ __('Mobile Friendly') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="branding-pattern"></div>
+                </div>
+
+                <!-- Right Side - Login Form -->
+                <div class="auth-form-wrapper">
+                    <div class="auth-form-card">
+                        <!-- Header -->
+                        <div class="auth-header">
+                            <div class="auth-icon">
+                                <i class="fas fa-sign-in-alt"></i>
+                            </div>
+                            <h2 class="auth-title">{{ __('Login') }}</h2>
+                            <p class="auth-subtitle">{{ __('Sign in to your account') }}</p>
+                        </div>
+
+                        <!-- Session Status -->
+                        @if(session('status'))
+                            <div class="alert alert-success-custom" role="alert">
+                                <i class="fas fa-check-circle me-2"></i>
+                                {{ session('status') }}
+                            </div>
+                        @endif
+
+                        <!-- Login Form -->
+                        <form method="POST" action="{{ route('login', ['locale' => app()->getLocale()]) }}" class="auth-form" >
+                            @csrf
+
+                            <!-- Email Field -->
+                            <div class="form-field">
+                                <label for="email" class="field-label">
+                                    <i class="fas fa-envelope field-label-icon"></i>
+                                    {{ __('Email Address') }}
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="email" 
+                                           id="email" 
+                                           name="email" 
+                                           class="form-input @error('email') is-invalid @enderror" 
+                                           value="{{ old('email') }}" 
+                                           placeholder="{{ __('Enter your email') }}" 
+                                           required 
+                                           autofocus 
+                                           autocomplete="username">
+                                    <span class="input-focus-line"></span>
+                                </div>
+                                @error('email')
+                                    <div class="field-error">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <!-- Password Field -->
+                            <div class="form-field">
+                                <label for="password" class="field-label">
+                                    <i class="fas fa-lock field-label-icon"></i>
+                                    {{ __('Password') }}
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="password" 
+                                           id="password" 
+                                           name="password" 
+                                           class="form-input @error('password') is-invalid @enderror" 
+                                           placeholder="{{ __('Enter your password') }}" 
+                                           required 
+                                           autocomplete="current-password">
+                                    <button type="button" class="password-toggle-btn" id="togglePassword" aria-label="Toggle password visibility">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <span class="input-focus-line"></span>
+                                </div>
+                                @error('password')
+                                    <div class="field-error">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <!-- Remember Me & Forgot Password -->
+                            <div class="form-options">
+                                <label class="checkbox-wrapper">
+                                    <input type="checkbox" id="remember_me" name="remember" class="checkbox-input">
+                                    <span class="checkbox-custom"></span>
+                                    <span class="checkbox-label">{{ __('Remember me') }}</span>
+                                </label>
+                                @if (Route::has('password.request'))
+                                    <a href="{{ route('password.request', ['locale' => app()->getLocale()]) }}" class="forgot-link">
+                                        {{ __('Forgot password?') }}
+                                    </a>
+                                @endif
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="auth-submit-btn">
+                                <span class="btn-content">
+                                    <span class="btn-text">{{ __('Log in') }}</span>
+                                    <i class="fas fa-arrow-right btn-arrow"></i>
+                                </span>
+                                <span class="btn-loader">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </span>
+                            </button>
+
+                            <!-- Divider -->
+                            <div class="auth-divider">
+                                <span class="divider-line"></span>
+                                <span class="divider-text">{{ __('Or continue with') }}</span>
+                                <span class="divider-line"></span>
+                            </div>
+
+                            <!-- Social Login -->
+                            <div class="social-login">
+                                <button type="button" class="social-btn social-google" disabled>
+                                    <i class="fab fa-google"></i>
+                                    <span>{{ __('Google') }}</span>
+                                </button>
+                                <button type="button" class="social-btn social-facebook" disabled>
+                                    <i class="fab fa-facebook-f"></i>
+                                    <span>{{ __('Facebook') }}</span>
+                                </button>
+                            </div>
+
+                            <!-- Register Link -->
+                            <div class="auth-footer">
+                                <p class="footer-text">
+                                    {{ __("Don't have an account?") }}
+                                    <a href="{{ route('register', ['locale' => app()->getLocale()]) }}" class="footer-link">
+                                        {{ __('Create account') }}
+                                    </a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+    @push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">
+    @endpush
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Password toggle
+            const toggleBtn = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            
+            if (toggleBtn && passwordInput) {
+                toggleBtn.addEventListener('click', function() {
+                    const icon = this.querySelector('i');
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else {
+                        passwordInput.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    }
+                });
+            }
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            // Form submission loading state
+            const form = document.getElementById('loginForm');
+            if (form) {
+                form.addEventListener('submit', function() {
+                    const submitBtn = this.querySelector('.auth-submit-btn');
+                    if (submitBtn) {
+                        submitBtn.classList.add('loading');
+                    }
+                });
+            }
+        });
+    </script>
+    @endpush
+@endsection

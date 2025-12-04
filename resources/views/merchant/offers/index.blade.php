@@ -128,7 +128,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" width="100%" cellspacing="0">
+            <table class="table table-bordered datatable" width="100%" cellspacing="0" data-dt-init="false">
                 <thead>
                     <tr>
                         <th>{{ __('Image') }}</th>

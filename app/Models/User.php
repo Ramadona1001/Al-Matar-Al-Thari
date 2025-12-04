@@ -123,6 +123,40 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Wallet: loyalty cards followed by the customer with pivot fields.
+     */
+    public function walletCards()
+    {
+        return $this->belongsToMany(LoyaltyCard::class, 'customer_loyalty_cards', 'customer_id', 'card_id')
+            ->withPivot(['points_balance', 'last_transaction_at'])
+            ->withTimestamps();
+    }
+
+    /**
+     * Loyalty transactions ledger for the user.
+     */
+    public function loyaltyTransactions()
+    {
+        return $this->hasMany(LoyaltyTransaction::class);
+    }
+
+    /**
+     * Point request links created by the customer.
+     */
+    public function pointRequestLinks()
+    {
+        return $this->hasMany(PointRequestLink::class, 'customer_id');
+    }
+
+    /**
+     * Redeem codes used by the user.
+     */
+    public function redeemCodesUsed()
+    {
+        return $this->hasMany(RedeemCode::class, 'used_by_user_id');
+    }
+
+    /**
      * Get the affiliate account for the user.
      */
     public function affiliate()
@@ -234,5 +268,32 @@ class User extends Authenticatable implements MustVerifyEmail
     public function scopeMerchants($query)
     {
         return $query->where('user_type', 'merchant');
+    }
+
+    /**
+     * Get the user's avatar URL.
+     */
+    public function getAvatarUrlAttribute(): ?string
+    {
+        if ($this->avatar) {
+            return \Illuminate\Support\Facades\Storage::url($this->avatar);
+        }
+        
+        // Return default avatar based on gender or initials
+        return null;
+    }
+
+    /**
+     * Get the user's avatar or default placeholder.
+     */
+    public function getAvatarOrPlaceholderAttribute(): string
+    {
+        if ($this->avatar) {
+            return \Illuminate\Support\Facades\Storage::url($this->avatar);
+        }
+        
+        // Return placeholder with initials
+        $initials = strtoupper(substr($this->first_name, 0, 1) . substr($this->last_name, 0, 1));
+        return "https://ui-avatars.com/api/?name={$initials}&background=random&color=fff&size=128";
     }
 }

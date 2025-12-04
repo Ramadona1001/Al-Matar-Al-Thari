@@ -90,6 +90,81 @@ class DashboardController extends Controller
             ->get();
     }
 
+    public function transactions(Request $request)
+    {
+        $query = Transaction::where('user_id', auth()->id())
+            ->with(['company']);
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter by date range
+        if ($request->filled('date_from')) {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
+        $transactions = $query->latest()->paginate(15);
+
+        return view('customer.transactions.index', compact('transactions'));
+    }
+
+    public function favorites(Request $request)
+    {
+        $userId = auth()->id();
+        
+        // Get company IDs with transaction counts
+        $companyStats = Transaction::select('company_id', DB::raw('COUNT(*) as transaction_count'), DB::raw('SUM(amount) as total_spent'))
+            ->where('user_id', $userId)
+            ->where('status', 'completed')
+            ->groupBy('company_id')
+            ->orderByDesc('transaction_count')
+            ->get();
+        
+        // Get companies and add transaction data
+        $companyIds = $companyStats->pluck('company_id');
+        $companyData = $companyStats->keyBy('company_id');
+        
+        $query = Company::whereIn('id', $companyIds);
+        
+        // Search filter
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->whereRaw("JSON_EXTRACT(name, '$.en') LIKE ?", ["%{$search}%"])
+                  ->orWhereRaw("JSON_EXTRACT(name, '$.ar') LIKE ?", ["%{$search}%"]);
+            });
+        }
+        
+        $companies = $query->get()
+            ->map(function($company) use ($companyData) {
+                $data = $companyData[$company->id] ?? null;
+                $company->transaction_count = $data->transaction_count ?? 0;
+                $company->total_spent = $data->total_spent ?? 0;
+                return $company;
+            })
+            ->sortByDesc('transaction_count')
+            ->values();
+        
+        // Paginate manually
+        $perPage = 15;
+        $currentPage = $request->get('page', 1);
+        $items = $companies->slice(($currentPage - 1) * $perPage, $perPage)->values();
+        $paginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            $items,
+            $companies->count(),
+            $perPage,
+            $currentPage,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
+        return view('customer.favorites.index', compact('paginated'));
+    }
+
     private function getLoyaltyPoints()
     {
         return LoyaltyPoint::where('user_id', auth()->id())
@@ -101,13 +176,28 @@ class DashboardController extends Controller
 
     private function getFavoriteCompanies($limit = 5)
     {
-        return Company::select('companies.*', DB::raw('COUNT(transactions.id) as transaction_count'))
-            ->join('transactions', 'companies.id', '=', 'transactions.company_id')
-            ->where('transactions.user_id', auth()->id())
-            ->groupBy('companies.id')
+        $userId = auth()->id();
+        
+        // Get company IDs with transaction counts using subquery
+        $companyStats = Transaction::select('company_id', DB::raw('COUNT(*) as transaction_count'))
+            ->where('user_id', $userId)
+            ->groupBy('company_id')
             ->orderByDesc('transaction_count')
             ->limit($limit)
             ->get();
+        
+        // Get companies and add transaction_count
+        $companyIds = $companyStats->pluck('company_id');
+        $transactionCounts = $companyStats->pluck('transaction_count', 'company_id');
+        
+        return Company::whereIn('id', $companyIds)
+            ->get()
+            ->map(function($company) use ($transactionCounts) {
+                $company->transaction_count = $transactionCounts[$company->id] ?? 0;
+                return $company;
+            })
+            ->sortByDesc('transaction_count')
+            ->values();
     }
 
     private function getChartData()

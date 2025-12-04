@@ -55,7 +55,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table table-bordered datatable">
                 <thead>
                     <tr>
                         <th>{{ __('Name') }}</th>

@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use App\Services\LocalizationService;
+use Illuminate\Support\Facades\URL;
 
 class Localization
 {
@@ -20,11 +21,15 @@ class Localization
         $localization = app(LocalizationService::class);
         
         // Check for locale in route parameter
-        $locale = $request->route(config('localization.locale_route_parameter'));
+        $locale = $request->route('locale');
+
         
         if ($locale && $localization->isValidLocale($locale)) {
             $localization->setLocale($locale);
         }
+
+        // Ensure generated routes include the current locale by default
+        URL::defaults(['locale' => $localization->getCurrentLocale()]);
 
         // Share localization data with views
         view()->share('localization', $localization);

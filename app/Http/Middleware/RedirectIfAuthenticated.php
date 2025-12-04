@@ -21,7 +21,12 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                $locale = session(config('localization.locale_session_key'))
+                    ?? $request->route('locale')
+                    ?? app()->getLocale()
+                    ?? config('localization.default_locale', 'en');
+
+                return redirect()->route('dashboard', ['locale' => $locale]);
             }
         }
 

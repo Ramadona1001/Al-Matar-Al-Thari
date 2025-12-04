@@ -114,8 +114,8 @@
                 <h6 class="m-0 font-weight-bold text-primary">{{ __('About the Company') }}</h6>
             </div>
             <div class="card-body">
-                <h5>{{ $offer->company->name ?? __('Unknown') }}</h5>
-                <p class="text-muted">{{ $offer->company->description ?? __('No description available.') }}</p>
+                <h5>{{ $offer->company->localized_name ?? __('Unknown') }}</h5>
+                <p class="text-muted">{{ $offer->company->localized_description ?? __('No description available.') }}</p>
                 <ul class="list-unstyled">
                     <li class="mb-2"><i class="fas fa-phone me-2 text-muted"></i>{{ $offer->company->phone ?? '-' }}</li>
                     <li class="mb-2"><i class="fas fa-envelope me-2 text-muted"></i>{{ $offer->company->email ?? '-' }}</li>

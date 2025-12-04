@@ -25,7 +25,7 @@
                             <option value="">{{ __('All Companies') }}</option>
                             @foreach($companies as $company)
                                 <option value="{{ $company->id }}" {{ request('company') == $company->id ? 'selected' : '' }}>
-                                    {{ $company->name }}
+                                    {{ $company->localized_name }}
                                 </option>
                             @endforeach
                         </select>

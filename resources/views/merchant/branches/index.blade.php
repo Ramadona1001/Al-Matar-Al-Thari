@@ -15,11 +15,11 @@
 @section('content')
 <div class="card shadow">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">{{ __('Branches for :company', ['company' => $company->name]) }}</h6>
+        <h6 class="m-0 font-weight-bold text-primary">{{ __('Branches for :company', ['company' => $company->localized_name]) }}</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table table-bordered datatable" data-dt-init="false">
                 <thead>
                     <tr>
                         <th>{{ __('Name') }}</th>

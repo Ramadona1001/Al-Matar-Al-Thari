@@ -25,6 +25,8 @@ class LoyaltyPoint extends Model
         'redeemed_at',
         'user_id',
         'company_id',
+        'loyalty_card_id',
+        'club_id',
     ];
 
     /**

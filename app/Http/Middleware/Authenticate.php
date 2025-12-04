@@ -12,6 +12,15 @@ class Authenticate extends Middleware
      */
     protected function redirectTo(Request $request): ?string
     {
-        return $request->expectsJson() ? null : route('login');
+        if ($request->expectsJson()) {
+            return null;
+        }
+
+        // Ensure locale is provided for localized auth routes
+        $locale = session(config('localization.locale_session_key'))
+            ?? app()->getLocale()
+            ?? config('localization.default_locale', 'en');
+
+        return route('login', ['locale' => $locale]);
     }
 }

@@ -19,33 +19,32 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Check for locale in session first
-        if (Session::has('locale')) {
-            $locale = Session::get('locale');
-        } 
-        // Then check for locale in cookie
-        elseif ($request->hasCookie('locale')) {
-            $locale = $request->cookie('locale');
-        } 
-        // Finally, use the default locale from config
-        else {
-            $locale = config('app.locale');
+        $supportedLocales = config('localization.supported_locales', ['en']);
+        $fallbackLocale = config('localization.fallback_locale', config('app.fallback_locale', 'en'));
+        $sessionKey = config('localization.locale_session_key', 'locale');
+
+        $locale = Session::get($sessionKey)
+            ?? $request->cookie('locale')
+            ?? null;
+
+        if (!$locale && config('localization.detect_locale', false)) {
+            $locale = $request->getPreferredLanguage($supportedLocales);
         }
 
-        // Validate the locale is supported
-        $supportedLocales = ['en', 'ar', 'fr', 'es'];
+        if (!$locale || !in_array($locale, $supportedLocales)) {
+            $locale = config('localization.default_locale', config('app.locale'));
+        }
+
         if (!in_array($locale, $supportedLocales)) {
-            $locale = config('app.fallback_locale', 'en');
+            $locale = $fallbackLocale;
         }
 
-        // Set the application locale
         App::setLocale($locale);
+        Session::put($sessionKey, $locale);
 
-        // Set the direction based on locale (RTL for Arabic)
-        $direction = ($locale === 'ar') ? 'rtl' : 'ltr';
-        App::setLocale($locale);
-        
-        // Share locale and direction with all views
+        $rtlLocales = ['ar', 'he', 'fa', 'ur'];
+        $direction = in_array($locale, $rtlLocales) ? 'rtl' : 'ltr';
+
         view()->share('currentLocale', $locale);
         view()->share('currentDirection', $direction);
 

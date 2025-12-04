@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact Al-Matar Al-Thari - Get in touch with us">
+    <title>Contact Us - Al-Matar Al-Thari</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="assets/css/styles-ltr.css">    <!-- Responsive Header Styles -->
+    
+</head>
+<body>
+    <!-- Top Navbar (Desktop Only) -->
+    <div class="top-navbar d-none d-md-block">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Left Side - Contact Info -->
+                <div class="col-md-6 contact-info">
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="mailto:info@almatar.com">
+                            <i class="bi bi-envelope"></i>
+                            <span>info@almatar.com</span>
+                        </a>
+                        <a href="tel:+1234567890">
+                            <i class="bi bi-telephone"></i>
+                            <span>+123 456 7890</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Side - Social Media -->
+                <div class="col-md-6 social-icons text-end">
+                    <a href="#" target="_blank" aria-label="Facebook">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Twitter">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Instagram">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="LinkedIn">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Desktop Main Navigation Bar -->
+    <nav class="navbar navbar-expand-lg main-navbar sticky-top d-none d-md-flex">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-cloud-rain"></i>
+                <span>Al-Matar Al-Thari</span>
+            </a>
+
+            <!-- Centered Menu Items -->
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link " href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="about.html">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="features.html">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="offers.html">Offers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="companies.html">Companies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="contact.html">Contact</a>
+                </li>
+            </ul>
+
+            <!-- Right Side - Language Switcher & Get Started Button -->
+            <div class="d-flex align-items-center">
+                <!-- Language Switcher Dropdown -->
+                <div class="lang-switcher dropdown">
+                    <button class="lang-dropdown-btn dropdown-toggle" type="button" id="langDropdownDesktop" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span id="currentLangTextDesktop">
+                            <i class="bi bi-globe"></i>
+                            <span>English</span>
+                        </span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    <ul class="lang-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="langDropdownDesktop">
+                        <li>
+                            <a class="lang-dropdown-item active" href="#" data-lang="ltr" data-text="English">
+                                <i class="bi bi-translate"></i>
+                                <span>English (LTR)</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="lang-dropdown-item" href="#" data-lang="rtl" data-text="العربية">
+                                <i class="bi bi-translate"></i>
+                                <span>العربية (RTL)</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Get Started Button -->
+                <a href="register.html" class="btn btn-get-started">
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Header (Mobile Only) -->
+    <div class="mobile-header d-md-none">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Logo -->
+                <a href="index.html" class="mobile-logo text-decoration-none">
+                    <i class="bi bi-cloud-rain"></i>
+                    <span>Al-Matar Al-Thari</span>
+                </a>
+
+                <!-- Language Dropdown -->
+                <div class="mobile-lang dropdown">
+                    <button class="mobile-lang-btn dropdown-toggle" type="button" id="langDropdownMobile" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-globe"></i>
+                        <span id="currentLangTextMobile">EN</span>
+                        <i class="bi bi-chevron-down" style="font-size: 0.6rem;"></i>
+                    </button>
+                    <ul class="lang-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="langDropdownMobile">
+                        <li>
+                            <a class="lang-dropdown-item active" href="#" data-lang="ltr" data-text="EN">
+                                <i class="bi bi-translate"></i>
+                                <span>English</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="lang-dropdown-item" href="#" data-lang="rtl" data-text="AR">
+                                <i class="bi bi-translate"></i>
+                                <span>العربية</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav d-md-none">
+        <div class="nav-container">
+            <a href="index.html" class="nav-item active" data-page="home">
+                <i class="bi bi-house-door"></i>
+                <span>Home</span>
+            </a>
+            <a href="offers.html" class="nav-item " data-page="offers">
+                <i class="bi bi-tag"></i>
+                <span>Offers</span>
+            </a>
+            <a href="companies.html" class="nav-item " data-page="companies">
+                <i class="bi bi-building"></i>
+                <span>Companies</span>
+            </a>
+            <a href="features.html" class="nav-item " data-page="features">
+                <i class="bi bi-star"></i>
+                <span>Features</span>
+            </a>
+            <a href="login.html" class="nav-item " data-page="account">
+                <i class="bi bi-person"></i>
+                <span>Account</span>
+            </a>
+        </div>
+    </nav>
+    <!-- Breadcrumb Section -->
+    <section class="breadcrumb-section">
+        <div class="container breadcrumb-container">
+            <h1 class="breadcrumb-title">Contact Us</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+
+                        <li class="breadcrumb-item">
+                            <a href="index.html">
+                                <i class="bi bi-house-door"></i>
+                                Home
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+
+                <!-- Right Side - Social Media -->
+                <div class="col-md-6 social-icons text-end">
+                    <a href="#" target="_blank" aria-label="Facebook">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Twitter">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Instagram">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="LinkedIn">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+                <!-- Right Side - Social Media -->
+                <div class="col-md-6 social-icons text-end">
+                    <a href="#" target="_blank" aria-label="Facebook">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Twitter">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Instagram">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="LinkedIn">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+                <!-- Right Side - Social Media -->
+                <div class="col-md-6 social-icons text-end">
+                    <a href="#" target="_blank" aria-label="Facebook">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Twitter">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Instagram">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="LinkedIn">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <section class="hero-section" style="padding: 120px 0 60px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="hero-title">Contact Us</h1>
+                    <p class="hero-description">Get in touch with us</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="form-section">
+        <div class="container">
+            <div class="row">
+                <!-- Contact Form -->
+                <div class="col-lg-8 mb-4">
+                    <div class="form-card">
+                        <h3 class="mb-4">Send us a Message</h3>
+                        <form id="contactForm">
+                            <div class="mb-3">
+                                <label for="contactName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="contactName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="contactEmail" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="contactEmail" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="contactPhone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="contactPhone">
+                            </div>
+                            <div class="mb-3">
+                                <label for="contactMessage" class="form-label">Message</label>
+                                <textarea class="form-control" id="contactMessage" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary-custom">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="col-lg-4">
+                    <div class="form-card">
+                        <h3 class="mb-4">Contact Information</h3>
+
+                        <div class="info-box mb-4" style="height: auto;">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <h5>Address</h5>
+                            <p>123 Business Street, City, Country</p>
+                        </div>
+
+                        <div class="info-box mb-4" style="height: auto;">
+                            <i class="fas fa-phone"></i>
+                            <h5>Phone</h5>
+                            <p>+123 456 7890</p>
+                        </div>
+
+                        <div class="info-box mb-4" style="height: auto;">
+                            <i class="fas fa-envelope"></i>
+                            <h5>Email</h5>
+                            <p>info@almatar.com</p>
+                        </div>
+
+                        <div class="info-box" style="height: auto;">
+                            <i class="fas fa-clock"></i>
+                            <h5>Business Hours</h5>
+                            <p>Monday - Friday: 9:00 AM - 6:00 PM<br>Saturday: 10:00 AM - 4:00 PM<br>Sunday: Closed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Google Maps Placeholder -->
+    <section class="section bg-light" style="padding: 0;">
+        <div class="container-fluid p-0">
+            <div style="width: 100%; height: 400px; background: linear-gradient(135deg, var(--primary-color) 0%, var(--info-color) 100%); display: flex; align-items: center; justify-content: center; color: white;">
+                <div class="text-center">
+                    <i class="fas fa-map-marked-alt fa-5x mb-3"></i>
+                    <h3>Google Maps Integration</h3>
+                    <p>Replace this section with your Google Maps embed code</p>
+                    <code style="background: rgba(255,255,255,0.2); padding: 10px; border-radius: 5px; display: block; margin-top: 20px;">
+                        &lt;iframe src="https://www.google.com/maps/embed?pb=..."&gt;&lt;/iframe&gt;
+                    </code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" title="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Language System -->
+    <script src="assets/js/lang.js"></script>
+
+    <!-- Main JavaScript -->
+    <script src="assets/js/main.js"></script>
+
+<!-- JavaScript -->
+    <script>
+        $(document).ready(function() {
+            // Function to update language
+            function updateLanguage(lang, langText) {
+                const isRTL = lang === 'rtl';
+
+                // Update document direction
+                $('html').attr('dir', isRTL ? 'rtl' : 'ltr');
+                $('html').attr('lang', isRTL ? 'ar' : 'en');
+
+                // Update desktop dropdown text
+                $('#currentLangTextDesktop').html(`
+                    <i class="bi bi-globe"></i>
+                    <span>${langText}</span>
+                `);
+
+                // Update mobile dropdown text
+                $('#currentLangTextMobile').text(lang === 'ltr' ? 'EN' : 'AR');
+
+                // Update active state for all dropdowns
+                $('.lang-dropdown-item').removeClass('active');
+                $(`.lang-dropdown-item[data-lang="${lang}"]`).addClass('active');
+
+                // Save preference
+                localStorage.setItem('language', lang);
+            }
+
+            // RTL/LTR Toggle - Desktop
+            $('.lang-dropdown-item').on('click', function(e) {
+                e.preventDefault();
+                const lang = $(this).data('lang');
+                const langText = $(this).data('text');
+
+                updateLanguage(lang, langText);
+
+                // Close dropdowns
+                const desktopDropdown = bootstrap.Dropdown.getInstance(document.getElementById('langDropdownDesktop'));
+                if (desktopDropdown) {
+                    desktopDropdown.hide();
+                }
+
+                const mobileDropdown = bootstrap.Dropdown.getInstance(document.getElementById('langDropdownMobile'));
+                if (mobileDropdown) {
+                    mobileDropdown.hide();
+                }
+            });
+
+            // Load saved language preference
+            const savedLang = localStorage.getItem('language') || 'ltr';
+            if (savedLang === 'rtl') {
+                updateLanguage('rtl', 'العربية');
+            } else {
+                updateLanguage('ltr', 'English');
+            }
+
+            // Sticky Navbar on Scroll (Desktop)
+            $(window).scroll(function() {
+                if ($(window).width() > 768) {
+                    if ($(window).scrollTop() > 50) {
+                        $('.main-navbar').addClass('scrolled');
+                    } else {
+                        $('.main-navbar').removeClass('scrolled');
+                    }
+                }
+            });
+
+            // Update active state in bottom nav based on current page
+            function updateBottomNavActive() {
+                const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+                $('.mobile-bottom-nav .nav-item').removeClass('active');
+
+                // Map pages to bottom nav items
+                const pageMap = {
+                    'index.html': 'home',
+                    'offers.html': 'offers',
+                    'companies.html': 'companies',
+                    'features.html': 'features',
+                    'login.html': 'account',
+                    'register.html': 'account'
+                };
+
+                const pageKey = pageMap[currentPage] || 'home';
+                $(`.mobile-bottom-nav .nav-item[data-page="${pageKey}"]`).addClass('active');
+            }
+
+            updateBottomNavActive();
+
+            // Add body class for bottom nav padding
+            if ($(window).width() <= 768) {
+                $('body').addClass('has-bottom-nav');
+            }
+
+            $(window).resize(function() {
+                if ($(window).width() <= 768) {
+                    $('body').addClass('has-bottom-nav');
+                } else {
+                    $('body').removeClass('has-bottom-nav');
+                }
+            });
+        });
+    </script>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="row">
+                <!-- Logo and Newsletter Section -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="footer-logo">
+                        <div class="footer-logo-icon">
+                            <i class="bi bi-cloud-rain"></i>
+                        </div>
+                        <div class="footer-logo-text">Al-Matar Al-Thari</div>
+                    </div>
+                    <div class="footer-newsletter">
+                        <h6>Subscribe Our Newsletter:</h6>
+                        <p>Stay updated with the latest offers, rewards, and exclusive deals from our partner companies.</p>
+                        <form class="newsletter-form" onsubmit="event.preventDefault(); return false;">
+                            <input type="email" class="newsletter-input" placeholder="Enter Your Email" required>
+                            <button type="submit" class="newsletter-btn" aria-label="Subscribe">
+                                <i class="bi bi-send"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <div class="footer-column">
+                        <h6>Quick Link</h6>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="features.html">Services</a></li>
+                            <li><a href="blog.html">Blog</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Services -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <div class="footer-column">
+                        <h6>Services</h6>
+                        <ul>
+                            <li><a href="loyalty-program.html">Loyalty Program</a></li>
+                            <li><a href="affiliate-program.html">Affiliate Program</a></li>
+                            <li><a href="offers.html">Special Offers</a></li>
+                            <li><a href="companies.html">Partner Companies</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Support -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <div class="footer-column">
+                        <h6>Support</h6>
+                        <ul>
+                            <li><a href="faq.html">Help</a></li>
+                            <li><a href="terms.html">Term's & Condition</a></li>
+                            <li><a href="privacy.html">Privacy Policy</a></li>
+                            <li><a href="contact.html">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <div class="footer-column">
+                        <h6>Contact</h6>
+                        <div class="footer-contact-info">
+                            <i class="bi bi-telephone"></i>
+                            <span>+123 456 7890</span>
+                        </div>
+                        <div class="footer-contact-info">
+                            <i class="bi bi-envelope"></i>
+                            <span>Info@almatar.com</span>
+                        </div>
+                        <div class="footer-contact-info">
+                            <i class="bi bi-geo-alt"></i>
+                            <span>123 Business Street, City, Country</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Media Icons -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="footer-social">
+                        <a href="#" target="_blank" aria-label="Pinterest">
+                            <i class="bi bi-pinterest"></i>
+                        </a>
+                        <a href="#" target="_blank" aria-label="Twitter">
+                            <i class="bi bi-twitter-x"></i>
+                        </a>
+                        <a href="#" target="_blank" aria-label="Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" target="_blank" aria-label="Instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="footer-bottom">
+                <p>Copyright © 2025 Al-Matar Al-Thari. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

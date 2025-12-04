@@ -94,10 +94,7 @@ class LocalizationService
      */
     public function getLocaleName(string $locale): string
     {
-        $names = [
-            'en' => 'English',
-            'ar' => 'العربية',
-        ];
+        $names = config('localization.locale_names', []);
 
         return $names[$locale] ?? ucfirst($locale);
     }
@@ -141,10 +138,7 @@ class LocalizationService
      */
     public function getLocaleFlag(string $locale): string
     {
-        $flags = [
-            'en' => '🇺🇸',
-            'ar' => '🇸🇦',
-        ];
+        $flags = config('localization.locale_flags', []);
 
         return $flags[$locale] ?? '🏳️';
     }

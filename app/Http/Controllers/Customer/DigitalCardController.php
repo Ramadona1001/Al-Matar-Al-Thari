@@ -102,8 +102,12 @@ class DigitalCardController extends Controller
         
         $cardNumber = DigitalCard::generateUniqueCardNumber($cardType);
         
+        // Generate QR code before creating the card
+        $qrCodePath = $this->qrCodeService->generateCardQrCode($cardNumber);
+        
         $digitalCard = DigitalCard::create([
             'card_number' => $cardNumber,
+            'qr_code' => $qrCodePath,
             'type' => $cardType,
             'discount_percentage' => $this->getDiscountPercentage($cardType),
             'loyalty_points' => 0,
@@ -111,10 +115,6 @@ class DigitalCardController extends Controller
             'status' => 'active',
             'user_id' => $user->id,
         ]);
-
-        // Generate QR code
-        $qrCodePath = $this->qrCodeService->generateCardQrCode($cardNumber);
-        $digitalCard->update(['qr_code' => $qrCodePath]);
 
         return $digitalCard;
     }

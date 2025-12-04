@@ -4,7 +4,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin.companies.index') }}">{{ __('Companies') }}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">{{ $company->name }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ $company->localized_name }}</li>
 @endsection
 
 @section('actions')
@@ -32,7 +32,7 @@
             </div>
             <div class="card-body text-center">
                 @if($company->logo)
-                    <img src="{{ asset('storage/' . $company->logo) }}" alt="{{ $company->name }}" 
+            <img src="{{ asset('storage/' . $company->logo) }}" alt="{{ $company->localized_name }}"
                          class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                 @else
                     <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" 
@@ -41,7 +41,7 @@
                     </div>
                 @endif
                 
-                <h4>{{ $company->name }}</h4>
+            <h4>{{ $company->localized_name }}</h4>
                 
                 @if($company->status == 'pending')
                     <span class="badge bg-warning">{{ __('Pending') }}</span>
@@ -51,8 +51,8 @@
                     <span class="badge bg-danger">{{ __('Rejected') }}</span>
                 @endif
                 
-                @if($company->description)
-                    <p class="mt-3 text-muted">{{ $company->description }}</p>
+                @if($company->localized_description)
+                    <p class="mt-3 text-muted">{{ $company->localized_description }}</p>
                 @endif
             </div>
         </div>

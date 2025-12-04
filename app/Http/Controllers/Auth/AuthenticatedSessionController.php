@@ -29,7 +29,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // Redirect to localized role-based dashboard
+        $locale = session(config('localization.locale_session_key'))
+            ?? $request->route('locale')
+            ?? app()->getLocale()
+            ?? config('localization.default_locale', 'en');
+
+        return redirect()->intended(route('dashboard', ['locale' => $locale]));
     }
 
     /**

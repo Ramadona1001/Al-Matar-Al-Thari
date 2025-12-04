@@ -10,6 +10,8 @@ class CouponUsage extends Model
 {
     use HasFactory;
 
+    protected $table = 'coupon_usage';
+
     /**
      * The attributes that are mass assignable.
      *

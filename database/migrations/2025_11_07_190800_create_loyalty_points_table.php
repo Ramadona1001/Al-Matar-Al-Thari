@@ -19,9 +19,15 @@ return new class extends Migration
             $table->dateTime('redeemed_at')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('company_id')->nullable()->constrained()->onDelete('set null');
+            // Note: loyalty_card_id and club_id foreign keys will be added in later migrations
+            // after loyalty_cards and clubs tables are created
+            $table->unsignedBigInteger('loyalty_card_id')->nullable();
+            $table->unsignedBigInteger('club_id')->nullable();
             $table->timestamps();
             
             $table->index('user_id');
+            $table->index('loyalty_card_id');
+            $table->index('club_id');
             $table->index('company_id');
             $table->index('type');
             $table->index('expiry_date');

@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn how Al-Matar Al-Thari works for customers and merchants">
+    <title>How It Works - Al-Matar Al-Thari</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="assets/css/styles-ltr.css">    <!-- Responsive Header Styles -->
+    
+</head>
+<body>
+    <!-- Top Navbar (Desktop Only) -->
+    <div class="top-navbar d-none d-md-block">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Left Side - Contact Info -->
+                <div class="col-md-6 contact-info">
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="mailto:info@almatar.com">
+                            <i class="bi bi-envelope"></i>
+                            <span>info@almatar.com</span>
+                        </a>
+                        <a href="tel:+1234567890">
+                            <i class="bi bi-telephone"></i>
+                            <span>+123 456 7890</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Side - Social Media -->
+                <div class="col-md-6 social-icons text-end">
+                    <a href="#" target="_blank" aria-label="Facebook">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Twitter">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Instagram">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="LinkedIn">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Desktop Main Navigation Bar -->
+    <nav class="navbar navbar-expand-lg main-navbar sticky-top d-none d-md-flex">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-cloud-rain"></i>
+                <span>Al-Matar Al-Thari</span>
+            </a>
+
+            <!-- Centered Menu Items -->
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link " href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="about.html">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="features.html">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="offers.html">Offers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="companies.html">Companies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="contact.html">Contact</a>
+                </li>
+            </ul>
+
+            <!-- Right Side - Language Switcher & Get Started Button -->
+            <div class="d-flex align-items-center">
+                <!-- Language Switcher Dropdown -->
+                <div class="lang-switcher dropdown">
+                    <button class="lang-dropdown-btn dropdown-toggle" type="button" id="langDropdownDesktop" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span id="currentLangTextDesktop">
+                            <i class="bi bi-globe"></i>
+                            <span>English</span>
+                        </span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    <ul class="lang-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="langDropdownDesktop">
+                        <li>
+                            <a class="lang-dropdown-item active" href="#" data-lang="ltr" data-text="English">
+                                <i class="bi bi-translate"></i>
+                                <span>English (LTR)</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="lang-dropdown-item" href="#" data-lang="rtl" data-text="العربية">
+                                <i class="bi bi-translate"></i>
+                                <span>العربية (RTL)</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Get Started Button -->
+                <a href="register.html" class="btn btn-get-started">
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Header (Mobile Only) -->
+    <div class="mobile-header d-md-none">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Logo -->
+                <a href="index.html" class="mobile-logo text-decoration-none">
+                    <i class="bi bi-cloud-rain"></i>
+                    <span>Al-Matar Al-Thari</span>
+                </a>
+
+                <!-- Language Dropdown -->
+                <div class="mobile-lang dropdown">
+                    <button class="mobile-lang-btn dropdown-toggle" type="button" id="langDropdownMobile" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-globe"></i>
+                        <span id="currentLangTextMobile">EN</span>
+                        <i class="bi bi-chevron-down" style="font-size: 0.6rem;"></i>
+                    </button>
+                    <ul class="lang-dropdown-menu dropdown-menu dropdown-menu-end" aria-labelledby="langDropdownMobile">
+                        <li>
+                            <a class="lang-dropdown-item active" href="#" data-lang="ltr" data-text="EN">
+                                <i class="bi bi-translate"></i>
+                                <span>English</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="lang-dropdown-item" href="#" data-lang="rtl" data-text="AR">
+                                <i class="bi bi-translate"></i>
+                                <span>العربية</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav d-md-none">
+        <div class="nav-container">
+            <a href="index.html" class="nav-item active" data-page="home">
+                <i class="bi bi-house-door"></i>
+                <span>Home</span>
+            </a>
+            <a href="offers.html" class="nav-item " data-page="offers">
+                <i class="bi bi-tag"></i>
+                <span>Offers</span>
+            </a>
+            <a href="companies.html" class="nav-item " data-page="companies">
+                <i class="bi bi-building"></i>
+                <span>Companies</span>
+            </a>
+            <a href="features.html" class="nav-item " data-page="features">
+                <i class="bi bi-star"></i>
+                <span>Features</span>
+            </a>
+            <a href="login.html" class="nav-item " data-page="account">
+                <i class="bi bi-person"></i>
+                <span>Account</span>
+            </a>
+        </div>
+    </nav>
+    <!-- Breadcrumb Section -->
+    <section class="breadcrumb-section">
+        <div class="container breadcrumb-container">
+            <h1 class="breadcrumb-title">How It Works</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+
+                        <li class="breadcrumb-item">
+                            <a href="index.html">
+                                <i class="bi bi-house-door"></i>
+                                Home
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">How It Works</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+
+                <!-- Right Side - Social Media -->
+                <div class="col-md-6 social-icons text-end">
+                    <a href="#" target="_blank" aria-label="Facebook">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Twitter">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Instagram">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="LinkedIn">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+                <!-- Right Side - Social Media -->
+                <div class="col-md-6 social-icons text-end">
+                    <a href="#" target="_blank" aria-label="Facebook">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Twitter">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Instagram">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="LinkedIn">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+                <!-- Right Side - Social Media -->
+                <div class="col-md-6 social-icons text-end">
+                    <a href="#" target="_blank" aria-label="Facebook">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Twitter">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="Instagram">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" target="_blank" aria-label="LinkedIn">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <section class="hero-section" style="padding: 120px 0 60px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="hero-title">How It Works</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Customers Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">How to Use as a Customer</h2>
+            <div class="row">
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h5 class="step-title">Sign up and create your account</h5>
+                        <p>Register with your email and phone number. Verification takes just a few minutes.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h5 class="step-title">Shop at partner merchants</h5>
+                        <p>Visit any store that displays our logo or QR code at the checkout counter.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h5 class="step-title">Earn loyalty points with every purchase</h5>
+                        <p>Scan the QR code or provide your phone number to earn points automatically.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h5 class="step-title">Redeem points for discounts and rewards</h5>
+                        <p>Use accumulated points to get discounts on future purchases or exchange for cashback.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Merchants Section -->
+    <section class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">How to Use as a Merchant</h2>
+            <div class="row">
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h5 class="step-title">Register your business</h5>
+                        <p>Complete the merchant registration form with your business details and documents.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h5 class="step-title">Set up your offers and discounts</h5>
+                        <p>Create attractive offers, set discount percentages, and define validity periods.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h5 class="step-title">Attract new customers</h5>
+                        <p>Your offers will be visible to all platform users, helping you reach more customers.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h5 class="step-title">Track sales and analytics</h5>
+                        <p>Monitor your performance through the merchant dashboard with real-time analytics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QR Code Usage Section -->
+    <section class="section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4">
+                    <div class="text-center">
+                        <i class="fas fa-qrcode" style="font-size: 200px; color: var(--info-color);"></i>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h2 class="section-title text-start">QR Code Usage</h2>
+                    <p class="lead">
+                        Simply scan the QR code at partner stores to earn points instantly.
+                        No need for physical cards or complex processes.
+                    </p>
+                    <ul class="list-unstyled mt-4">
+                        <li class="mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Quick & Easy:</strong> Scan and earn points in seconds
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>No Cards Needed:</strong> Everything is digital
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Instant Updates:</strong> Points appear in your account immediately
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loyalty Points Section -->
+    <section class="section bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-lg-2 mb-4">
+                    <div class="text-center">
+                        <i class="fas fa-coins" style="font-size: 200px; color: var(--success-color);"></i>
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <h2 class="section-title text-start">Loyalty Points System</h2>
+                    <p class="lead">
+                        Earn points with every purchase. Accumulate points and redeem them for discounts,
+                        cashback, or exclusive offers.
+                    </p>
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-3">
+                            <div class="info-box">
+                                <i class="fas fa-gift"></i>
+                                <h5>Earn Points</h5>
+                                <p>1 point for every $1 spent</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="info-box">
+                                <i class="fas fa-exchange-alt"></i>
+                                <h5>Redeem Points</h5>
+                                <p>100 points = $1 discount</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Affiliate System Section -->
+    <section class="section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4">
+                    <div class="text-center">
+                        <i class="fas fa-user-friends" style="font-size: 200px; color: var(--primary-color);"></i>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h2 class="section-title text-start">Affiliate System</h2>
+                    <p class="lead">
+                        Refer friends and earn commissions. Build your network and generate passive income
+                        through our affiliate program.
+                    </p>
+                    <div class="row mt-4">
+                        <div class="col-md-4 mb-3">
+                            <div class="text-center">
+                                <h3 class="text-primary">5%</h3>
+                                <p>Commission on referrals</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="text-center">
+                                <h3 class="text-success">Unlimited</h3>
+                                <p>Referral potential</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="text-center">
+                                <h3 class="text-info">Instant</h3>
+                                <p>Commission payout</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" title="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Language System -->
+    <script src="assets/js/lang.js"></script>
+
+    <!-- Main JavaScript -->
+    <script src="assets/js/main.js"></script>
+
+<!-- JavaScript -->
+    <script>
+        $(document).ready(function() {
+            // Function to update language
+            function updateLanguage(lang, langText) {
+                const isRTL = lang === 'rtl';
+
+                // Update document direction
+                $('html').attr('dir', isRTL ? 'rtl' : 'ltr');
+                $('html').attr('lang', isRTL ? 'ar' : 'en');
+
+                // Update desktop dropdown text
+                $('#currentLangTextDesktop').html(`
+                    <i class="bi bi-globe"></i>
+                    <span>${langText}</span>
+                `);
+
+                // Update mobile dropdown text
+                $('#currentLangTextMobile').text(lang === 'ltr' ? 'EN' : 'AR');
+
+                // Update active state for all dropdowns
+                $('.lang-dropdown-item').removeClass('active');
+                $(`.lang-dropdown-item[data-lang="${lang}"]`).addClass('active');
+
+                // Save preference
+                localStorage.setItem('language', lang);
+            }
+
+            // RTL/LTR Toggle - Desktop
+            $('.lang-dropdown-item').on('click', function(e) {
+                e.preventDefault();
+                const lang = $(this).data('lang');
+                const langText = $(this).data('text');
+
+                updateLanguage(lang, langText);
+
+                // Close dropdowns
+                const desktopDropdown = bootstrap.Dropdown.getInstance(document.getElementById('langDropdownDesktop'));
+                if (desktopDropdown) {
+                    desktopDropdown.hide();
+                }
+
+                const mobileDropdown = bootstrap.Dropdown.getInstance(document.getElementById('langDropdownMobile'));
+                if (mobileDropdown) {
+                    mobileDropdown.hide();
+                }
+            });
+
+            // Load saved language preference
+            const savedLang = localStorage.getItem('language') || 'ltr';
+            if (savedLang === 'rtl') {
+                updateLanguage('rtl', 'العربية');
+            } else {
+                updateLanguage('ltr', 'English');
+            }
+
+            // Sticky Navbar on Scroll (Desktop)
+            $(window).scroll(function() {
+                if ($(window).width() > 768) {
+                    if ($(window).scrollTop() > 50) {
+                        $('.main-navbar').addClass('scrolled');
+                    } else {
+                        $('.main-navbar').removeClass('scrolled');
+                    }
+                }
+            });
+
+            // Update active state in bottom nav based on current page
+            function updateBottomNavActive() {
+                const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+                $('.mobile-bottom-nav .nav-item').removeClass('active');
+
+                // Map pages to bottom nav items
+                const pageMap = {
+                    'index.html': 'home',
+                    'offers.html': 'offers',
+                    'companies.html': 'companies',
+                    'features.html': 'features',
+                    'login.html': 'account',
+                    'register.html': 'account'
+                };
+
+                const pageKey = pageMap[currentPage] || 'home';
+                $(`.mobile-bottom-nav .nav-item[data-page="${pageKey}"]`).addClass('active');
+            }
+
+            updateBottomNavActive();
+
+            // Add body class for bottom nav padding
+            if ($(window).width() <= 768) {
+                $('body').addClass('has-bottom-nav');
+            }
+
+            $(window).resize(function() {
+                if ($(window).width() <= 768) {
+                    $('body').addClass('has-bottom-nav');
+                } else {
+                    $('body').removeClass('has-bottom-nav');
+                }
+            });
+        });
+    </script>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="row">
+                <!-- Logo and Newsletter Section -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="footer-logo">
+                        <div class="footer-logo-icon">
+                            <i class="bi bi-cloud-rain"></i>
+                        </div>
+                        <div class="footer-logo-text">Al-Matar Al-Thari</div>
+                    </div>
+                    <div class="footer-newsletter">
+                        <h6>Subscribe Our Newsletter:</h6>
+                        <p>Stay updated with the latest offers, rewards, and exclusive deals from our partner companies.</p>
+                        <form class="newsletter-form" onsubmit="event.preventDefault(); return false;">
+                            <input type="email" class="newsletter-input" placeholder="Enter Your Email" required>
+                            <button type="submit" class="newsletter-btn" aria-label="Subscribe">
+                                <i class="bi bi-send"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <div class="footer-column">
+                        <h6>Quick Link</h6>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="features.html">Services</a></li>
+                            <li><a href="blog.html">Blog</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Services -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <div class="footer-column">
+                        <h6>Services</h6>
+                        <ul>
+                            <li><a href="loyalty-program.html">Loyalty Program</a></li>
+                            <li><a href="affiliate-program.html">Affiliate Program</a></li>
+                            <li><a href="offers.html">Special Offers</a></li>
+                            <li><a href="companies.html">Partner Companies</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Support -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <div class="footer-column">
+                        <h6>Support</h6>
+                        <ul>
+                            <li><a href="faq.html">Help</a></li>
+                            <li><a href="terms.html">Term's & Condition</a></li>
+                            <li><a href="privacy.html">Privacy Policy</a></li>
+                            <li><a href="contact.html">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <div class="footer-column">
+                        <h6>Contact</h6>
+                        <div class="footer-contact-info">
+                            <i class="bi bi-telephone"></i>
+                            <span>+123 456 7890</span>
+                        </div>
+                        <div class="footer-contact-info">
+                            <i class="bi bi-envelope"></i>
+                            <span>Info@almatar.com</span>
+                        </div>
+                        <div class="footer-contact-info">
+                            <i class="bi bi-geo-alt"></i>
+                            <span>123 Business Street, City, Country</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Media Icons -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="footer-social">
+                        <a href="#" target="_blank" aria-label="Pinterest">
+                            <i class="bi bi-pinterest"></i>
+                        </a>
+                        <a href="#" target="_blank" aria-label="Twitter">
+                            <i class="bi bi-twitter-x"></i>
+                        </a>
+                        <a href="#" target="_blank" aria-label="Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" target="_blank" aria-label="Instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="footer-bottom">
+                <p>Copyright © 2025 Al-Matar Al-Thari. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

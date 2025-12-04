@@ -20,6 +20,20 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
             UserSeeder::class,
             PointsSettingSeeder::class,
+            // CMS Seeders
+            BannerSeeder::class,
+            SectionSeeder::class,
+            SectionItemSeeder::class,
+            MenuSeeder::class,
+            ServiceSeeder::class,
+            BlogSeeder::class,
+            TestimonialSeeder::class,
+            StatisticSeeder::class,
+            HowItWorksStepSeeder::class,
+            CompanyPartnerSeeder::class,
+            PageSeeder::class,
+            FooterMenuGroupSeeder::class,
+            AboutSectionsSeeder::class,
         ]);
 
         // Re-enable foreign key checks
