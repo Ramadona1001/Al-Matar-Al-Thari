@@ -64,16 +64,17 @@ class CalculateLoyaltyPointsJob implements ShouldQueue
                 ]
             );
 
-            // Add points as pending
-            $wallet->addLoyaltyPoints($points);
+            // Add points directly to balance (loyalty points don't need settlement period)
+            $wallet->approveLoyaltyPoints($points);
 
-            // Create wallet transaction
+            // Create wallet transaction as approved (loyalty points are immediately available)
             $walletTransaction = WalletTransaction::create([
                 'wallet_id' => $wallet->id,
                 'type' => 'loyalty',
                 'transaction_type' => 'earned',
                 'points' => $points,
-                'status' => 'pending',
+                'status' => 'approved',
+                'approved_at' => now(),
                 'source_type' => Transaction::class,
                 'source_id' => $this->transaction->id,
                 'description' => 'Loyalty points earned from transaction ' . $this->transaction->transaction_id,

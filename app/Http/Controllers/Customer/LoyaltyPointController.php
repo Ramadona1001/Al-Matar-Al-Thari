@@ -38,8 +38,10 @@ class LoyaltyPointController extends Controller
             ->latest()
             ->paginate(10);
         
-        // Get available points from wallet balance
-        $availablePoints = $wallet->loyalty_points_balance ?? 0;
+        // Get available points from wallet (balance + pending)
+        // Show all available points (balance + pending) to include any legacy pending points
+        // New points will be approved immediately, but old pending points need to be included
+        $availablePoints = ($wallet->loyalty_points_balance ?? 0) + ($wallet->loyalty_points_pending ?? 0);
         
         $redemptions = PointRedemption::where('user_id', $user->id)
             ->latest()
