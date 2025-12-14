@@ -32,15 +32,7 @@
                     </div>
                     <div>
                         <p class="small text-uppercase mb-1 text-white-50">{{ __('This page') }}</p>
-                        <h4 class="fw-semibold mb-0">
-                            @if($pageTotals['count'] == 0)
-                                {{ __('No sales yet') }}
-                            @elseif($pageTotals['count'] == 1)
-                                {{ __('1 sale listed') }}
-                            @else
-                                {{ __(':count sales listed', ['count' => $pageTotals['count']]) }}
-                            @endif
-                        </h4>
+                        <h4 class="fw-semibold mb-0">{{ trans_choice('{0}No sales yet|{1}1 sale listed|[2,*]:count sales listed', $pageTotals['count'], ['count' => $pageTotals['count']]) }}</h4>
                     </div>
                 </div>
                 <div class="d-flex flex-column gap-2 small text-white-50">
@@ -103,7 +95,6 @@
                         </li>
                     </ul>
                 @endif
-                {{-- نهاية @if($affiliate) --}}
             </div>
         </div>
     </div>
@@ -174,7 +165,6 @@
                                         </td>
                                     </tr>
                                 @endforelse
-                                {{-- نهاية @forelse --}}
                             </tbody>
                         </table>
                     </div>
@@ -189,7 +179,6 @@
                         </div>
                     </div>
                 @else
-                    {{-- نهاية @if --}}
                     <div class="empty-state text-center py-5">
                         <div class="icon-circle bg-primary-subtle text-primary mb-3">
                             <i class="fas fa-bullhorn"></i>
@@ -198,7 +187,6 @@
                         <p class="text-muted mb-0">{{ __('Once your application is approved, every referral and commission will be listed with real-time updates.') }}</p>
                     </div>
                 @endif
-                {{-- نهاية @if($affiliate && $sales instanceof ...) --}}
             </div>
         </div>
     </div>
