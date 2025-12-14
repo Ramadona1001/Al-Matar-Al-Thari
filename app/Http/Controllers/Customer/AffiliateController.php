@@ -22,20 +22,23 @@ class AffiliateController extends Controller
         $affiliate = $user->affiliate;
         
         if (!$affiliate) {
+            $referralCode = Affiliate::generateUniqueReferralCode();
             $affiliate = Affiliate::create([
                 'user_id' => $user->id,
                 'company_id' => null, // General affiliate, not tied to specific company
                 'offer_id' => null, // General affiliate link
-                'referral_code' => Affiliate::generateUniqueReferralCode(),
-                'referral_link' => config('app.url') . '?ref=' . Affiliate::generateUniqueReferralCode(),
+                'referral_code' => $referralCode,
+                'referral_link' => url('/register?ref=' . $referralCode), // Store initial link (accessor will override on read)
                 'commission_rate' => 0, // Will be calculated based on admin settings
                 'commission_type' => 'percentage',
                 'status' => 'active', // Auto-approved for general affiliate
             ]);
-            
-            // Update referral_link with actual code
+        }
+        
+        // Ensure referral_link is updated if code exists but link is old (for existing affiliates)
+        if ($affiliate->referral_code && str_contains($affiliate->getRawOriginal('referral_link') ?? '', 'localhost')) {
             $affiliate->update([
-                'referral_link' => config('app.url') . '?ref=' . $affiliate->referral_code
+                'referral_link' => url('/register?ref=' . $affiliate->referral_code)
             ]);
         }
         

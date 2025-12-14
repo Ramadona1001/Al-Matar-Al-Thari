@@ -74,7 +74,11 @@
                     <div class="mb-4">
                         <label for="affiliate-referral-link" class="fw-semibold text-muted small text-uppercase">{{ __('Referral Link') }}</label>
                         <div class="input-group shadow-sm">
-                            <input type="text" id="affiliate-referral-link" class="form-control" value="{{ $affiliate->referral_link }}" readonly>
+                            @php
+                                // Generate referral link using current URL to avoid localhost issue
+                                $referralLink = url('/register?ref=' . $affiliate->referral_code);
+                            @endphp
+                            <input type="text" id="affiliate-referral-link" class="form-control" value="{{ $referralLink }}" readonly>
                             <button class="btn btn-outline-primary btn-animated" type="button" data-copy="#affiliate-referral-link">
                                 <i class="fas fa-copy me-2"></i>{{ __('Copy') }}
                             </button>

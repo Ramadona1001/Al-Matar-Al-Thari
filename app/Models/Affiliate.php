@@ -123,7 +123,22 @@ class Affiliate extends Model
      */
     public function generateReferralLink(): string
     {
-        return config('app.url') . '/register?ref=' . $this->referral_code;
+        return url('/register?ref=' . $this->referral_code);
+    }
+
+    /**
+     * Get referral link attribute (accessor).
+     * Returns dynamic URL instead of stored value to ensure correct domain.
+     */
+    public function getReferralLinkAttribute($value): string
+    {
+        // Always generate fresh link with current domain
+        if ($this->referral_code) {
+            return url('/register?ref=' . $this->referral_code);
+        }
+        
+        // Fallback to stored value if no code
+        return $value ?? '';
     }
 
     /**
