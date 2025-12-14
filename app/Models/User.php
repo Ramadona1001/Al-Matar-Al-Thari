@@ -113,9 +113,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Get the total loyalty points balance.
+     * Uses Wallet model for current system, falls back to LoyaltyPoint for backward compatibility.
      */
     public function getLoyaltyPointsBalanceAttribute(): int
     {
+        // Use Wallet if available (new system)
+        $wallet = $this->wallet;
+        if ($wallet) {
+            return $wallet->loyalty_points_balance ?? 0;
+        }
+        
+        // Fallback to old LoyaltyPoint system for backward compatibility
         return $this->loyaltyPoints()
             ->where('type', 'earned')
             ->whereNull('redeemed_at')

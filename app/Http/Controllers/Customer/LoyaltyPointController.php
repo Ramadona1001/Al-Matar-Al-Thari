@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\LoyaltyPoint;
 use App\Models\PointRedemption;
+use App\Models\Wallet;
+use App\Models\WalletTransaction;
 use App\Services\PointsService;
 use Illuminate\Http\Request;
 
@@ -18,8 +20,27 @@ class LoyaltyPointController extends Controller
     public function index(PointsService $pointsService)
     {
         $user = auth()->user();
-        $points = $user->loyaltyPoints()->latest()->paginate(10);
-        $availablePoints = $user->loyalty_points_balance;
+        
+        // Get or create wallet
+        $wallet = Wallet::firstOrCreate(
+            ['user_id' => $user->id],
+            [
+                'loyalty_points_balance' => 0,
+                'affiliate_points_balance' => 0,
+                'loyalty_points_pending' => 0,
+                'affiliate_points_pending' => 0,
+            ]
+        );
+        
+        // Get wallet transactions for loyalty points
+        $points = WalletTransaction::where('wallet_id', $wallet->id)
+            ->where('type', 'loyalty')
+            ->latest()
+            ->paginate(10);
+        
+        // Get available points from wallet balance
+        $availablePoints = $wallet->loyalty_points_balance ?? 0;
+        
         $redemptions = PointRedemption::where('user_id', $user->id)
             ->latest()
             ->paginate(10, ['*'], 'redemptions');
@@ -35,7 +56,20 @@ class LoyaltyPointController extends Controller
     public function store(Request $request, PointsService $pointsService)
     {
         $user = auth()->user();
-        $availablePoints = $user->loyalty_points_balance;
+        
+        // Get or create wallet
+        $wallet = Wallet::firstOrCreate(
+            ['user_id' => $user->id],
+            [
+                'loyalty_points_balance' => 0,
+                'affiliate_points_balance' => 0,
+                'loyalty_points_pending' => 0,
+                'affiliate_points_pending' => 0,
+            ]
+        );
+        
+        // Get available points from wallet balance
+        $availablePoints = $wallet->loyalty_points_balance ?? 0;
 
         $validated = $request->validate([
             'points' => 'required|integer|min:1',
@@ -56,13 +90,16 @@ class LoyaltyPointController extends Controller
             'notes' => $validated['notes'] ?? null,
         ]);
 
-        LoyaltyPoint::create([
-            'user_id' => $user->id,
-            'points' => $validated['points'],
-            'type' => 'redeemed',
-            'description' => __('Redemption request #:id', ['id' => $redemption->id]),
+        // Create wallet transaction for redemption
+        WalletTransaction::create([
+            'wallet_id' => $wallet->id,
+            'type' => 'loyalty',
+            'transaction_type' => 'redeemed',
+            'points' => -$validated['points'],
+            'status' => 'pending',
             'source_type' => PointRedemption::class,
             'source_id' => $redemption->id,
+            'description' => __('Redemption request #:id', ['id' => $redemption->id]),
         ]);
 
         if ($pointsService->autoApproveRedemptions()) {
@@ -71,6 +108,9 @@ class LoyaltyPointController extends Controller
                 'processed_by' => $user->id,
                 'processed_at' => now(),
             ]);
+            
+            // Deduct points from wallet if auto-approved
+            $wallet->redeemLoyaltyPoints($validated['points']);
         }
 
         return redirect()->route('customer.loyalty.index')

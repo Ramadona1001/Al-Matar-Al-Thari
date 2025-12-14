@@ -67,8 +67,18 @@
                                 <tr>
                                     <td>{{ $entry->created_at->format('Y-m-d H:i') }}</td>
                                     <td>{{ $entry->description ?? '-' }}</td>
-                                    <td>{{ ucfirst($entry->type) }}</td>
-                                    <td class="fw-bold {{ $entry->points > 0 ? 'text-success' : 'text-danger' }}">{{ $entry->points }}</td>
+                                    <td>
+                                        @if($entry->transaction_type === 'earned')
+                                            <span class="badge bg-success">{{ __('Earned') }}</span>
+                                        @elseif($entry->transaction_type === 'redeemed')
+                                            <span class="badge bg-danger">{{ __('Redeemed') }}</span>
+                                        @else
+                                            {{ ucfirst($entry->transaction_type ?? $entry->type) }}
+                                        @endif
+                                    </td>
+                                    <td class="fw-bold {{ $entry->points > 0 ? 'text-success' : 'text-danger' }}">
+                                        {{ $entry->points > 0 ? '+' : '' }}{{ number_format($entry->points) }}
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
