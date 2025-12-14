@@ -141,6 +141,7 @@ class AffiliateRewardJob implements ShouldQueue
                 'commission_amount' => $pointsEarned, // Store points as commission
                 'commission_rate' => 0, // Not used for general affiliate
                 'status' => 'approved', // Auto-approve for general affiliate
+                'approved_at' => now(), // Set approval timestamp
                 'user_id' => $user->id,
                 'company_id' => $this->transaction->company_id, // Store transaction company for reference
                 'offer_id' => null, // General affiliate

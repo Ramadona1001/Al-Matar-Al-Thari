@@ -122,7 +122,6 @@
                                     <th scope="col">{{ __('Product/Company') }}</th>
                                     <th scope="col" class="text-end">{{ __('Sale Amount') }}</th>
                                     <th scope="col" class="text-end">{{ __('Commission') }}</th>
-                                    <th scope="col" class="text-center">{{ __('Status') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -147,7 +146,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="text-center py-5">
+                                        <td colspan="4" class="text-center py-5">
                                             <div class="text-muted">
                                                 <i class="fas fa-chart-line fa-2x mb-3 text-primary"></i>
                                                 <p class="mb-0">{{ __('No sales yet.') }}</p>
