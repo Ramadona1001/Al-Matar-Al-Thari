@@ -143,7 +143,22 @@
                                         </td>
                                         <td class="text-end fw-semibold text-primary">{{ number_format($sale->sale_amount, 2) }}</td>
                                         <td class="text-end fw-semibold text-success">{{ number_format($sale->commission_amount, 0) }} {{ __('points') }}</td>
-                                        
+                                        <td class="text-center">
+                                            @php
+                                                $statusClass = 'bg-info-subtle text-info';
+                                                switch ($sale->status) {
+                                                    case 'pending':
+                                                        $statusClass = 'bg-warning-subtle text-warning';
+                                                        break;
+                                                    case 'approved':
+                                                        $statusClass = 'bg-success-subtle text-success';
+                                                    case 'rejected':
+                                                        $statusClass = 'bg-danger-subtle text-danger';
+                                                        break;
+                                                }
+                                            @endphp
+                                            <span class="badge rounded-pill {{ $statusClass }} px-3 py-2 text-uppercase small">{{ $sale->status }}</span>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
