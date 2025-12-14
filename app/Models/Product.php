@@ -209,6 +209,10 @@ class Product extends Model
         if (!$this->track_stock) {
             return $this->in_stock;
         }
+        // If stock_quantity is null, it means unlimited stock
+        if ($this->stock_quantity === null) {
+            return $this->in_stock;
+        }
         return $this->in_stock && $this->stock_quantity > 0;
     }
 

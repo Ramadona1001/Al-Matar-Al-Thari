@@ -218,13 +218,14 @@
 
                             <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label for="stock_quantity" class="form-label fw-semibold">{{ __('Stock Quantity') }}</label>
-                                    <input type="number" class="form-control @error('stock_quantity') is-invalid @enderror" 
-                                           id="stock_quantity" name="stock_quantity" value="{{ old('stock_quantity', 0) }}" 
-                                           min="0" step="1">
-                                    @error('stock_quantity')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="unlimited_stock" name="unlimited_stock" value="1" 
+                                               {{ old('unlimited_stock') ? 'checked' : '' }}>
+                                        <label class="form-check-label fw-semibold" for="unlimited_stock">
+                                            {{ __('Unlimited Stock') }}
+                                        </label>
+                                    </div>
+                                    <small class="form-text text-muted">{{ __('Product has unlimited quantity') }}</small>
                                 </div>
                             </div>
 
@@ -238,6 +239,21 @@
                                         </label>
                                     </div>
                                     <small class="form-text text-muted">{{ __('Product availability status') }}</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="stock_quantity" class="form-label fw-semibold">{{ __('Stock Quantity') }}</label>
+                                    <input type="number" class="form-control @error('stock_quantity') is-invalid @enderror" 
+                                           id="stock_quantity" name="stock_quantity" value="{{ old('stock_quantity', 0) }}" 
+                                           min="0" step="1">
+                                    @error('stock_quantity')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="form-text text-muted">{{ __('Leave empty if unlimited stock is enabled') }}</small>
                                 </div>
                             </div>
                         </div>
@@ -382,6 +398,29 @@
             });
         }
     }
+
+    // Handle unlimited stock toggle
+    document.addEventListener('DOMContentLoaded', function() {
+        const unlimitedStockCheckbox = document.getElementById('unlimited_stock');
+        const stockQuantityInput = document.getElementById('stock_quantity');
+        
+        if (unlimitedStockCheckbox && stockQuantityInput) {
+            function toggleStockQuantity() {
+                if (unlimitedStockCheckbox.checked) {
+                    stockQuantityInput.disabled = true;
+                    stockQuantityInput.value = '';
+                } else {
+                    stockQuantityInput.disabled = false;
+                    if (!stockQuantityInput.value) {
+                        stockQuantityInput.value = '0';
+                    }
+                }
+            }
+            
+            unlimitedStockCheckbox.addEventListener('change', toggleStockQuantity);
+            toggleStockQuantity(); // Initialize on page load
+        }
+    });
 </script>
 @endpush
 @endsection

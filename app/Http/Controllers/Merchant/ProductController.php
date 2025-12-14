@@ -122,6 +122,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'compare_price' => 'nullable|numeric|min:0',
             'stock_quantity' => 'nullable|integer|min:0',
+            'unlimited_stock' => 'nullable|boolean',
             'track_stock' => 'nullable|boolean',
             'in_stock' => 'nullable|boolean',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -133,6 +134,13 @@ class ProductController extends Controller
             'category_id' => 'nullable|exists:categories,id',
             'branch_id' => 'nullable|exists:branches,id',
         ]);
+        
+        // Handle unlimited stock - set stock_quantity to null if unlimited
+        if ($request->has('unlimited_stock') && $request->unlimited_stock) {
+            $validated['stock_quantity'] = null;
+        } else if (!isset($validated['stock_quantity']) || $validated['stock_quantity'] === '') {
+            $validated['stock_quantity'] = 0;
+        }
 
         // Prepare multilingual fields
         $validated['name'] = [
@@ -164,10 +172,12 @@ class ProductController extends Controller
             $validated['images'] = $images;
         }
 
-        // Set defaults
+        // Set defaults (stock_quantity already handled above for unlimited)
         $validated['track_stock'] = $validated['track_stock'] ?? true;
         $validated['in_stock'] = $validated['in_stock'] ?? true;
-        $validated['stock_quantity'] = $validated['stock_quantity'] ?? 0;
+        if (!isset($validated['stock_quantity'])) {
+            $validated['stock_quantity'] = 0;
+        }
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
         $validated['is_featured'] = $validated['is_featured'] ?? false;
 
@@ -241,6 +251,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'compare_price' => 'nullable|numeric|min:0',
             'stock_quantity' => 'nullable|integer|min:0',
+            'unlimited_stock' => 'nullable|boolean',
             'track_stock' => 'nullable|boolean',
             'in_stock' => 'nullable|boolean',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -252,6 +263,13 @@ class ProductController extends Controller
             'category_id' => 'nullable|exists:categories,id',
             'branch_id' => 'nullable|exists:branches,id',
         ]);
+        
+        // Handle unlimited stock - set stock_quantity to null if unlimited
+        if ($request->has('unlimited_stock') && $request->unlimited_stock) {
+            $validated['stock_quantity'] = null;
+        } else if (!isset($validated['stock_quantity']) || $validated['stock_quantity'] === '') {
+            $validated['stock_quantity'] = 0;
+        }
 
         // Prepare multilingual fields
         $validated['name'] = [

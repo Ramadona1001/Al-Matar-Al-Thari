@@ -57,7 +57,11 @@
                                     <i class="fas fa-check-circle me-1"></i>{{ __('In Stock') }}
                                 </span>
                                 @if($product->track_stock)
-                                    <small class="text-muted ms-2">({{ $product->stock_quantity }} {{ __('available') }})</small>
+                                    @if($product->stock_quantity === null)
+                                        <small class="text-muted ms-2">({{ __('Unlimited') }})</small>
+                                    @else
+                                        <small class="text-muted ms-2">({{ $product->stock_quantity }} {{ __('available') }})</small>
+                                    @endif
                                 @endif
                             @else
                                 <span class="badge bg-danger fs-6">
@@ -91,7 +95,13 @@
                                     <div class="col-md-4">
                                         <label for="quantity" class="form-label">{{ __('Quantity') }}</label>
                                         <input type="number" class="form-control" id="quantity" name="quantity" 
-                                               value="1" min="1" max="{{ $product->stock_quantity ?? 999 }}" required>
+                                               value="1" min="1" 
+                                               @if($product->track_stock && $product->stock_quantity !== null)
+                                                   max="{{ $product->stock_quantity }}"
+                                               @else
+                                                   max="999"
+                                               @endif
+                                               required>
                                     </div>
                                     <div class="col-md-8">
                                         <button type="submit" class="btn btn-primary btn-lg w-100">
@@ -108,7 +118,7 @@
                                         <small class="text-muted">{{ __('Enter a referral code to support your referrer') }}</small>
                                     </div>
                                 </div>
-                                @if($product->track_stock)
+                                @if($product->track_stock && $product->stock_quantity !== null)
                                     <small class="text-muted">{{ __('Maximum quantity available: :qty', ['qty' => $product->stock_quantity]) }}</small>
                                 @endif
                             </form>

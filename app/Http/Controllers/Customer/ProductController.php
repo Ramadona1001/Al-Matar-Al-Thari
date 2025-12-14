@@ -106,10 +106,10 @@ class ProductController extends Controller
             return back()->with('error', __('Please activate your digital card first.'));
         }
 
-        // Determine max quantity
+        // Determine max quantity (skip limit if unlimited stock)
         $maxQuantity = 999;
-        if ($product->track_stock) {
-            $maxQuantity = max(1, $product->stock_quantity ?? 1);
+        if ($product->track_stock && $product->stock_quantity !== null) {
+            $maxQuantity = max(1, $product->stock_quantity);
         }
         
         $validated = $request->validate([
@@ -150,8 +150,8 @@ class ProductController extends Controller
             // Refresh product to get latest stock
             $product->refresh();
             
-            // Validate stock availability before transaction
-            if ($product->track_stock && $product->stock_quantity < $quantity) {
+            // Validate stock availability before transaction (skip if unlimited stock)
+            if ($product->track_stock && $product->stock_quantity !== null && $product->stock_quantity < $quantity) {
                 throw new \Exception(__('Insufficient stock. Only :qty available.', ['qty' => $product->stock_quantity]));
             }
             
@@ -190,8 +190,8 @@ class ProductController extends Controller
                 'notes' => "Purchase: {$productName} x {$quantity}",
             ]);
 
-            // Update product stock if tracking
-            if ($product->track_stock) {
+            // Update product stock if tracking (skip if unlimited stock)
+            if ($product->track_stock && $product->stock_quantity !== null) {
                 $newQuantity = $product->stock_quantity - $quantity;
                 $product->update([
                     'stock_quantity' => max(0, $newQuantity),
