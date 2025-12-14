@@ -12,7 +12,48 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @php
+            // Check for Vite manifest first
+            $manifestPath = public_path('build/manifest.json');
+            $hasManifest = file_exists($manifestPath);
+            
+            // Check for static files
+            $staticCss = file_exists(public_path('css/app.css'));
+            $staticJs = file_exists(public_path('js/app.js'));
+        @endphp
+        @if($hasManifest)
+            @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @elseif($staticCss || $staticJs)
+            <!-- Using static files (no npm build needed) -->
+            @if($staticCss)
+                <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+            @endif
+            <!-- Alpine.js from CDN -->
+            <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+            <!-- GSAP from CDN -->
+            <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+            @if($staticJs)
+                <script src="{{ asset('js/app.js') }}" defer></script>
+            @endif
+        @else
+            <!-- Fallback: Try to load from build directory if exists -->
+            @php
+                $buildDir = public_path('build');
+                $cssFiles = is_dir($buildDir . '/assets') ? glob($buildDir . '/assets/*.css') : [];
+                $jsFiles = is_dir($buildDir . '/assets') ? glob($buildDir . '/assets/*.js') : [];
+            @endphp
+            @if(!empty($cssFiles))
+                @foreach($cssFiles as $cssFile)
+                    <link rel="stylesheet" href="{{ asset('build/assets/' . basename($cssFile)) }}">
+                @endforeach
+            @endif
+            @if(!empty($jsFiles))
+                @foreach($jsFiles as $jsFile)
+                    <script src="{{ asset('build/assets/' . basename($jsFile)) }}" defer></script>
+                @endforeach
+            @endif
+        @endif
     </head>
     <style>
         @php
