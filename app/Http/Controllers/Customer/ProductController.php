@@ -109,7 +109,24 @@ class ProductController extends Controller
         $validated = $request->validate([
             'quantity' => 'required|integer|min:1|max:' . ($product->stock_quantity ?? 999),
             'branch_id' => 'nullable|exists:branches,id',
+            'referral_code' => 'nullable|string',
         ]);
+        
+        // Validate referral code if provided
+        if (!empty($validated['referral_code'])) {
+            $affiliate = \App\Models\Affiliate::where('referral_code', $validated['referral_code'])
+                ->where('status', 'active')
+                ->first();
+                
+            if (!$affiliate) {
+                return back()->with('error', __('Invalid referral code.'));
+            }
+            
+            // Prevent self-referral
+            if ($affiliate->user_id === $user->id) {
+                return back()->with('error', __('You cannot use your own referral code.'));
+            }
+        }
 
         $quantity = $validated['quantity'];
         $originalAmount = $product->price * $quantity;
@@ -118,6 +135,21 @@ class ProductController extends Controller
 
         DB::beginTransaction();
         try {
+            // Handle referral code if provided
+            $referralCode = $validated['referral_code'] ?? session('referral_code') ?? request()->cookie('referral_code');
+            
+            // If referral code provided, store it in session for affiliate tracking
+            if ($referralCode) {
+                $affiliate = \App\Models\Affiliate::where('referral_code', $referralCode)
+                    ->where('status', 'active')
+                    ->first();
+                    
+                if ($affiliate && $affiliate->user_id !== $user->id) {
+                    // Store in session for affiliate tracking
+                    session(['referral_code' => $referralCode]);
+                }
+            }
+            
             // Create transaction
             $transaction = Transaction::create([
                 'transaction_id' => Transaction::generateUniqueTransactionId(),
@@ -146,6 +178,7 @@ class ProductController extends Controller
             }
 
             // Complete transaction to trigger events (points will be calculated automatically)
+            // AffiliateRewardJob will be triggered by OrderCompleted event and will check session/cookie for referral code
             $transaction->complete();
 
             DB::commit();

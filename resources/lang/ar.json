@@ -467,5 +467,10 @@
     "Terms & Conditions": "الشروط والأحكام",
     "Products & Offers": "المنتجات والعروض",
     "Loyalty Member": "عضو ولاء",
-    "Link copied successfully!": "تم نسخ الرابط بنجاح!"
+    "Link copied successfully!": "تم نسخ الرابط بنجاح!",
+    "Referral Code (Optional)": "كود الإحالة (اختياري)",
+    "Enter referral code if you have one": "أدخل كود الإحالة إن وجد",
+    "Enter a referral code to support your referrer": "أدخل كود الإحالة لدعم صاحب الرابط",
+    "Featured Products": "المنتجات المميزة",
+    "View Product": "عرض المنتج"
 }

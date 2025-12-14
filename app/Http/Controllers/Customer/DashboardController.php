@@ -27,8 +27,21 @@ class DashboardController extends Controller
         $loyaltyPoints = $this->getLoyaltyPoints();
         $favoriteCompanies = $this->getFavoriteCompanies();
         $chartData = $this->getChartData();
+        $products = $this->getProducts();
 
-        return view('customer.dashboard', compact('stats', 'availableOffers', 'myCoupons', 'recentTransactions', 'loyaltyPoints', 'favoriteCompanies', 'chartData'));
+        return view('customer.dashboard', compact('stats', 'availableOffers', 'myCoupons', 'recentTransactions', 'loyaltyPoints', 'favoriteCompanies', 'chartData', 'products'));
+    }
+    
+    private function getProducts($limit = 8)
+    {
+        return \App\Models\Product::with(['company', 'category'])
+            ->where('status', 'active')
+            ->where('in_stock', true)
+            ->where('is_featured', true)
+            ->ordered()
+            ->latest()
+            ->limit($limit)
+            ->get();
     }
 
     private function getDashboardStats()

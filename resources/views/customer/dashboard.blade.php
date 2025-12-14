@@ -186,6 +186,74 @@
     </div>
 </div>
 
+<!-- Products Section -->
+@if(isset($products) && $products->count() > 0)
+<div class="row g-4 mb-4">
+    <div class="col-12">
+        <div class="card modern-card shadow-sm border-0 fade-in-up">
+            <div class="card-header bg-white border-0 pb-0 pt-4 px-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="chart-icon-wrapper bg-success-subtle">
+                            <i class="fas fa-box text-success"></i>
+                        </div>
+                        <div>
+                            <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('Featured Products') }}</p>
+                            <h5 class="fw-bold mb-0 text-gray-900">{{ __('Products & Offers') }}</h5>
+                        </div>
+                    </div>
+                    <a href="{{ route('customer.products.index') }}" class="btn btn-sm btn-primary btn-animated shadow-sm">
+                        <i class="fas fa-arrow-up-right-from-square me-2"></i>{{ __('view_all') }}
+                    </a>
+                </div>
+            </div>
+            <div class="card-body px-4 pb-4">
+                <div class="row g-3">
+                    @foreach($products as $product)
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card border-0 shadow-sm h-100 product-card">
+                                @if($product->image)
+                                    <img src="{{ asset('storage/' . str_replace('/storage/', '', $product->image)) }}" 
+                                         alt="{{ $product->localized_name }}" 
+                                         class="card-img-top" 
+                                         style="height: 180px; object-fit: cover;">
+                                @else
+                                    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                                        <i class="fas fa-image fa-3x text-muted"></i>
+                                    </div>
+                                @endif
+                                <div class="card-body">
+                                    <h6 class="fw-semibold mb-2 text-gray-900" style="min-height: 40px;">
+                                        {{ Str::limit($product->localized_name, 50) }}
+                                    </h6>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="text-primary fw-bold">{{ number_format($product->price, 2) }} {{ __('SAR') }}</span>
+                                        @if($product->is_featured)
+                                            <span class="badge bg-warning text-dark"><i class="fas fa-star"></i></span>
+                                        @endif
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center text-muted small mb-2">
+                                        <span><i class="fas fa-store me-1 text-primary"></i>{{ $product->company->localized_name ?? '-' }}</span>
+                                        @if($product->isInStock())
+                                            <span class="badge bg-success-subtle text-success">{{ __('In Stock') }}</span>
+                                        @else
+                                            <span class="badge bg-danger-subtle text-danger">{{ __('Out of Stock') }}</span>
+                                        @endif
+                                    </div>
+                                    <a href="{{ route('customer.products.show', $product) }}" class="btn btn-sm btn-primary w-100">
+                                        {{ __('View Product') }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
 <!-- Tables Section -->
 <div class="row g-4 mb-4">
     <!-- Available Offers Card -->

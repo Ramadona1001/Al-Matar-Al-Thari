@@ -84,6 +84,9 @@
                         @if($product->isInStock() && auth()->user()->digitalCard && auth()->user()->digitalCard->isActive())
                             <form method="POST" action="{{ route('customer.products.purchase', $product) }}" class="mt-3">
                                 @csrf
+                                @if(request()->has('ref'))
+                                    <input type="hidden" name="referral_code" value="{{ request()->get('ref') }}">
+                                @endif
                                 <div class="row g-2 align-items-end">
                                     <div class="col-md-4">
                                         <label for="quantity" class="form-label">{{ __('Quantity') }}</label>
@@ -94,6 +97,15 @@
                                         <button type="submit" class="btn btn-primary btn-lg w-100">
                                             <i class="fas fa-shopping-cart me-2"></i>{{ __('Purchase with Digital Card') }}
                                         </button>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <label for="referral_code" class="form-label small">{{ __('Referral Code (Optional)') }}</label>
+                                        <input type="text" class="form-control form-control-sm" id="referral_code" name="referral_code" 
+                                               value="{{ request()->get('ref') ?? old('referral_code') }}" 
+                                               placeholder="{{ __('Enter referral code if you have one') }}">
+                                        <small class="text-muted">{{ __('Enter a referral code to support your referrer') }}</small>
                                     </div>
                                 </div>
                                 @if($product->track_stock)
