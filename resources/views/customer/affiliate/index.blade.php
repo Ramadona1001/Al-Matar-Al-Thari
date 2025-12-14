@@ -158,7 +158,7 @@
                                                         break;
                                                 }
                                             @endphp
-                                            <span class="badge rounded-pill {{ $statusClass }} px-3 py-2 text-uppercase small">{{ $sale->status }}</span>
+                                            <span class="badge rounded-pill  px-3 py-2 text-uppercase small">{{ $sale->status }}</span>
                                         </td>
                                     </tr>
                                 @empty
