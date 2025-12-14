@@ -372,6 +372,7 @@
                                 <th class="fw-semibold text-gray-700">{{ __('payment_method') }}</th>
                                 <th class="fw-semibold text-gray-700">{{ __('branch') }}</th>
                                 <th class="fw-semibold text-gray-700 text-end">{{ __('date') }}</th>
+                                <th class="fw-semibold text-gray-700 text-center">{{ __('actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -417,10 +418,20 @@
                                         <div class="text-muted small">{{ $transaction->created_at->format('Y-m-d') }}</div>
                                         <div class="text-muted" style="font-size: 0.75rem;">{{ $transaction->created_at->format('H:i') }}</div>
                                     </td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ route('merchant.transactions.invoice.download', $transaction) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Download Invoice') }}">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                            <a href="{{ route('merchant.transactions.invoice.view', $transaction) }}" target="_blank" class="btn btn-sm btn-outline-info" title="{{ __('View Invoice') }}">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </a>
+                                        </div>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center py-5">
+                                    <td colspan="8" class="text-center py-5">
                                         <div class="empty-state-modern">
                                             <div class="empty-icon-wrapper mb-3">
                                                 <i class="fas fa-exchange-alt"></i>

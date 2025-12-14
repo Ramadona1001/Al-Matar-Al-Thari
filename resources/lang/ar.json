@@ -483,5 +483,20 @@
     "View Product": "عرض المنتج",
     "Unlimited Stock": "مخزون غير محدود",
     "Product has unlimited quantity": "المنتج لديه كمية غير محدودة",
-    "Unlimited": "غير محدود"
+    "Unlimited": "غير محدود",
+    "Invoice": "فاتورة",
+    "Invoice Number": "رقم الفاتورة",
+    "Company Information": "معلومات الشركة",
+    "Company Name": "اسم الشركة",
+    "Customer Information": "معلومات العميل",
+    "Customer Name": "اسم العميل",
+    "Description": "الوصف",
+    "Original Price": "السعر الأصلي",
+    "Subtotal": "المجموع الفرعي",
+    "Total Amount": "المبلغ الإجمالي",
+    "Thank you for your business!": "شكراً لتعاملك معنا!",
+    "This is a computer-generated invoice.": "هذه فاتورة مولدّة آلياً.",
+    "Download Invoice": "تحميل الفاتورة",
+    "View Invoice": "عرض الفاتورة",
+    "actions": "الإجراءات"
 }

@@ -483,5 +483,20 @@
     "View Product": "View Product",
     "Unlimited Stock": "Unlimited Stock",
     "Product has unlimited quantity": "Product has unlimited quantity",
-    "Unlimited": "Unlimited"
+    "Unlimited": "Unlimited",
+    "Invoice": "Invoice",
+    "Invoice Number": "Invoice Number",
+    "Company Information": "Company Information",
+    "Company Name": "Company Name",
+    "Customer Information": "Customer Information",
+    "Customer Name": "Customer Name",
+    "Description": "Description",
+    "Original Price": "Original Price",
+    "Subtotal": "Subtotal",
+    "Total Amount": "Total Amount",
+    "Thank you for your business!": "Thank you for your business!",
+    "This is a computer-generated invoice.": "This is a computer-generated invoice.",
+    "Download Invoice": "Download Invoice",
+    "View Invoice": "View Invoice",
+    "actions": "Actions"
 }

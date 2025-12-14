@@ -50,6 +50,7 @@
                         <th>{{ __('type') }}</th>
                         <th>{{ __('status') }}</th>
                         <th>{{ __('description') }}</th>
+                        <th class="text-center">{{ __('actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,7 +72,7 @@
                             </td>
                             <td>
                                 <span class="fw-semibold {{ $transaction->amount >= 0 ? 'text-success' : 'text-danger' }}">
-                                    {{ $transaction->amount >= 0 ? '+' : '' }}${{ number_format(abs($transaction->amount), 2) }}
+                                    {{ $transaction->amount >= 0 ? '+' : '' }}﷼{{ number_format(abs($transaction->amount), 2) }}
                                 </span>
                             </td>
                             <td>
@@ -91,10 +92,20 @@
                             <td>
                                 <small class="text-muted">{{ Str::limit($transaction->description ?? __('transaction'), 50) }}</small>
                             </td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a href="{{ route('customer.transactions.invoice.download', $transaction) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Download Invoice') }}">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                    <a href="{{ route('customer.transactions.invoice.view', $transaction) }}" target="_blank" class="btn btn-sm btn-outline-info" title="{{ __('View Invoice') }}">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </a>
+                                </div>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center py-5">
+                            <td colspan="7" class="text-center py-5">
                                 <div class="empty-state">
                                     <i class="fas fa-exchange-alt fa-2x text-muted mb-3"></i>
                                     <p class="text-muted mb-0">{{ __('no_transactions_found') }}</p>

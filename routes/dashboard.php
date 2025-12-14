@@ -36,6 +36,7 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\OfferController as AdminOfferController;
 use App\Http\Controllers\Admin\CouponController as AdminCouponController;
+use App\Http\Controllers\InvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -133,6 +134,10 @@ Route::middleware(['auth', 'role:super-admin|admin'])->prefix('admin')->name('ad
     Route::post('/companies/{company}/unfreeze', [AdminFreezeController::class, 'unfreezeCompany'])->name('companies.unfreeze');
     Route::post('/cards/{card}/freeze', [AdminFreezeController::class, 'freezeCard'])->name('cards.freeze');
     Route::post('/cards/{card}/unfreeze', [AdminFreezeController::class, 'unfreezeCard'])->name('cards.unfreeze');
+
+    // Invoice routes (Admin can view all transactions)
+    Route::get('/transactions/{transaction}/invoice', [InvoiceController::class, 'download'])->name('transactions.invoice.download');
+    Route::get('/transactions/{transaction}/invoice/view', [InvoiceController::class, 'view'])->name('transactions.invoice.view');
 });
 
 // Merchant Dashboard Routes
@@ -224,6 +229,10 @@ Route::middleware(['auth', 'verified', 'role:merchant', 'frozen'])->prefix('merc
 
     // Transactions
     Route::get('transactions', [MerchantTransactionController::class, 'index'])->name('transactions.index');
+
+    // Invoice routes
+    Route::get('transactions/{transaction}/invoice', [InvoiceController::class, 'download'])->name('transactions.invoice.download');
+    Route::get('transactions/{transaction}/invoice/view', [InvoiceController::class, 'view'])->name('transactions.invoice.view');
 });
 
 // Customer Dashboard Routes
@@ -284,6 +293,10 @@ Route::middleware(['auth', 'verified', 'role:customer', 'frozen'])->prefix('cust
     
     // Transactions Routes
     Route::get('/transactions', [CustomerDashboardController::class, 'transactions'])->name('transactions.index');
+
+    // Invoice routes
+    Route::get('/transactions/{transaction}/invoice', [InvoiceController::class, 'download'])->name('transactions.invoice.download');
+    Route::get('/transactions/{transaction}/invoice/view', [InvoiceController::class, 'view'])->name('transactions.invoice.view');
     
     // Favorites Routes
     Route::get('/favorites', [CustomerDashboardController::class, 'favorites'])->name('favorites.index');
