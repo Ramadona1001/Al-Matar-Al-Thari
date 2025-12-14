@@ -113,7 +113,17 @@
                 </div>
             </div>
             <div class="card-body p-4">
-                
+                @if($affiliate && $sales instanceof \Illuminate\Contracts\Pagination\Paginator)
+                    
+                @else
+                    <div class="empty-state text-center py-5">
+                        <div class="icon-circle bg-primary-subtle text-primary mb-3">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <h5 class="fw-semibold mb-2">{{ __('Get started to see your stats here') }}</h5>
+                        <p class="text-muted mb-0">{{ __('Once your application is approved, every referral and commission will be listed with real-time updates.') }}</p>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
