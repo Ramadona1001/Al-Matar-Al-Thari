@@ -152,6 +152,7 @@
                                                         break;
                                                     case 'approved':
                                                         $statusClass = 'bg-success-subtle text-success';
+                                                        break;
                                                     case 'rejected':
                                                         $statusClass = 'bg-danger-subtle text-danger';
                                                         break;
