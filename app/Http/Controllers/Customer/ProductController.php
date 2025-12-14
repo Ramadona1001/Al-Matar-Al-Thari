@@ -106,8 +106,14 @@ class ProductController extends Controller
             return back()->with('error', __('Please activate your digital card first.'));
         }
 
+        // Determine max quantity
+        $maxQuantity = 999;
+        if ($product->track_stock) {
+            $maxQuantity = max(1, $product->stock_quantity ?? 1);
+        }
+        
         $validated = $request->validate([
-            'quantity' => 'required|integer|min:1|max:' . ($product->stock_quantity ?? 999),
+            'quantity' => 'required|integer|min:1|max:' . $maxQuantity,
             'branch_id' => 'nullable|exists:branches,id',
             'referral_code' => 'nullable|string',
         ]);
@@ -129,12 +135,26 @@ class ProductController extends Controller
         }
 
         $quantity = $validated['quantity'];
+        
+        // Validate product price
+        if (!$product->price || $product->price <= 0) {
+            return back()->with('error', __('Invalid product price.'));
+        }
+        
         $originalAmount = $product->price * $quantity;
         $discountAmount = 0; // No discount from card
         $finalAmount = $originalAmount;
 
         DB::beginTransaction();
         try {
+            // Refresh product to get latest stock
+            $product->refresh();
+            
+            // Validate stock availability before transaction
+            if ($product->track_stock && $product->stock_quantity < $quantity) {
+                throw new \Exception(__('Insufficient stock. Only :qty available.', ['qty' => $product->stock_quantity]));
+            }
+            
             // Handle referral code if provided
             $referralCode = $validated['referral_code'] ?? session('referral_code') ?? request()->cookie('referral_code');
             
@@ -150,6 +170,9 @@ class ProductController extends Controller
                 }
             }
             
+            // Get product name safely
+            $productName = $product->localized_name ?? $product->name ?? 'Product';
+            
             // Create transaction
             $transaction = Transaction::create([
                 'transaction_id' => Transaction::generateUniqueTransactionId(),
@@ -164,17 +187,16 @@ class ProductController extends Controller
                 'branch_id' => $validated['branch_id'] ?? null,
                 'digital_card_id' => $digitalCard->id,
                 'product_id' => $product->id,
-                'notes' => "Purchase: {$product->localized_name} x {$quantity}",
+                'notes' => "Purchase: {$productName} x {$quantity}",
             ]);
 
             // Update product stock if tracking
             if ($product->track_stock) {
-                $product->decrement('stock_quantity', $quantity);
-                
-                // Update in_stock status
-                if ($product->stock_quantity <= 0) {
-                    $product->update(['in_stock' => false]);
-                }
+                $newQuantity = $product->stock_quantity - $quantity;
+                $product->update([
+                    'stock_quantity' => max(0, $newQuantity),
+                    'in_stock' => $newQuantity > 0
+                ]);
             }
 
             // Complete transaction to trigger events (points will be calculated automatically)
@@ -185,10 +207,27 @@ class ProductController extends Controller
 
             return redirect()->route('customer.products.show', $product)
                 ->with('success', __('Product purchased successfully! Loyalty points will be added to your account.'));
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            return back()->withErrors($e->validator)->withInput();
         } catch (\Exception $e) {
             DB::rollBack();
             
-            return back()->with('error', __('An error occurred while processing your purchase. Please try again.'));
+            // Log the error for debugging
+            \Log::error('Product purchase error: ' . $e->getMessage(), [
+                'user_id' => $user->id,
+                'product_id' => $product->id,
+                'quantity' => $quantity ?? null,
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            // Show user-friendly error message
+            $errorMessage = $e->getMessage();
+            if (config('app.debug')) {
+                $errorMessage .= ' (' . $e->getFile() . ':' . $e->getLine() . ')';
+            }
+            
+            return back()->with('error', $errorMessage ?: __('An error occurred while processing your purchase. Please try again.'));
         }
     }
 }
