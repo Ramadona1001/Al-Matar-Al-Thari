@@ -126,7 +126,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($sales as $sale)
+                                @forelse($sales as $sale)
                                     <tr>
                                         <td class="fw-semibold">{{ $sale->created_at->translatedFormat('d M Y') }}</td>
                                         <td>
@@ -144,7 +144,7 @@
                                         <td class="text-end fw-semibold text-primary">{{ number_format($sale->sale_amount, 2) }}</td>
                                         <td class="text-end fw-semibold text-success">{{ number_format($sale->commission_amount, 0) }} {{ __('points') }}</td>
                                         <td class="text-center">
-                                            @php
+                                            {{-- @php
                                                 $statusClass = match($sale->status) {
                                                     'pending' => 'bg-warning-subtle text-warning',
                                                     'approved' => 'bg-success-subtle text-success',
@@ -152,10 +152,19 @@
                                                     default => 'bg-info-subtle text-info'
                                                 };
                                             @endphp
-                                            <span class="badge rounded-pill {{ $statusClass }} px-3 py-2 text-uppercase small">{{ $sale->status }}</span>
+                                            <span class="badge rounded-pill {{ $statusClass }} px-3 py-2 text-uppercase small">{{ $sale->status }}</span> --}}
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center py-5">
+                                            <div class="text-muted">
+                                                <i class="fas fa-chart-line fa-2x mb-3 text-primary"></i>
+                                                <p class="mb-0">{{ __('No sales yet.') }}</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
