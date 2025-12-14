@@ -114,7 +114,32 @@
             </div>
             <div class="card-body p-4">
                 @if($affiliate && $sales instanceof \Illuminate\Contracts\Pagination\Paginator)
-                    
+                    <div class="table-responsive shadow-sm rounded overflow-hidden">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr class="text-muted text-uppercase small">
+                                    <th scope="col">{{ __('Date') }}</th>
+                                    <th scope="col">{{ __('Product/Company') }}</th>
+                                    <th scope="col" class="text-end">{{ __('Sale Amount') }}</th>
+                                    <th scope="col" class="text-end">{{ __('Commission') }}</th>
+                                    <th scope="col" class="text-center">{{ __('Status') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-between flex-column flex-md-row align-items-center gap-3 mt-4">
+                        <div class="d-flex gap-3 text-muted small">
+                            <span><strong>{{ __('Current page') }}:</strong> {{ $sales->currentPage() }}</span>
+                            <span><strong>{{ __('Total results') }}:</strong> {{ $sales->total() }}</span>
+                        </div>
+                        <div class="pagination-wrapper">
+                            {{ $sales->links() }}
+                        </div>
+                    </div>
                 @else
                     <div class="empty-state text-center py-5">
                         <div class="icon-circle bg-primary-subtle text-primary mb-3">
