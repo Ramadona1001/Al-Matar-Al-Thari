@@ -31,9 +31,10 @@ class DashboardController extends Controller
         $recentCoupons = $this->getRecentCoupons($company);
         $recentTransactions = $this->getRecentTransactions($company);
         $chartData = $this->getChartData($company);
-        $topCustomers = $this->getTopCustomers($company);
+        $allCustomers = $this->getAllCustomers($company);
+        $allTransactions = $this->getAllTransactions($company);
 
-        return view('merchant.dashboard', compact('stats', 'recentOffers', 'recentCoupons', 'recentTransactions', 'chartData', 'topCustomers'));
+        return view('merchant.dashboard', compact('stats', 'recentOffers', 'recentCoupons', 'recentTransactions', 'chartData', 'allCustomers', 'allTransactions'));
     }
 
     private function getDashboardStats($company)
@@ -129,6 +130,26 @@ class DashboardController extends Controller
             ->orderByDesc('total_spent')
             ->limit($limit)
             ->with(['user'])
+            ->get();
+    }
+
+    private function getAllCustomers($company)
+    {
+        return Transaction::select('user_id', DB::raw('COUNT(*) as transaction_count'), DB::raw('SUM(amount) as total_spent'))
+            ->where('company_id', $company->id)
+            ->where('status', 'completed')
+            ->groupBy('user_id')
+            ->orderByDesc('total_spent')
+            ->with(['user'])
+            ->get();
+    }
+
+    private function getAllTransactions($company, $limit = 50)
+    {
+        return Transaction::where('company_id', $company->id)
+            ->with(['user', 'branch', 'coupon'])
+            ->latest()
+            ->limit($limit)
             ->get();
     }
 
