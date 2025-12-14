@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DigitalCard;
 use App\Services\QrCodeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DigitalCardController extends Controller
 {
@@ -31,10 +32,17 @@ class DigitalCardController extends Controller
             $digitalCard = $this->createDigitalCard($user);
         }
 
-        // Generate QR code if doesn't exist
+        // Generate QR code if doesn't exist or file doesn't exist
         if (!$digitalCard->qr_code) {
             $qrCodePath = $this->qrCodeService->generateCardQrCode($digitalCard->card_number);
             $digitalCard->update(['qr_code' => $qrCodePath]);
+        } else {
+            // Verify QR code file exists, regenerate if missing
+            $filePath = str_replace(Storage::url(''), '', $digitalCard->qr_code);
+            if (!Storage::disk('public')->exists($filePath)) {
+                $qrCodePath = $this->qrCodeService->generateCardQrCode($digitalCard->card_number);
+                $digitalCard->update(['qr_code' => $qrCodePath]);
+            }
         }
 
         return view('customer.digital-card.index', compact('digitalCard'));

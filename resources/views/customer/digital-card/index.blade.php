@@ -52,10 +52,22 @@
                     <!-- QR Code - Left Side -->
                     <div class="col-md-5 text-center">
                         @if($digitalCard->qr_code)
+                            @php
+                                // Get the file path from storage URL
+                                $qrPath = $digitalCard->qr_code;
+                                // Remove /storage/ prefix if exists
+                                $qrPath = str_replace('/storage/', '', $qrPath);
+                                $qrPath = str_replace(asset('storage/'), '', $qrPath);
+                                // Get full URL using Storage facade
+                                $qrUrl = \Illuminate\Support\Facades\Storage::disk('public')->exists($qrPath) 
+                                    ? \Illuminate\Support\Facades\Storage::disk('public')->url($qrPath)
+                                    : asset('storage/' . $qrPath);
+                            @endphp
                             <div class="qr-code-container" style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: inline-block;">
-                                <img src="{{ asset('storage/' . str_replace('/storage/', '', $digitalCard->qr_code)) }}" 
+                                <img src="{{ $qrUrl }}" 
                                      alt="QR Code" 
-                                     style="width: 180px; height: 180px; display: block;">
+                                     style="width: 180px; height: 180px; display: block;"
+                                     onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI2YwZjBmMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTk5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5RUiBDb2RlPC90ZXh0Pjwvc3ZnPg==';">
                             </div>
                             <p class="text-muted mt-3 mb-0" style="font-size: 0.9rem;">{{ __('Scan this QR code at the store') }}</p>
                         @else
