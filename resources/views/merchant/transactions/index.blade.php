@@ -82,10 +82,10 @@
                             </td>
                             <td class="text-center">
                                 <div class="btn-group" role="group">
-                                    <a href="{{ route('merchant.transactions.invoice.download', $transaction) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Download Invoice') }}">
+                                    <a href="{{ route('merchant.transactions.invoice.download', $transaction->id) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Download Invoice') }}">
                                         <i class="fas fa-download"></i>
                                     </a>
-                                    <a href="{{ route('merchant.transactions.invoice.view', $transaction) }}" target="_blank" class="btn btn-sm btn-outline-info" title="{{ __('View Invoice') }}">
+                                    <a href="{{ route('merchant.transactions.invoice.view', $transaction->id) }}" target="_blank" class="btn btn-sm btn-outline-info" title="{{ __('View Invoice') }}">
                                         <i class="fas fa-file-pdf"></i>
                                     </a>
                                 </div>
