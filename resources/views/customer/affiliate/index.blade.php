@@ -180,4 +180,81 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Copy to clipboard functionality
+    const copyButton = document.querySelector('[data-copy="#affiliate-referral-link"]');
+    const copyInput = document.getElementById('affiliate-referral-link');
+    
+    if (copyButton && copyInput) {
+        copyButton.addEventListener('click', async function() {
+            try {
+                // Copy to clipboard
+                await navigator.clipboard.writeText(copyInput.value);
+                
+                // Show success message using Bootstrap Toast
+                const toast = document.createElement('div');
+                toast.className = 'toast align-items-center text-white bg-success border-0';
+                toast.setAttribute('role', 'alert');
+                toast.setAttribute('aria-live', 'assertive');
+                toast.setAttribute('aria-atomic', 'true');
+                toast.innerHTML = `
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="fas fa-check-circle me-2"></i>{{ __('Link copied successfully!') }}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                `;
+                
+                // Create toast container if it doesn't exist
+                let toastContainer = document.getElementById('toast-container');
+                if (!toastContainer) {
+                    toastContainer = document.createElement('div');
+                    toastContainer.id = 'toast-container';
+                    toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+                    toastContainer.style.zIndex = '9999';
+                    document.body.appendChild(toastContainer);
+                }
+                
+                toastContainer.appendChild(toast);
+                
+                // Initialize and show toast
+                const bsToast = new bootstrap.Toast(toast, {
+                    autohide: true,
+                    delay: 3000
+                });
+                bsToast.show();
+                
+                // Remove toast element after it's hidden
+                toast.addEventListener('hidden.bs.toast', function() {
+                    toast.remove();
+                });
+                
+                // Update button icon temporarily
+                const icon = copyButton.querySelector('i');
+                if (icon) {
+                    const originalClass = icon.className;
+                    icon.className = 'fas fa-check me-2';
+                    setTimeout(() => {
+                        icon.className = originalClass;
+                    }, 2000);
+                }
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                // Fallback for older browsers
+                copyInput.select();
+                copyInput.setSelectionRange(0, 99999);
+                document.execCommand('copy');
+                
+                // Show success message
+                alert('{{ __("Link copied successfully!") }}');
+            }
+        });
+    }
+});
+</script>
+@endpush
 @endsection
