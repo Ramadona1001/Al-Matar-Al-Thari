@@ -114,9 +114,16 @@
                                 <code class="text-primary fw-semibold">{{ $page->slug }}</code>
                             </td>
                             <td>
-                                <div class="fw-semibold text-gray-900">{{ $page->getTitleForLocale() }}</div>
-                                @if($page->getExcerptForLocale())
-                                    <small class="text-muted d-block mt-1">{{ \Illuminate\Support\Str::limit($page->getExcerptForLocale(), 60) }}</small>
+                                @php
+                                    $currentLocale = app()->getLocale();
+                                    $currentTranslation = $page->translate($currentLocale);
+                                    $enTranslation = $page->translate('en');
+                                    $title = ($currentTranslation && $currentTranslation->title) ? $currentTranslation->title : (($enTranslation && $enTranslation->title) ? $enTranslation->title : __('No Title'));
+                                    $excerpt = ($currentTranslation && $currentTranslation->excerpt) ? $currentTranslation->excerpt : (($enTranslation && $enTranslation->excerpt) ? $enTranslation->excerpt : null);
+                                @endphp
+                                <div class="fw-semibold text-gray-900">{{ $title }}</div>
+                                @if($excerpt)
+                                    <small class="text-muted d-block mt-1">{{ \Illuminate\Support\Str::limit($excerpt, 60) }}</small>
                                 @endif
                             </td>
                             <td>

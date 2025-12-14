@@ -99,9 +99,27 @@ class DashboardController extends Controller
         ];
     }
 
+    public function getStatistics()
+    {
+        return response()->json($this->getDashboardStats());
+    }
+
+    public function getChartDataPublic()
+    {
+        $chartData = $this->getChartData();
+        return response()->json($chartData);
+    }
+
     public function getNotifications()
     {
-        return auth()->user()->notifications()->latest()->limit(5)->get();
+        $notifications = auth()->user()->notifications()->latest()->limit(5)->get();
+        return response()->json($notifications);
+    }
+
+    public function markNotificationsAsRead(Request $request)
+    {
+        auth()->user()->unreadNotifications->markAsRead();
+        return response()->json(['success' => true]);
     }
 
     public function markNotificationAsRead($notificationId)

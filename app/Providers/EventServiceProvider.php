@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use App\Listeners\SendCustomEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
@@ -16,7 +16,21 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         Registered::class => [
-            SendEmailVerificationNotification::class,
+            SendCustomEmailVerificationNotification::class,
+        ],
+        \App\Events\OrderCompleted::class => [
+            \App\Listeners\CalculateLoyaltyPointsListener::class,
+            \App\Listeners\AwardAffiliatePointsListener::class,
+        ],
+        \App\Events\PaymentConfirmed::class => [
+            \App\Listeners\CalculateLoyaltyPointsListener::class,
+            \App\Listeners\AwardAffiliatePointsListener::class,
+        ],
+        \App\Events\TicketOpened::class => [
+            \App\Listeners\LockAffiliatePointsOnTicketOpened::class,
+        ],
+        \App\Events\TicketResolved::class => [
+            \App\Listeners\HandleAffiliatePointsOnTicketResolved::class,
         ],
     ];
 

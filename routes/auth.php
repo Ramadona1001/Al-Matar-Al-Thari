@@ -33,6 +33,10 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
                 ->name('password.store');
+
+    Route::get('password-reset-success', function () {
+        return view('auth.password-reset-success');
+    })->name('password.reset.success');
 });
 
 Route::middleware('auth')->group(function () {
@@ -46,6 +50,10 @@ Route::middleware('auth')->group(function () {
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
                 ->middleware('throttle:6,1')
                 ->name('verification.send');
+
+    Route::get('email/verified', function () {
+        return view('auth.email-verified');
+    })->name('email.verified')->middleware('auth');
 
     Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
                 ->name('password.confirm');

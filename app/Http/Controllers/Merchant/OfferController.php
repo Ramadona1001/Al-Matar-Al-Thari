@@ -37,22 +37,23 @@ class OfferController extends Controller
             ->with(['category', 'branch']);
 
         // Filter by status
-        if ($request->has('status') && $request->status !== '') {
+        if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
         // Filter by category
-        if ($request->has('category_id') && $request->category_id !== '') {
+        if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);
         }
 
         // Search
-        if ($request->has('search') && $request->search !== '') {
+        if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
-                $q->whereRaw("JSON_EXTRACT(title, '$.en') LIKE ?", ["%{$search}%"])
-                  ->orWhereRaw("JSON_EXTRACT(title, '$.ar') LIKE ?", ["%{$search}%"])
-                  ->orWhereRaw("JSON_EXTRACT(description, '$.en') LIKE ?", ["%{$search}%"]);
+                $q->whereRaw("JSON_UNQUOTE(JSON_EXTRACT(title, '$.en')) LIKE ?", ["%{$search}%"])
+                  ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(title, '$.ar')) LIKE ?", ["%{$search}%"])
+                  ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(description, '$.en')) LIKE ?", ["%{$search}%"])
+                  ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(description, '$.ar')) LIKE ?", ["%{$search}%"]);
             });
         }
 
@@ -120,6 +121,9 @@ class OfferController extends Controller
             'branch_id' => 'nullable|exists:branches,id',
         ]);
 
+        // Generate slug first (before setting title to avoid conflicts)
+        $validated['slug'] = Str::slug($validated['title_en']);
+
         // Prepare title and description for JSON storage
         $validated['title'] = [
             'en' => $validated['title_en'],
@@ -130,9 +134,6 @@ class OfferController extends Controller
             'en' => $validated['description_en'] ?? '',
             'ar' => $validated['description_ar'] ?? $validated['description_en'] ?? '',
         ];
-
-        // Generate slug
-        $validated['slug'] = Str::slug($validated['title_en']);
 
         // Handle image upload
         if ($request->hasFile('image')) {
@@ -169,7 +170,7 @@ class OfferController extends Controller
             'total_coupons' => $offer->coupons()->count(),
             'used_coupons' => $offer->coupons()->whereHas('couponUsages')->count(),
             'total_transactions' => $offer->transactions()->count(),
-            'total_revenue' => $offer->transactions()->where('status', 'completed')->sum('final_amount'),
+            'total_revenue' => $offer->transactions()->where('transactions.status', 'completed')->sum('transactions.final_amount'),
         ];
 
         return view('merchant.offers.show', compact('offer', 'stats'));
@@ -222,6 +223,11 @@ class OfferController extends Controller
             'branch_id' => 'nullable|exists:branches,id',
         ]);
 
+        // Generate slug if title changed (before setting title to avoid conflicts)
+        if ($offer->title['en'] !== $validated['title_en']) {
+            $validated['slug'] = Str::slug($validated['title_en']);
+        }
+
         // Prepare title and description for JSON storage
         $validated['title'] = [
             'en' => $validated['title_en'],
@@ -232,11 +238,6 @@ class OfferController extends Controller
             'en' => $validated['description_en'] ?? '',
             'ar' => $validated['description_ar'] ?? $validated['description_en'] ?? '',
         ];
-
-        // Generate slug if title changed
-        if ($offer->title['en'] !== $validated['title_en']) {
-            $validated['slug'] = Str::slug($validated['title_en']);
-        }
 
         // Handle image upload
         if ($request->hasFile('image')) {

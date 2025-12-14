@@ -19,55 +19,61 @@
                     @csrf
                     @method('PUT')
 
-                    <div class="mb-3">
-                        <label class="form-label">{{ __('Title') }} <span class="text-danger">*</span></label>
-                        <ul class="nav nav-tabs" id="titleTabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="title-en-tab" data-bs-toggle="tab" data-bs-target="#title-en" type="button" role="tab" aria-controls="title-en" aria-selected="true">{{ __('English') }}</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="title-ar-tab" data-bs-toggle="tab" data-bs-target="#title-ar" type="button" role="tab" aria-controls="title-ar" aria-selected="false">{{ __('Arabic') }}</button>
-                            </li>
-                        </ul>
-                        <div class="tab-content border border-top-0 p-3" id="titleTabsContent">
-                            <div class="tab-pane fade show active" id="title-en" role="tabpanel" aria-labelledby="title-en-tab">
+                    <!-- Language Tabs -->
+                    <ul class="nav nav-tabs mb-4" id="langTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="lang-en-tab" data-bs-toggle="tab" data-bs-target="#lang-en" type="button" role="tab" aria-controls="lang-en" aria-selected="true">
+                                <i class="fas fa-language me-1"></i>{{ __('English') }}
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="lang-ar-tab" data-bs-toggle="tab" data-bs-target="#lang-ar" type="button" role="tab" aria-controls="lang-ar" aria-selected="false">
+                                <i class="fas fa-language me-1"></i>{{ __('Arabic') }}
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="langTabsContent">
+                        <!-- English Tab -->
+                        <div class="tab-pane fade show active" id="lang-en" role="tabpanel" aria-labelledby="lang-en-tab">
+                            <div class="mb-3">
+                                <label for="title_en" class="form-label">{{ __('Title') }} <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('title_en') is-invalid @enderror"
-                                       id="title_en" name="title_en" value="{{ old('title_en', $offer->title['en'] ?? '') }}" required>
+                                       id="title_en" name="title_en" value="{{ old('title_en', $offer->title['en'] ?? '') }}" 
+                                       placeholder="{{ __('Enter offer title in English') }}" required>
                                 @error('title_en')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="tab-pane fade" id="title-ar" role="tabpanel" aria-labelledby="title-ar-tab">
-                                <input type="text" class="form-control @error('title_ar') is-invalid @enderror"
-                                       id="title_ar" name="title_ar" value="{{ old('title_ar', $offer->title['ar'] ?? '') }}">
-                                @error('title_ar')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">{{ __('Description') }}</label>
-                        <ul class="nav nav-tabs" id="descriptionTabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="description-en-tab" data-bs-toggle="tab" data-bs-target="#description-en" type="button" role="tab" aria-controls="description-en" aria-selected="true">{{ __('English') }}</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="description-ar-tab" data-bs-toggle="tab" data-bs-target="#description-ar" type="button" role="tab" aria-controls="description-ar" aria-selected="false">{{ __('Arabic') }}</button>
-                            </li>
-                        </ul>
-                        <div class="tab-content border border-top-0 p-3" id="descriptionTabsContent">
-                            <div class="tab-pane fade show active" id="description-en" role="tabpanel" aria-labelledby="description-en-tab">
+                            <div class="mb-3">
+                                <label for="description_en" class="form-label">{{ __('Description') }}</label>
                                 <textarea class="form-control @error('description_en') is-invalid @enderror"
-                                          id="description_en" name="description_en" rows="3">{{ old('description_en', $offer->description['en'] ?? '') }}</textarea>
+                                          id="description_en" name="description_en" rows="4"
+                                          placeholder="{{ __('Enter offer description in English') }}">{{ old('description_en', $offer->description['en'] ?? '') }}</textarea>
                                 @error('description_en')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="tab-pane fade" id="description-ar" role="tabpanel" aria-labelledby="description-ar-tab">
+                        </div>
+
+                        <!-- Arabic Tab -->
+                        <div class="tab-pane fade" id="lang-ar" role="tabpanel" aria-labelledby="lang-ar-tab">
+                            <div class="mb-3">
+                                <label for="title_ar" class="form-label">{{ __('Title') }}</label>
+                                <input type="text" class="form-control @error('title_ar') is-invalid @enderror"
+                                       id="title_ar" name="title_ar" value="{{ old('title_ar', $offer->title['ar'] ?? '') }}"
+                                       placeholder="{{ __('Enter offer title in Arabic') }}">
+                                @error('title_ar')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description_ar" class="form-label">{{ __('Description') }}</label>
                                 <textarea class="form-control @error('description_ar') is-invalid @enderror"
-                                          id="description_ar" name="description_ar" rows="3">{{ old('description_ar', $offer->description['ar'] ?? '') }}</textarea>
+                                          id="description_ar" name="description_ar" rows="4"
+                                          placeholder="{{ __('Enter offer description in Arabic') }}">{{ old('description_ar', $offer->description['ar'] ?? '') }}</textarea>
                                 @error('description_ar')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

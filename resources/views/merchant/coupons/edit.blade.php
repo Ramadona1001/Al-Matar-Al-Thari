@@ -32,16 +32,16 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="offer_id" class="form-label">{{ __('Related Offer') }}</label>
-                                <select class="form-select @error('offer_id') is-invalid @enderror" id="offer_id" name="offer_id">
-                                    <option value="">{{ __('Select Offer (optional)') }}</option>
-                                    @foreach($offers as $offer)
-                                        <option value="{{ $offer->id }}" {{ old('offer_id', $coupon->offer_id) == $offer->id ? 'selected' : '' }}>
-                                            {{ $offer->localized_title }}
+                                <label for="product_id" class="form-label">{{ __('Related Product') }}</label>
+                                <select class="form-select @error('product_id') is-invalid @enderror" id="product_id" name="product_id">
+                                    <option value="">{{ __('Select Product (optional)') }}</option>
+                                    @foreach($products as $product)
+                                        <option value="{{ $product->id }}" {{ old('product_id', $coupon->product_id) == $product->id ? 'selected' : '' }}>
+                                            {{ $product->localized_name }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('offer_id')
+                                @error('product_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

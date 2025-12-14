@@ -2,6 +2,10 @@
    RTL (Right-to-Left) Specific Styles
    ============================================ */
 
+   .dropdown-item {
+    color: var(--bs-dropdown-link-color) !important;
+}
+
 /* RTL Overrides for Arabic Language */
 [dir="rtl"] {
   direction: rtl;

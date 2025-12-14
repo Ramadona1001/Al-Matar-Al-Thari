@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Merchant;
 
 use App\Http\Controllers\Controller;
 use App\Models\Coupon;
-use App\Models\Offer;
+use App\Models\Product;
 use App\Models\Company;
 use App\Services\QrCodeService;
 use Illuminate\Http\Request;
@@ -33,16 +33,16 @@ class CouponController extends Controller
         }
 
         $query = Coupon::where('company_id', $company->id)
-            ->with(['offer', 'user']);
+            ->with(['product', 'user']);
 
         // Filter by status
         if ($request->has('status') && $request->status !== '') {
             $query->where('status', $request->status);
         }
 
-        // Filter by offer
-        if ($request->has('offer_id') && $request->offer_id !== '') {
-            $query->where('offer_id', $request->offer_id);
+        // Filter by product
+        if ($request->has('product_id') && $request->product_id !== '') {
+            $query->where('product_id', $request->product_id);
         }
 
         // Search
@@ -54,7 +54,7 @@ class CouponController extends Controller
         }
 
         $coupons = $query->latest()->paginate(15);
-        $offers = Offer::where('company_id', $company->id)->get();
+        $products = Product::where('company_id', $company->id)->get();
 
         $stats = [
             'total' => Coupon::where('company_id', $company->id)->count(),
@@ -63,7 +63,7 @@ class CouponController extends Controller
             'expired' => Coupon::where('company_id', $company->id)->where('status', 'expired')->count(),
         ];
 
-        return view('merchant.coupons.index', compact('coupons', 'offers', 'stats'));
+        return view('merchant.coupons.index', compact('coupons', 'products', 'stats'));
     }
 
     /**
@@ -78,9 +78,9 @@ class CouponController extends Controller
                 ->with('error', __('Your company must be approved before creating coupons.'));
         }
 
-        $offers = Offer::where('company_id', $company->id)->get();
+        $products = Product::where('company_id', $company->id)->get();
 
-        return view('merchant.coupons.create', compact('offers'));
+        return view('merchant.coupons.create', compact('products'));
     }
 
     /**
@@ -106,8 +106,19 @@ class CouponController extends Controller
             'end_date' => 'required|date|after:start_date',
             'status' => 'required|in:active,disabled',
             'is_public' => 'nullable|boolean',
-            'offer_id' => 'nullable|exists:offers,id',
+            'product_id' => 'nullable|exists:products,id',
         ]);
+
+        // Validate product belongs to company
+        if (!empty($validated['product_id'])) {
+            $product = Product::where('id', $validated['product_id'])
+                ->where('company_id', $company->id)
+                ->first();
+            
+            if (!$product) {
+                return back()->withErrors(['product_id' => __('The selected product does not belong to your company.')])->withInput();
+            }
+        }
 
         // Generate unique code if not provided
         if (empty($validated['code'])) {
@@ -138,7 +149,7 @@ class CouponController extends Controller
             abort(403);
         }
 
-        $coupon->load(['offer', 'user', 'couponUsages.user', 'transactions']);
+        $coupon->load(['product', 'user', 'couponUsages.user', 'transactions']);
 
         $stats = [
             'total_usage' => $coupon->couponUsages()->count(),
@@ -161,9 +172,9 @@ class CouponController extends Controller
         }
 
         $company = auth()->user()->company;
-        $offers = Offer::where('company_id', $company->id)->get();
+        $products = Product::where('company_id', $company->id)->get();
 
-        return view('merchant.coupons.edit', compact('coupon', 'offers'));
+        return view('merchant.coupons.edit', compact('coupon', 'products'));
     }
 
     /**
@@ -187,8 +198,19 @@ class CouponController extends Controller
             'end_date' => 'required|date|after:start_date',
             'status' => 'required|in:active,used,expired,disabled',
             'is_public' => 'nullable|boolean',
-            'offer_id' => 'nullable|exists:offers,id',
+            'product_id' => 'nullable|exists:products,id',
         ]);
+
+        // Validate product belongs to company
+        if (!empty($validated['product_id'])) {
+            $product = Product::where('id', $validated['product_id'])
+                ->where('company_id', $coupon->company_id)
+                ->first();
+            
+            if (!$product) {
+                return back()->withErrors(['product_id' => __('The selected product does not belong to your company.')])->withInput();
+            }
+        }
 
         $coupon->update($validated);
 
@@ -300,8 +322,19 @@ class CouponController extends Controller
             'end_date' => 'required|date|after:start_date',
             'status' => 'required|in:active,disabled',
             'is_public' => 'nullable|boolean',
-            'offer_id' => 'nullable|exists:offers,id',
+            'product_id' => 'nullable|exists:products,id',
         ]);
+
+        // Validate product belongs to company
+        if (!empty($validated['product_id'])) {
+            $product = Product::where('id', $validated['product_id'])
+                ->where('company_id', $company->id)
+                ->first();
+            
+            if (!$product) {
+                return back()->withErrors(['product_id' => __('The selected product does not belong to your company.')])->withInput();
+            }
+        }
 
         $coupons = [];
         for ($i = 0; $i < $validated['quantity']; $i++) {

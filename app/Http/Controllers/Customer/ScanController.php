@@ -135,9 +135,10 @@ class ScanController extends Controller
                 $transaction = Transaction::create([
                     'transaction_id' => Transaction::generateUniqueTransactionId(),
                     'amount' => $originalAmount,
+                    'original_price' => $originalAmount, // Store original price for points calculation
                     'discount_amount' => $discountAmount,
                     'final_amount' => $finalAmount,
-                    'status' => 'completed',
+                    'status' => 'pending', // Set as pending first
                     'payment_method' => 'qr_code',
                     'user_id' => $user->id,
                     'company_id' => $coupon->company_id,
@@ -145,8 +146,8 @@ class ScanController extends Controller
                     'coupon_id' => $coupon->id,
                 ]);
 
-                // Award loyalty points
-                $this->awardLoyaltyPoints($user, $coupon->company_id, $finalAmount, $transaction);
+                // Complete transaction to trigger events
+                $transaction->complete();
             }
 
             DB::commit();
@@ -194,10 +195,10 @@ class ScanController extends Controller
             ], 400);
         }
 
-        // Calculate discount
+        // No discount - card only for earning points
         $originalAmount = $validated['amount'] ?? 0;
-        $discountAmount = $digitalCard->calculateDiscount($originalAmount);
-        $finalAmount = max(0, $originalAmount - $discountAmount);
+        $discountAmount = 0;
+        $finalAmount = $originalAmount;
 
         // Create transaction if amount provided
         if (isset($validated['amount']) && $validated['amount'] > 0) {
@@ -206,15 +207,19 @@ class ScanController extends Controller
                 $transaction = Transaction::create([
                     'transaction_id' => Transaction::generateUniqueTransactionId(),
                     'amount' => $originalAmount,
-                    'discount_amount' => $discountAmount,
+                    'original_price' => $originalAmount, // Store original price for points calculation
+                    'discount_amount' => 0, // No discount from card
                     'final_amount' => $finalAmount,
-                    'status' => 'completed',
+                    'status' => 'pending', // Set as pending first
                     'payment_method' => 'digital_card',
                     'user_id' => $user->id,
                     'company_id' => null, // Can be set based on branch
                     'branch_id' => $validated['branch_id'] ?? null,
                     'digital_card_id' => $digitalCard->id,
                 ]);
+
+                // Complete transaction to trigger events (points will be calculated based on admin settings)
+                $transaction->complete();
 
                 DB::commit();
             } catch (\Exception $e) {
@@ -229,11 +234,11 @@ class ScanController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => __('Digital card applied successfully.'),
+            'message' => __('Digital card applied successfully. Points will be calculated based on purchase amount.'),
             'data' => [
                 'card' => $digitalCard,
                 'original_amount' => $originalAmount,
-                'discount_amount' => $discountAmount,
+                'discount_amount' => 0,
                 'final_amount' => $finalAmount,
             ],
         ]);

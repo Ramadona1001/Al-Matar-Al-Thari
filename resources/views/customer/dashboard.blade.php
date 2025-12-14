@@ -6,28 +6,28 @@
 @php($currentLocale = app()->getLocale())
 @php($metricCards = [
     [
-        'label' => __('Total Coupons'),
+        'label' => __('total_coupons'),
         'value' => number_format($stats['total_coupons']),
         'icon' => 'fas fa-ticket',
         'gradient' => 'indigo',
         'trend' => trans(':count_redeemed', ['count' => number_format($stats['used_coupons'] ?? 0)]),
     ],
     [
-        'label' => __('Active Coupons'),
+        'label' => __('active_coupons'),
         'value' => number_format($stats['active_coupons']),
         'icon' => 'fas fa-bolt',
         'gradient' => 'pink',
         'trend' => trans('expires_soon', ['count' => number_format($stats['expiring_coupons'] ?? 0)]),
     ],
     [
-        'label' => __('Total Spent'),
+        'label' => __('total_spent'),
         'value' => '$' . number_format($stats['total_spent'], 2),
         'icon' => 'fas fa-wallet',
         'gradient' => 'emerald',
         'trend' => trans('this_month', ['amount' => number_format($stats['spent_month'] ?? 0, 2)]),
     ],
     [
-        'label' => __('Loyalty Points'),
+        'label' => __('loyalty_points'),
         'value' => number_format($stats['loyalty_points_balance']),
         'icon' => 'fas fa-star',
         'gradient' => 'teal',
@@ -170,7 +170,7 @@
                         <i class="fas fa-search me-2"></i>{{ __('browse_offers') }}
                     </a>
                     <a href="{{ route('customer.coupons.index') }}" class="btn btn-outline-primary btn-animated shadow-sm">
-                        <i class="fas fa-ticket me-2"></i>{{ __('My Coupons') }}
+                        <i class="fas fa-ticket me-2"></i>{{ __('my_coupons') }}
                     </a>
                     <a href="{{ route('customer.loyalty.index') }}" class="btn btn-outline-success btn-animated shadow-sm">
                         <i class="fas fa-star me-2"></i>{{ __('loyalty_wallet') }}
@@ -214,7 +214,7 @@
                             <div class="card border-0 shadow-sm h-100">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <h6 class="fw-semibold mb-0 text-gray-900">{{ is_array($offer->title) ? ($offer->title[$currentLocale] ?? $offer->title['en'] ?? '') : ($offer->title ?? __('Untitled Offer')) }}</h6>
+                                        <h6 class="fw-semibold mb-0 text-gray-900">{{ is_array($offer->title) ? ($offer->title[$currentLocale] ?? $offer->title['en'] ?? '') : ($offer->title ?? __('untitled_offer')) }}</h6>
                                         <span class="badge bg-primary-subtle text-primary rounded-pill px-2 py-1">{{ $offer->discount_percentage ?? 0 }}%</span>
                                     </div>
                                     <p class="text-muted small mb-2">{{ Str::limit(is_array($offer->description) ? ($offer->description[$currentLocale] ?? $offer->description['en'] ?? '') : ($offer->description ?? ''), 60) }}</p>
@@ -252,7 +252,7 @@
                         </div>
                         <div>
                             <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('your_coupons') }}</p>
-                            <h5 class="fw-bold mb-0 text-gray-900">{{ __('My Coupons') }}</h5>
+                            <h5 class="fw-bold mb-0 text-gray-900">{{ __('my_coupons') }}</h5>
                         </div>
                     </div>
                     <a href="{{ route('customer.coupons.index') }}" class="btn btn-sm btn-primary btn-animated shadow-sm">

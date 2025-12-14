@@ -61,15 +61,17 @@ class BannerController extends Controller
             'settings' => 'nullable|array',
         ]);
 
+        // Validate multilingual fields
         foreach ($locales as $locale) {
             $request->validate([
                 "title.{$locale}" => 'nullable|string|max:255',
-                "subtitle.{$locale}" => 'nullable|string',
+                "subtitle.{$locale}" => 'nullable|string|max:500',
                 "description.{$locale}" => 'nullable|string',
                 "button_text.{$locale}" => 'nullable|string|max:100',
             ]);
         }
 
+        // Handle file uploads
         if ($request->hasFile('image_path')) {
             $validated['image_path'] = $request->file('image_path')->store('banners', 'public');
         }
@@ -81,15 +83,18 @@ class BannerController extends Controller
         $validated['is_active'] = $request->has('is_active');
         $validated['order'] = $validated['order'] ?? 0;
 
+        // Create banner
         $banner = Banner::create($validated);
 
+        // Save translations for each locale
         foreach ($locales as $locale) {
-            $banner->translateOrNew($locale)->title = $request->input("title.{$locale}");
-            $banner->translateOrNew($locale)->subtitle = $request->input("subtitle.{$locale}");
-            $banner->translateOrNew($locale)->description = $request->input("description.{$locale}");
-            $banner->translateOrNew($locale)->button_text = $request->input("button_text.{$locale}");
+            $translation = $banner->translateOrNew($locale);
+            $translation->title = $request->input("title.{$locale}") ?? '';
+            $translation->subtitle = $request->input("subtitle.{$locale}") ?? '';
+            $translation->description = $request->input("description.{$locale}") ?? '';
+            $translation->button_text = $request->input("button_text.{$locale}") ?? '';
+            $translation->save();
         }
-        $banner->save();
 
         return redirect()->route('admin.banners.index')
             ->with('success', __('Banner created successfully.'));
@@ -115,15 +120,17 @@ class BannerController extends Controller
             'settings' => 'nullable|array',
         ]);
 
+        // Validate multilingual fields
         foreach ($locales as $locale) {
             $request->validate([
                 "title.{$locale}" => 'nullable|string|max:255',
-                "subtitle.{$locale}" => 'nullable|string',
+                "subtitle.{$locale}" => 'nullable|string|max:500',
                 "description.{$locale}" => 'nullable|string',
                 "button_text.{$locale}" => 'nullable|string|max:100',
             ]);
         }
 
+        // Handle file uploads
         if ($request->hasFile('image_path')) {
             if ($banner->image_path) {
                 Storage::disk('public')->delete($banner->image_path);
@@ -141,15 +148,18 @@ class BannerController extends Controller
         $validated['is_active'] = $request->has('is_active');
         $validated['order'] = $validated['order'] ?? $banner->order;
 
+        // Update banner
         $banner->update($validated);
 
+        // Update translations for each locale
         foreach ($locales as $locale) {
-            $banner->translateOrNew($locale)->title = $request->input("title.{$locale}");
-            $banner->translateOrNew($locale)->subtitle = $request->input("subtitle.{$locale}");
-            $banner->translateOrNew($locale)->description = $request->input("description.{$locale}");
-            $banner->translateOrNew($locale)->button_text = $request->input("button_text.{$locale}");
+            $translation = $banner->translateOrNew($locale);
+            $translation->title = $request->input("title.{$locale}") ?? '';
+            $translation->subtitle = $request->input("subtitle.{$locale}") ?? '';
+            $translation->description = $request->input("description.{$locale}") ?? '';
+            $translation->button_text = $request->input("button_text.{$locale}") ?? '';
+            $translation->save();
         }
-        $banner->save();
 
         return redirect()->route('admin.banners.index')
             ->with('success', __('Banner updated successfully.'));

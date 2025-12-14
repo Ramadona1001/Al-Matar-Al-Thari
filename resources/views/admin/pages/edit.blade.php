@@ -26,7 +26,7 @@
                 <label class="form-label fw-semibold">{{ __('Current Featured Image') }}</label>
                 <div>
                     <img src="{{ asset('storage/' . $page->featured_image) }}" 
-                         alt="{{ $page->title }}" 
+                         alt="{{ $page->translate('en')->title ?? __('Page') }}" 
                          class="img-thumbnail" 
                          style="max-height: 200px;">
                 </div>
@@ -52,17 +52,6 @@
                     @error('slug')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 
-                <div class="col-md-6">
-                    <label for="locale" class="form-label fw-semibold">{{ __('Language') }} <span class="text-danger">*</span></label>
-                    <select name="locale" id="locale" class="form-select @error('locale') is-invalid @enderror" required>
-                        @foreach($locales as $loc)
-                            <option value="{{ $loc }}" {{ old('locale', $page->locale) == $loc ? 'selected' : '' }}>
-                                {{ strtoupper($loc) }} - {{ config("localization.locale_names.{$loc}", $loc) }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('locale')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
                 
                 <!-- Multi-Language Content Tabs -->
                 <div class="col-12">
@@ -87,12 +76,13 @@
                     <div class="tab-content" id="contentTabsContent">
                         @foreach($locales as $index => $locale)
                             @php
-                                $titleValue = old("title.{$locale}", is_array($page->title) ? ($page->title[$locale] ?? '') : '');
-                                $contentValue = old("content.{$locale}", is_array($page->content) ? ($page->content[$locale] ?? '') : '');
-                                $excerptValue = old("excerpt.{$locale}", is_array($page->excerpt) ? ($page->excerpt[$locale] ?? '') : '');
-                                $metaTitleValue = old("meta_title.{$locale}", is_array($page->meta_title) ? ($page->meta_title[$locale] ?? '') : '');
-                                $metaDescValue = old("meta_description.{$locale}", is_array($page->meta_description) ? ($page->meta_description[$locale] ?? '') : '');
-                                $metaKeywordsValue = old("meta_keywords.{$locale}", is_array($page->meta_keywords) ? ($page->meta_keywords[$locale] ?? '') : '');
+                                $translation = $page->translate($locale);
+                                $titleValue = old("title.{$locale}", $translation->title ?? '');
+                                $contentValue = old("content.{$locale}", $translation->content ?? '');
+                                $excerptValue = old("excerpt.{$locale}", $translation->excerpt ?? '');
+                                $metaTitleValue = old("meta_title.{$locale}", $translation->meta_title ?? '');
+                                $metaDescValue = old("meta_description.{$locale}", $translation->meta_description ?? '');
+                                $metaKeywordsValue = old("meta_keywords.{$locale}", $translation->meta_keywords ?? '');
                             @endphp
                             <div class="tab-pane fade {{ $index === 0 ? 'show active' : '' }}" 
                                  id="content-{{ $locale }}" 
@@ -224,7 +214,8 @@
                     <div class="row g-3">
                         @foreach($locales as $locale)
                             @php
-                                $menuLabelValue = old("menu_label.{$locale}", is_array($page->menu_label) ? ($page->menu_label[$locale] ?? '') : '');
+                                $translation = $page->translate($locale);
+                                $menuLabelValue = old("menu_label.{$locale}", $translation->menu_label ?? '');
                             @endphp
                             <div class="col-md-6">
                                 <label for="menu_label_{{ $locale }}" class="form-label small">

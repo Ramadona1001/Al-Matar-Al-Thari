@@ -5,55 +5,55 @@
 @section('content')
 @php($metricCards = [
     [
-        'label' => __('Total Offers'),
+        'label' => __('total_offers'),
         'value' => number_format($stats['total_offers']),
         'icon' => 'fas fa-tags',
         'gradient' => 'indigo',
-        'trend' => __(':count active', ['count' => number_format($stats['active_offers'])]),
+        'trend' => __(':count_active', ['count' => number_format($stats['active_offers'])]),
     ],
     [
-        'label' => __('Total Coupons'),
+        'label' => __('total_coupons'),
         'value' => number_format($stats['total_coupons']),
         'icon' => 'fas fa-ticket-alt',
         'gradient' => 'pink',
-        'trend' => __(':count used', ['count' => number_format($stats['used_coupons'])]),
+        'trend' => __(':count_used', ['count' => number_format($stats['used_coupons'])]),
     ],
     [
-        'label' => __('Total Revenue'),
+        'label' => __('total_revenue'),
         'value' => '$' . number_format($stats['total_revenue'], 2),
         'icon' => 'fas fa-sack-dollar',
         'gradient' => 'emerald',
-        'trend' => __('Last 30 days: $:amount', ['amount' => number_format($stats['revenue_30_days'] ?? 0, 2)]),
+        'trend' => __('last_30_days_amount', ['amount' => number_format($stats['revenue_30_days'] ?? 0, 2)]),
     ],
     [
-        'label' => __('Total Customers'),
+        'label' => __('total_customers'),
         'value' => number_format($stats['total_customers']),
         'icon' => 'fas fa-users',
         'gradient' => 'teal',
-        'trend' => __('New this month: :count', ['count' => number_format($stats['new_customers_month'] ?? 0)]),
+        'trend' => __('new_this_month_count', ['count' => number_format($stats['new_customers_month'] ?? 0)]),
     ],
 ])
 @php($performanceMetrics = [
     [
-        'title' => __('Coupon Usage Rate'),
+        'title' => __('coupon_usage_rate'),
         'value' => $stats['total_coupons'] > 0 ? round(($stats['used_coupons'] / max($stats['total_coupons'], 1)) * 100, 1) : 0,
         'percent' => $stats['total_coupons'] > 0 ? round(($stats['used_coupons'] / max($stats['total_coupons'], 1)) * 100) : 0,
         'color' => 'bg-primary',
-        'hint' => __('Redemptions vs generated'),
+        'hint' => __('redemptions_vs_generated'),
     ],
     [
-        'title' => __('Offer Activation'),
+        'title' => __('offer_activation'),
         'value' => $stats['total_offers'] > 0 ? round(($stats['active_offers'] / max($stats['total_offers'], 1)) * 100, 1) : 0,
         'percent' => $stats['total_offers'] > 0 ? round(($stats['active_offers'] / max($stats['total_offers'], 1)) * 100) : 0,
         'color' => 'bg-success',
-        'hint' => __('Live offers today'),
+        'hint' => __('live_offers_today'),
     ],
     [
-        'title' => __('Monthly Revenue Target'),
+        'title' => __('monthly_revenue_target'),
         'value' => 75,
         'percent' => 75,
         'color' => 'bg-warning',
-        'hint' => __(':amount achieved', ['amount' => '$' . number_format($stats['monthly_revenue'] ?? 0, 2)]),
+        'hint' => __(':amount_achieved', ['amount' => '$' . number_format($stats['monthly_revenue'] ?? 0, 2)]),
     ],
 ])
 
@@ -61,26 +61,26 @@
     <div class="row g-4 align-items-center">
         <div class="col-xl-8">
             <div class="text-white">
-                <span class="badge rounded-pill bg-white text-primary bg-opacity-15 mb-3">{{ __('Merchant Snapshot') }}</span>
-                <h2 class="display-6 fw-semibold mb-3">{{ __('Track performance, launch new offers, and celebrate loyal customers') }}</h2>
-                <p class="text-white-50 mb-0">{{ __('See revenue trends, coupon activity, and loyalty highlights in one streamlined view. Create new offers faster with quick actions tailored for your business.') }}</p>
+                <span class="badge rounded-pill bg-white text-primary bg-opacity-15 mb-3">{{ __('merchant_snapshot') }}</span>
+                <h2 class="display-6 fw-semibold mb-3">{{ __('track_performance_launch_new_offers_and_celebrate_loyal_customers') }}</h2>
+                <p class="text-white-50 mb-0">{{ __('see_revenue_trends_coupon_activity_and_loyalty_highlights') }}</p>
             </div>
         </div>
         <div class="col-xl-4">
             <div class="glass-card p-4 h-100 text-white fade-in-up delay-1">
                 <div class="d-flex align-items-center justify-content-between mb-3">
                     <div>
-                        <p class="text-white-50 text-uppercase small fw-semibold mb-1">{{ __('Today\'s pulse') }}</p>
-                        <h4 class="fw-semibold mb-0">{{ __('Live Insights') }}</h4>
+                        <p class="text-white-50 text-uppercase small fw-semibold mb-1">{{ __('todays_pulse') }}</p>
+                        <h4 class="fw-semibold mb-0">{{ __('live_insights') }}</h4>
                     </div>
                     <div class="icon-circle bg-white bg-opacity-25 text-white">
                         <i class="fas fa-bullseye"></i>
                     </div>
                 </div>
                 <ul class="list-unstyled small text-white-50 mb-0 d-flex flex-column gap-2">
-                    <li class="d-flex justify-content-between"><span>{{ __('Offers expiring soon') }}</span><span class="fw-semibold text-white">{{ number_format($stats['offers_expiring'] ?? 0) }}</span></li>
-                    <li class="d-flex justify-content-between"><span>{{ __('Coupons redeemed today') }}</span><span class="fw-semibold text-white">{{ number_format($stats['coupons_redeemed_today'] ?? 0) }}</span></li>
-                    <li class="d-flex justify-content-between"><span>{{ __('Loyalty points issued') }}</span><span class="fw-semibold text-white">{{ number_format($stats['loyalty_points_issued_today'] ?? 0) }}</span></li>
+                    <li class="d-flex justify-content-between"><span>{{ __('offers_expiring_soon') }}</span><span class="fw-semibold text-white">{{ number_format($stats['offers_expiring'] ?? 0) }}</span></li>
+                    <li class="d-flex justify-content-between"><span>{{ __('coupons_redeemed_today') }}</span><span class="fw-semibold text-white">{{ number_format($stats['coupons_redeemed_today'] ?? 0) }}</span></li>
+                    <li class="d-flex justify-content-between"><span>{{ __('loyalty_points_issued') }}</span><span class="fw-semibold text-white">{{ number_format($stats['loyalty_points_issued_today'] ?? 0) }}</span></li>
                 </ul>
             </div>
         </div>
@@ -122,8 +122,8 @@
                                 <i class="fas fa-chart-line text-primary"></i>
                             </div>
                             <div>
-                                <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('Revenue Trend') }}</p>
-                                <h5 class="fw-bold mb-0 text-gray-900">{{ __('Revenue Performance') }}</h5>
+                                <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('revenue_trend') }}</p>
+                                <h5 class="fw-bold mb-0 text-gray-900">{{ __('revenue_performance') }}</h5>
                             </div>
                         </div>
                     </div>
@@ -151,8 +151,8 @@
                         <i class="fas fa-chart-pie text-success"></i>
                     </div>
                     <div>
-                        <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('Performance') }}</p>
-                        <h5 class="fw-bold mb-0 text-gray-900">{{ __('Metrics') }}</h5>
+                        <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('performance') }}</p>
+                        <h5 class="fw-bold mb-0 text-gray-900">{{ __('metrics') }}</h5>
                     </div>
                 </div>
             </div>
@@ -183,13 +183,13 @@
                 <hr class="my-4">
                 <div class="quick-actions d-grid gap-2">
                     <a href="{{ route('merchant.offers.create') }}" class="btn btn-primary btn-animated shadow-sm">
-                        <i class="fas fa-plus me-2"></i>{{ __('Create New Offer') }}
+                        <i class="fas fa-plus me-2"></i>{{ __('create_new_offer') }}
                     </a>
                     <a href="{{ route('merchant.coupons.create') }}" class="btn btn-outline-primary btn-animated shadow-sm">
-                        <i class="fas fa-ticket me-2"></i>{{ __('Generate Coupons') }}
+                        <i class="fas fa-ticket me-2"></i>{{ __('generate_coupons') }}
                     </a>
                     <a href="{{ route('merchant.members.index') }}" class="btn btn-outline-secondary btn-animated shadow-sm">
-                        <i class="fas fa-users me-2"></i>{{ __('View Customers') }}
+                        <i class="fas fa-users me-2"></i>{{ __('view_customers') }}
                     </a>
                 </div>
             </div>
@@ -209,12 +209,12 @@
                             <i class="fas fa-tags text-info"></i>
                         </div>
                         <div>
-                            <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('Offer Pipeline') }}</p>
-                            <h5 class="fw-bold mb-0 text-gray-900">{{ __('Recent Offers') }}</h5>
+                            <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('offer_pipeline') }}</p>
+                            <h5 class="fw-bold mb-0 text-gray-900">{{ __('recent_offers') }}</h5>
                         </div>
                     </div>
                     <a href="{{ route('merchant.offers.index') }}" class="btn btn-sm btn-primary btn-animated shadow-sm">
-                        <i class="fas fa-arrow-up-right-from-square me-2"></i>{{ __('View All') }}
+                        <i class="fas fa-arrow-up-right-from-square me-2"></i>{{ __('view_all') }}
                     </a>
                 </div>
             </div>
@@ -223,10 +223,10 @@
                     <table class="table table-modern align-middle mb-0" data-dt-init="false">
                         <thead class="table-header-modern">
                             <tr>
-                                <th class="fw-semibold text-gray-700">{{ __('Title') }}</th>
-                                <th class="fw-semibold text-gray-700">{{ __('Category') }}</th>
-                                <th class="fw-semibold text-gray-700">{{ __('Status') }}</th>
-                                <th class="fw-semibold text-gray-700 text-end">{{ __('Coupons') }}</th>
+                                <th class="fw-semibold text-gray-700">{{ __('title') }}</th>
+                                <th class="fw-semibold text-gray-700">{{ __('category') }}</th>
+                                <th class="fw-semibold text-gray-700">{{ __('status') }}</th>
+                                <th class="fw-semibold text-gray-700 text-end">{{ __('coupons') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -242,7 +242,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="badge bg-secondary rounded-pill px-2 py-1">{{ $offer->category->localized_name ?? __('N/A') }}</span>
+                                        <span class="badge bg-secondary rounded-pill px-2 py-1">{{ $offer->category->localized_name ?? __('n/a') }}</span>
                                     </td>
                                     <td>
                                         <span class="badge {{ $offer->status === 'active' ? 'bg-success-subtle text-success' : ($offer->status === 'inactive' ? 'bg-danger-subtle text-danger' : 'bg-warning-subtle text-warning') }} rounded-pill px-3 py-2 fw-semibold">
@@ -261,7 +261,7 @@
                                             <div class="empty-icon-wrapper mb-3">
                                                 <i class="fas fa-tags"></i>
                                             </div>
-                                            <p class="text-muted mb-0 fw-semibold">{{ __('No offers found') }}</p>
+                                            <p class="text-muted mb-0 fw-semibold">{{ __('no_offers_found') }}</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -283,12 +283,12 @@
                             <i class="fas fa-users text-warning"></i>
                         </div>
                         <div>
-                            <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('Customer Loyalty') }}</p>
-                            <h5 class="fw-bold mb-0 text-gray-900">{{ __('Top Customers') }}</h5>
+                            <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('customer_loyalty') }}</p>
+                            <h5 class="fw-bold mb-0 text-gray-900">{{ __('top_customers') }}</h5>
                         </div>
                     </div>
                     <a href="{{ route('merchant.members.index') }}" class="btn btn-sm btn-primary btn-animated shadow-sm">
-                        <i class="fas fa-arrow-up-right-from-square me-2"></i>{{ __('View All') }}
+                        <i class="fas fa-arrow-up-right-from-square me-2"></i>{{ __('view_all') }}
                     </a>
                 </div>
             </div>
@@ -297,9 +297,9 @@
                     <table class="table table-modern align-middle mb-0" data-dt-init="false">
                         <thead class="table-header-modern">
                             <tr>
-                                <th class="fw-semibold text-gray-700">{{ __('Customer') }}</th>
-                                <th class="fw-semibold text-gray-700">{{ __('Transactions') }}</th>
-                                <th class="fw-semibold text-gray-700 text-end">{{ __('Total Spent') }}</th>
+                                <th class="fw-semibold text-gray-700">{{ __('customer') }}</th>
+                                <th class="fw-semibold text-gray-700">{{ __('transactions') }}</th>
+                                <th class="fw-semibold text-gray-700 text-end">{{ __('total_spent') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -336,7 +336,7 @@
                                             <div class="empty-icon-wrapper mb-3">
                                                 <i class="fas fa-users-slash"></i>
                                             </div>
-                                            <p class="text-muted mb-0 fw-semibold">{{ __('No customers found') }}</p>
+                                            <p class="text-muted mb-0 fw-semibold">{{ __('no_customers_found') }}</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -360,8 +360,8 @@
                         <i class="fas fa-ticket-alt text-purple"></i>
                     </div>
                     <div>
-                        <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('Coupon Insights') }}</p>
-                        <h5 class="fw-bold mb-0 text-gray-900">{{ __('Coupon Usage Trend') }}</h5>
+                        <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('coupon_insights') }}</p>
+                        <h5 class="fw-bold mb-0 text-gray-900">{{ __('coupon_usage_trend') }}</h5>
                     </div>
                 </div>
             </div>
@@ -382,8 +382,8 @@
                         <i class="fas fa-star text-teal"></i>
                     </div>
                     <div>
-                        <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('Loyalty Summary') }}</p>
-                        <h5 class="fw-bold mb-0 text-gray-900">{{ __('Loyalty Points Overview') }}</h5>
+                        <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('loyalty_summary') }}</p>
+                        <h5 class="fw-bold mb-0 text-gray-900">{{ __('loyalty_points_overview') }}</h5>
                     </div>
                 </div>
             </div>
@@ -391,16 +391,16 @@
                 <div class="row text-center g-0 mb-4">
                     <div class="col-6">
                         <div class="modern-metric-item">
-                            <span class="metric-title fw-semibold text-gray-700 d-block mb-2">{{ __('Points Issued') }}</span>
+                            <span class="metric-title fw-semibold text-gray-700 d-block mb-2">{{ __('points_issued') }}</span>
                             <div class="value text-primary fw-bold" style="font-size: 1.75rem;">{{ number_format($stats['loyalty_points_issued']) }}</div>
                             <span class="text-muted small d-block mt-2">
-                                <i class="fas fa-circle text-primary" style="font-size:0.4rem"></i> {{ __('Lifetime') }}
+                                <i class="fas fa-circle text-primary" style="font-size:0.4rem"></i> {{ __('lifetime') }}
                             </span>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="modern-metric-item">
-                            <span class="metric-title fw-semibold text-gray-700 d-block mb-2">{{ __('Points Redeemed') }}</span>
+                            <span class="metric-title fw-semibold text-gray-700 d-block mb-2">{{ __('points_redeemed') }}</span>
                             <div class="value text-success fw-bold" style="font-size: 1.75rem;">{{ number_format($stats['loyalty_points_redeemed']) }}</div>
                             <span class="text-muted small d-block mt-2">
                                 <i class="fas fa-circle text-success" style="font-size:0.4rem"></i> {{ __('Lifetime') }}
@@ -411,7 +411,7 @@
                 <hr>
                 <div class="text-center">
                     <h3 class="fw-bold text-warning mb-1">{{ number_format($stats['loyalty_points_issued'] - $stats['loyalty_points_redeemed']) }}</h3>
-                    <p class="text-muted mb-0 fw-semibold">{{ __('Active Points') }}</p>
+                    <p class="text-muted mb-0 fw-semibold">{{ __('active_points') }}</p>
                 </div>
             </div>
         </div>
@@ -469,7 +469,7 @@
         data: {
             labels: {!! json_encode(array_keys($chartData['revenue_data']->toArray())) !!},
             datasets: [{
-                label: "{{ __('Revenue') }}",
+                label: "{{ __('revenue') }}",
                 data: {!! json_encode(array_values($chartData['revenue_data']->toArray())) !!},
                 borderColor: 'rgb(59, 130, 246)',
                 backgroundColor: 'rgba(59, 130, 246, 0.1)',
@@ -507,7 +507,7 @@
         data: {
             labels: {!! json_encode(array_keys($chartData['coupon_usage_data']->toArray())) !!},
             datasets: [{
-                label: "{{ __('Coupons Used') }}",
+                label: "{{ __('coupons_used') }}",
                 data: {!! json_encode(array_values($chartData['coupon_usage_data']->toArray())) !!},
                 backgroundColor: 'rgba(168, 85, 247, 0.8)',
                 borderColor: 'rgba(168, 85, 247, 1)',

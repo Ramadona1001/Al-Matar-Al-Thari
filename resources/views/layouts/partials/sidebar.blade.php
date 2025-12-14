@@ -17,13 +17,6 @@
             <i class="fas fa-network-wired me-2"></i>{{ __('Networks') }}
         </a>
     </li>
-    @if(Route::has('admin.companies.index'))
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('admin.companies.*') ? 'active' : '' }}" href="{{ route('admin.companies.index') }}">
-                <i class="fas fa-handshake me-2"></i>{{ __('Partners') }}
-            </a>
-        </li>
-    @endif
     @if(Route::has('admin.loyalty-cards.index'))
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.loyalty-cards.*') ? 'active' : '' }}" href="{{ route('admin.loyalty-cards.index') }}">
@@ -42,6 +35,13 @@
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.companies.*') ? 'active' : '' }}" href="{{ route('admin.companies.index') }}">
                 <i class="fas fa-building me-2"></i>{{ __('Companies') }}
+            </a>
+        </li>
+    @endif
+    @if(Route::has('admin.products.index'))
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}" href="{{ route('admin.products.index') }}">
+                <i class="fas fa-box me-2"></i>{{ __('Products') }}
             </a>
         </li>
     @endif
@@ -144,6 +144,13 @@
             </a>
         </li>
     @endif
+    @if(Route::has('admin.faqs.index'))
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}" href="{{ route('admin.faqs.index') }}">
+                <i class="fas fa-question-circle me-2"></i>{{ __('FAQs') }}
+            </a>
+        </li>
+    @endif
     <li class="nav-item mt-2 text-uppercase small  px-3" style=" color: var(--bs-blue) !important; padding: 10px; font-weight: bold; ">{{ __('Site Management') }}</li>
     <li class="nav-item">
         <a class="nav-link {{ request()->routeIs('admin.site.settings.*') ? 'active' : '' }}" href="{{ route('admin.site.settings.edit') }}">
@@ -193,6 +200,13 @@
             </a>
         </li>
     @endif
+    @if(Route::has('admin.tickets.index'))
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('admin.tickets.*') ? 'active' : '' }}" href="{{ route('admin.tickets.index') }}">
+                <i class="fas fa-ticket-alt me-2"></i>{{ __('Tickets') }}
+            </a>
+        </li>
+    @endif
 
 @elseif($userRole === 'manager')
     <!-- Manager Sidebar -->
@@ -223,7 +237,21 @@
         </a>
     </li>
     
-    <li class="nav-item mt-2 text-uppercase small  px-3" style=" color: var(--bs-blue) !important; padding: 10px; font-weight: bold; ">{{ __('Offers & Coupons') }}</li>
+    <li class="nav-item mt-2 text-uppercase small  px-3" style=" color: var(--bs-blue) !important; padding: 10px; font-weight: bold; ">{{ __('Products & Offers') }}</li>
+    @if(Route::has('merchant.products.index'))
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('merchant.products.*') ? 'active' : '' }}" href="{{ route('merchant.products.index') }}">
+                <i class="fas fa-box me-2"></i>{{ __('Products') }}
+            </a>
+        </li>
+    @endif
+    @if(Route::has('merchant.sales.index'))
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('merchant.sales.*') ? 'active' : '' }}" href="{{ route('merchant.sales.index') }}">
+                <i class="fas fa-cash-register me-2"></i>{{ __('Sales') }}
+            </a>
+        </li>
+    @endif
     @if(Route::has('merchant.offers.index'))
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('merchant.offers.*') ? 'active' : '' }}" href="{{ route('merchant.offers.index') }}">
@@ -357,6 +385,13 @@
     @endif
     
     <li class="nav-item mt-2 text-uppercase small  px-3" style=" color: var(--bs-blue) !important; padding: 10px; font-weight: bold; ">{{ __('Account') }}</li>
+    @if(Route::has('customer.tickets.index'))
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('customer.tickets.*') ? 'active' : '' }}" href="{{ route('customer.tickets.index') }}">
+                <i class="fas fa-headset me-2"></i>{{ __('Support Tickets') }}
+            </a>
+        </li>
+    @endif
     @if(Route::has('customer.profile.edit'))
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('customer.profile.*') ? 'active' : '' }}" href="{{ route('customer.profile.edit') }}">

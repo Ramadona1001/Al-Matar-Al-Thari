@@ -103,12 +103,12 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <label for="offer_id" class="form-label">{{ __('Offer') }}</label>
-                <select name="offer_id" id="offer_id" class="form-select">
-                    <option value="">{{ __('All Offers') }}</option>
-                    @foreach($offers as $offer)
-                        <option value="{{ $offer->id }}" {{ request('offer_id') == $offer->id ? 'selected' : '' }}>
-                            {{ $offer->localized_title }}
+                <label for="product_id" class="form-label">{{ __('Product') }}</label>
+                <select name="product_id" id="product_id" class="form-select">
+                    <option value="">{{ __('All Products') }}</option>
+                    @foreach($products as $product)
+                        <option value="{{ $product->id }}" {{ request('product_id') == $product->id ? 'selected' : '' }}>
+                            {{ $product->localized_name }}
                         </option>
                     @endforeach
                 </select>
@@ -140,7 +140,7 @@
                         <th>{{ __('Code') }}</th>
                         <th>{{ __('Type') }}</th>
                         <th>{{ __('Value') }}</th>
-                        <th>{{ __('Offer') }}</th>
+                        <th>{{ __('Product') }}</th>
                         <th>{{ __('Status') }}</th>
                         <th>{{ __('Usage') }}</th>
                         <th>{{ __('Valid Until') }}</th>
@@ -161,7 +161,7 @@
                                     {{ number_format($coupon->value, 2) }}
                                 @endif
                             </td>
-                            <td>{{ $coupon->offer->localized_title ?? '-' }}</td>
+                            <td>{{ $coupon->product->localized_name ?? '-' }}</td>
                             <td>
                                 @if($coupon->status == 'active')
                                     <span class="badge bg-success">{{ __('Active') }}</span>

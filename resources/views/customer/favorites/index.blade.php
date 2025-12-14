@@ -1,27 +1,27 @@
 @extends('layouts.dashboard')
 
-@section('title', __('Favorite Companies'))
+@section('title', __('favorite_companies'))
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active" aria-current="page">{{ __('Favorite Companies') }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ __('favorite_companies') }}</li>
 @endsection
 
 @section('content')
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">{{ __('My Favorite Companies') }}</h6>
+        <h6 class="m-0 font-weight-bold text-primary">{{ __('my_favorite_companies') }}</h6>
     </div>
     <div class="card-body">
         <!-- Search Filter -->
         <form method="GET" action="{{ route('customer.favorites.index') }}" class="row g-3 mb-4">
             <div class="col-md-10">
-                <label for="search" class="form-label">{{ __('Search Companies') }}</label>
+                <label for="search" class="form-label">{{ __('search_companies') }}</label>
                 <input type="text" name="search" id="search" class="form-control" 
-                       value="{{ request('search') }}" placeholder="{{ __('Search by company name...') }}">
+                       value="{{ request('search') }}" placeholder="{{ __('search_by_company_name') }}">
             </div>
             <div class="col-md-2 d-flex align-items-end">
                 <button type="submit" class="btn btn-primary w-100">
-                    <i class="fas fa-search me-2"></i>{{ __('Search') }}
+                    <i class="fas fa-search me-2"></i>{{ __('search') }}
                 </button>
             </div>
         </form>
@@ -56,13 +56,13 @@
                                 <div class="col-6">
                                     <div class="text-center p-2 bg-light rounded">
                                         <div class="fw-bold text-primary">{{ $company->transaction_count ?? 0 }}</div>
-                                        <small class="text-muted">{{ __('Transactions') }}</small>
+                                        <small class="text-muted">{{ __('transactions') }}</small>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="text-center p-2 bg-light rounded">
                                         <div class="fw-bold text-success">${{ number_format($company->total_spent ?? 0, 2) }}</div>
-                                        <small class="text-muted">{{ __('Total Spent') }}</small>
+                                        <small class="text-muted">{{ __('total_spent') }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -76,7 +76,7 @@
                             <div class="d-flex gap-2">
                                 @if($company->website)
                                     <a href="{{ $company->website }}" target="_blank" class="btn btn-sm btn-outline-primary flex-grow-1">
-                                        <i class="fas fa-globe me-1"></i>{{ __('Website') }}
+                                        <i class="fas fa-globe me-1"></i>{{ __('website') }}
                                     </a>
                                 @endif
                                 @if($company->phone)
@@ -92,7 +92,7 @@
                 <div class="col-12">
                     <div class="empty-state text-center py-5">
                         <i class="fas fa-heart fa-2x text-muted mb-3"></i>
-                        <p class="text-muted mb-0">{{ __('No favorite companies found. Start making transactions to see your favorite companies here!') }}</p>
+                        <p class="text-muted mb-0">{{ __('no_favorite_companies_found') }}</p>
                     </div>
                 </div>
             @endforelse

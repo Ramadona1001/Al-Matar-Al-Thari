@@ -12,6 +12,10 @@ Variables
     --bottom-nav-height: 70px;
 }
 
+.dropdown-item {
+    color: var(--bs-dropdown-link-color) !important;
+}
+
 /* ============================================
 Top Navbar (Desktop Only)
 ============================================ */

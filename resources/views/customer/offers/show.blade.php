@@ -60,7 +60,7 @@
                             </tr>
                             <tr>
                                 <th>{{ __('Company') }}:</th>
-                                <td>{{ $offer->company->name ?? '-' }}</td>
+                                <td>{{ $offer->company->localized_name ?? '-' }}</td>
                             </tr>
                             <tr>
                                 <th>{{ __('Category') }}:</th>

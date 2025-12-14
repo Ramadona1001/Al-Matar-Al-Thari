@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Offer extends Model
 {
@@ -34,6 +35,7 @@ class Offer extends Model
         'company_id',
         'category_id',
         'branch_id',
+        'product_id',
     ];
 
     /**
@@ -77,6 +79,14 @@ class Offer extends Model
     }
 
     /**
+     * Get the product that owns the offer.
+     */
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    /**
      * Get the coupons for the offer.
      */
     public function coupons(): HasMany
@@ -101,11 +111,11 @@ class Offer extends Model
     }
 
     /**
-     * Get the transactions for the offer.
+     * Get the transactions for the offer through coupons.
      */
-    public function transactions(): HasMany
+    public function transactions(): HasManyThrough
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasManyThrough(Transaction::class, Coupon::class, 'offer_id', 'coupon_id');
     }
 
     /**
@@ -140,7 +150,19 @@ class Offer extends Model
     public function getLocalizedTitleAttribute(): string
     {
         $locale = app()->getLocale();
-        return $this->title[$locale] ?? $this->title['en'] ?? '';
+        $rawTitle = $this->getRawOriginal('title');
+        
+        if (empty($rawTitle)) {
+            return '';
+        }
+        
+        $title = json_decode($rawTitle, true);
+        
+        if (!is_array($title) || empty($title)) {
+            return '';
+        }
+        
+        return $title[$locale] ?? $title['en'] ?? '';
     }
 
     /**
@@ -149,7 +171,19 @@ class Offer extends Model
     public function getLocalizedDescriptionAttribute(): string
     {
         $locale = app()->getLocale();
-        return $this->description[$locale] ?? $this->description['en'] ?? '';
+        $rawDescription = $this->getRawOriginal('description');
+        
+        if (empty($rawDescription)) {
+            return '';
+        }
+        
+        $description = json_decode($rawDescription, true);
+        
+        if (!is_array($description) || empty($description)) {
+            return '';
+        }
+        
+        return $description[$locale] ?? $description['en'] ?? '';
     }
 
     /**
@@ -185,8 +219,13 @@ class Offer extends Model
     {
         $this->attributes['title'] = is_array($value) ? json_encode($value) : $value;
         
-        if (empty($this->slug) && is_array($value)) {
-            $this->attributes['slug'] = \Str::slug($value['en'] ?? array_values($value)[0] ?? '');
+        // Only auto-generate slug if slug is not already set and title is an array
+        if (empty($this->attributes['slug'] ?? null) && is_array($value)) {
+            $titleString = $value['en'] ?? array_values($value)[0] ?? '';
+            // Ensure we have a string before passing to Str::slug()
+            if (is_string($titleString) && !empty($titleString)) {
+                $this->attributes['slug'] = \Str::slug($titleString);
+            }
         }
     }
 

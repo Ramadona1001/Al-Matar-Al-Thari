@@ -30,6 +30,7 @@ class Coupon extends Model
         'status',
         'is_public',
         'offer_id',
+        'product_id',
         'company_id',
         'user_id',
     ];
@@ -53,6 +54,14 @@ class Coupon extends Model
     public function offer(): BelongsTo
     {
         return $this->belongsTo(Offer::class);
+    }
+
+    /**
+     * Get the product that owns the coupon.
+     */
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
     }
 
     /**

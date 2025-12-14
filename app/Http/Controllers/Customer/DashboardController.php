@@ -231,9 +231,57 @@ class DashboardController extends Controller
         ];
     }
 
+    public function getStatistics()
+    {
+        return response()->json($this->getDashboardStats());
+    }
+
+    public function getChartDataPublic()
+    {
+        $chartData = $this->getChartData();
+        return response()->json($chartData);
+    }
+
+    public function getAvailableOffersPublic()
+    {
+        $offers = $this->getAvailableOffers();
+        return response()->json($offers);
+    }
+
+    public function getMyCouponsPublic()
+    {
+        $coupons = $this->getMyCoupons();
+        return response()->json($coupons);
+    }
+
+    public function getRecentTransactionsPublic()
+    {
+        $transactions = $this->getRecentTransactions();
+        return response()->json($transactions);
+    }
+
+    public function getLoyaltyPointsPublic()
+    {
+        $loyaltyPoints = $this->getLoyaltyPoints();
+        return response()->json($loyaltyPoints);
+    }
+
+    public function getFavoriteCompaniesPublic()
+    {
+        $companies = $this->getFavoriteCompanies();
+        return response()->json($companies);
+    }
+
     public function getNotifications()
     {
-        return auth()->user()->notifications()->latest()->limit(5)->get();
+        $notifications = auth()->user()->notifications()->latest()->limit(5)->get();
+        return response()->json($notifications);
+    }
+
+    public function markNotificationsAsRead(Request $request)
+    {
+        auth()->user()->unreadNotifications->markAsRead();
+        return response()->json(['success' => true]);
     }
 
     public function markNotificationAsRead($notificationId)

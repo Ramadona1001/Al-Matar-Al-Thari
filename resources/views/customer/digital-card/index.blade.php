@@ -9,7 +9,10 @@
 @section('actions')
     <div class="btn-group" role="group">
         <a href="{{ route('customer.digital-card.download-qr') }}" class="btn btn-primary">
-            <i class="fas fa-download me-2"></i>{{ __('Download QR Code') }}
+            <i class="fas fa-qrcode me-2"></i>{{ __('Download QR Code') }}
+        </a>
+        <a href="{{ route('customer.digital-card.download') }}" class="btn btn-success">
+            <i class="fas fa-download me-2"></i>{{ __('Download Card as PNG') }}
         </a>
     </div>
 @endsection
@@ -23,32 +26,15 @@
             </div>
             <div class="card-body text-center">
                 <div class="mb-4">
-                    @if($digitalCard->type == 'silver')
-                        <div class="card-type silver p-4 rounded" style="background: linear-gradient(135deg, #C0C0C0 0%, #808080 100%); color: white;">
-                            <i class="fas fa-credit-card fa-4x mb-3"></i>
-                            <h3 class="text-uppercase">{{ __('Silver Card') }}</h3>
-                        </div>
-                    @elseif($digitalCard->type == 'gold')
-                        <div class="card-type gold p-4 rounded" style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: white;">
-                            <i class="fas fa-credit-card fa-4x mb-3"></i>
-                            <h3 class="text-uppercase">{{ __('Gold Card') }}</h3>
-                        </div>
-                    @else
-                        <div class="card-type platinum p-4 rounded" style="background: linear-gradient(135deg, #E5E4E2 0%, #C0C0C0 100%); color: white;">
-                            <i class="fas fa-credit-card fa-4x mb-3"></i>
-                            <h3 class="text-uppercase">{{ __('Platinum Card') }}</h3>
-                        </div>
-                    @endif
+                    <div class="card-type p-4 rounded" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white;">
+                        <i class="fas fa-credit-card fa-4x mb-3"></i>
+                        <h3 class="text-uppercase">{{ __('Digital Card') }}</h3>
+                    </div>
                 </div>
 
                 <div class="mb-3">
                     <strong>{{ __('Card Number') }}:</strong><br>
                     <h4 class="mt-2">{{ $digitalCard->card_number }}</h4>
-                </div>
-
-                <div class="mb-3">
-                    <strong>{{ __('Discount Percentage') }}:</strong><br>
-                    <h4 class="mt-2 text-primary">{{ $digitalCard->discount_percentage }}%</h4>
                 </div>
 
                 <div class="mb-3">
@@ -88,32 +74,14 @@
                 
                 <ul class="list-unstyled">
                     <li class="mb-3">
-                        <i class="fas fa-check-circle text-success me-2"></i>
-                        <strong>{{ __('Discount') }}:</strong> {{ $benefits['discount_percentage'] }}% {{ __('on all purchases') }}
+                        <i class="fas fa-star text-warning me-2"></i>
+                        <strong>{{ __('Loyalty Points') }}:</strong> {{ $benefits['description'] }}
                     </li>
                     <li class="mb-3">
-                        <i class="fas fa-star text-warning me-2"></i>
-                        <strong>{{ __('Loyalty Points') }}:</strong> {{ ($benefits['loyalty_points_multiplier'] - 1) * 100 }}% {{ __('bonus points') }}
+                        <i class="fas fa-info-circle text-info me-2"></i>
+                        {{ $benefits['points_system'] }}
                     </li>
                 </ul>
-
-                <hr>
-
-                <h6 class="mb-3">{{ __('Upgrade Card') }}</h6>
-                <form method="POST" action="{{ route('customer.digital-card.upgrade') }}">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="card_type" class="form-label">{{ __('Card Type') }}</label>
-                        <select class="form-select" id="card_type" name="card_type" required>
-                            <option value="silver" {{ $digitalCard->type == 'silver' ? 'selected' : '' }}>{{ __('Silver') }} (5% discount)</option>
-                            <option value="gold" {{ $digitalCard->type == 'gold' ? 'selected' : '' }}>{{ __('Gold') }} (10% discount)</option>
-                            <option value="platinum" {{ $digitalCard->type == 'platinum' ? 'selected' : '' }}>{{ __('Platinum') }} (15% discount)</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-warning">
-                        <i class="fas fa-arrow-up me-2"></i>{{ __('Upgrade Card') }}
-                    </button>
-                </form>
             </div>
         </div>
 
@@ -123,11 +91,10 @@
             </div>
             <div class="card-body">
                 <ol>
-                    <li class="mb-2">{{ __('Download your QR code or show it on your phone') }}</li>
+                    <li class="mb-2">{{ __('Download your digital card as PNG or QR code') }}</li>
                     <li class="mb-2">{{ __('Visit a participating store') }}</li>
-                    <li class="mb-2">{{ __('Present your QR code at checkout') }}</li>
-                    <li class="mb-2">{{ __('Enjoy your discount automatically applied') }}</li>
-                    <li>{{ __('Earn loyalty points on every purchase') }}</li>
+                    <li class="mb-2">{{ __('Present your card or QR code at checkout') }}</li>
+                    <li>{{ __('Earn loyalty points on every purchase based on admin settings') }}</li>
                 </ol>
             </div>
         </div>

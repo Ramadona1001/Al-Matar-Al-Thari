@@ -41,12 +41,9 @@ class DashboardController extends Controller
         return [
             'total_offers' => Offer::where('company_id', $company->id)->count(),
             'active_offers' => Offer::where('company_id', $company->id)->where('status', 'active')->count(),
-            'total_coupons' => Coupon::whereHas('offer', function($query) use ($company) {
-                $query->where('company_id', $company->id);
-            })->count(),
-            'used_coupons' => Coupon::whereHas('offer', function($query) use ($company) {
-                $query->where('company_id', $company->id);
-            })->whereHas('couponUsages')->count(),
+            'total_coupons' => Coupon::where('company_id', $company->id)->count(),
+            'used_coupons' => Coupon::where('company_id', $company->id)
+                ->whereHas('couponUsages')->count(),
             'total_transactions' => Transaction::where('company_id', $company->id)->count(),
             'total_revenue' => Transaction::where('company_id', $company->id)
                 ->where('status', 'completed')
@@ -78,10 +75,8 @@ class DashboardController extends Controller
 
     private function getRecentCoupons($company, $limit = 5)
     {
-        return Coupon::whereHas('offer', function($query) use ($company) {
-                $query->where('company_id', $company->id);
-            })
-            ->with(['offer', 'usage'])
+        return Coupon::where('company_id', $company->id)
+            ->with(['product', 'couponUsages'])
             ->latest()
             ->limit($limit)
             ->get();
@@ -113,9 +108,7 @@ class DashboardController extends Controller
             DB::raw('DATE(created_at) as date'),
             DB::raw('COUNT(*) as count')
         )
-        ->whereHas('offer', function($query) use ($company) {
-            $query->where('company_id', $company->id);
-        })
+        ->where('company_id', $company->id)
         ->where('created_at', '>=', now()->subDays(30))
         ->groupBy('date')
         ->orderBy('date')
@@ -139,9 +132,45 @@ class DashboardController extends Controller
             ->get();
     }
 
+    public function getStatistics()
+    {
+        $company = auth()->user()->company;
+        if (!$company) {
+            return response()->json(['error' => 'Company not found'], 404);
+        }
+        return response()->json($this->getDashboardStats($company));
+    }
+
+    public function getChartDataPublic()
+    {
+        $company = auth()->user()->company;
+        if (!$company) {
+            return response()->json(['error' => 'Company not found'], 404);
+        }
+        $chartData = $this->getChartData($company);
+        return response()->json($chartData);
+    }
+
+    public function getTopCustomersPublic()
+    {
+        $company = auth()->user()->company;
+        if (!$company) {
+            return response()->json(['error' => 'Company not found'], 404);
+        }
+        $topCustomers = $this->getTopCustomers($company);
+        return response()->json($topCustomers);
+    }
+
     public function getNotifications()
     {
-        return auth()->user()->notifications()->latest()->limit(5)->get();
+        $notifications = auth()->user()->notifications()->latest()->limit(5)->get();
+        return response()->json($notifications);
+    }
+
+    public function markNotificationsAsRead(Request $request)
+    {
+        auth()->user()->unreadNotifications->markAsRead();
+        return response()->json(['success' => true]);
     }
 
     public function markNotificationAsRead($notificationId)

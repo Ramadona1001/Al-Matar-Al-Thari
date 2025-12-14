@@ -10,6 +10,7 @@ class PointsSetting extends Model
         'earn_rate',
         'redeem_rate',
         'referral_bonus_points',
+        'affiliate_settlement_days',
         'auto_approve_redemptions',
         'updated_by',
     ];
@@ -18,6 +19,7 @@ class PointsSetting extends Model
         'earn_rate' => 'decimal:2',
         'redeem_rate' => 'decimal:2',
         'referral_bonus_points' => 'integer',
+        'affiliate_settlement_days' => 'integer',
         'auto_approve_redemptions' => 'boolean',
     ];
 

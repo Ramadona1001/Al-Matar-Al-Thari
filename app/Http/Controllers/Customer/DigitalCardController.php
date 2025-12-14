@@ -94,11 +94,8 @@ class DigitalCardController extends Controller
      */
     private function createDigitalCard($user)
     {
-        // Determine card type based on user activity or default to silver
-        $cardType = 'silver';
-        
-        // You can add logic here to determine card type based on user activity
-        // For example: if ($user->loyalty_points_balance > 1000) { $cardType = 'gold'; }
+        // Default card type - no discount, only points system
+        $cardType = 'standard';
         
         $cardNumber = DigitalCard::generateUniqueCardNumber($cardType);
         
@@ -109,7 +106,6 @@ class DigitalCardController extends Controller
             'card_number' => $cardNumber,
             'qr_code' => $qrCodePath,
             'type' => $cardType,
-            'discount_percentage' => $this->getDiscountPercentage($cardType),
             'loyalty_points' => 0,
             'expiry_date' => now()->addYears(2), // Card valid for 2 years
             'status' => 'active',
@@ -120,23 +116,9 @@ class DigitalCardController extends Controller
     }
 
     /**
-     * Get discount percentage based on card type
+     * Download digital card as PNG image
      */
-    private function getDiscountPercentage(string $type): float
-    {
-        $discounts = [
-            'silver' => 5.00,
-            'gold' => 10.00,
-            'platinum' => 15.00,
-        ];
-
-        return $discounts[$type] ?? 5.00;
-    }
-
-    /**
-     * Upgrade card type
-     */
-    public function upgrade(Request $request)
+    public function downloadCard()
     {
         $user = auth()->user();
         $digitalCard = $user->digitalCard;
@@ -146,20 +128,75 @@ class DigitalCardController extends Controller
                 ->with('error', __('Digital card not found.'));
         }
 
-        $validated = $request->validate([
-            'card_type' => 'required|in:silver,gold,platinum',
-        ]);
+        // Generate card image as PNG
+        $image = $this->generateCardImage($digitalCard);
+        
+        return response($image)
+            ->header('Content-Type', 'image/png')
+            ->header('Content-Disposition', 'attachment; filename="digital-card-' . $digitalCard->card_number . '.png"');
+    }
 
-        // Check if upgrade is allowed (user must have higher loyalty points, etc.)
-        // This is a simple implementation - you can add more complex logic
-
-        $digitalCard->update([
-            'type' => $validated['card_type'],
-            'discount_percentage' => $this->getDiscountPercentage($validated['card_type']),
-        ]);
-
-        return redirect()->route('customer.digital-card.index')
-            ->with('success', __('Card upgraded successfully.'));
+    /**
+     * Generate digital card image as PNG
+     */
+    private function generateCardImage($digitalCard)
+    {
+        $user = $digitalCard->user;
+        $width = 800;
+        $height = 500;
+        
+        // Create image
+        $image = imagecreatetruecolor($width, $height);
+        
+        // Define colors
+        $white = imagecolorallocate($image, 255, 255, 255);
+        $black = imagecolorallocate($image, 0, 0, 0);
+        $gray = imagecolorallocate($image, 128, 128, 128);
+        $primary = imagecolorallocate($image, 59, 130, 246); // Blue
+        
+        // Fill background
+        imagefilledrectangle($image, 0, 0, $width, $height, $white);
+        
+        // Add border
+        imagerectangle($image, 10, 10, $width - 10, $height - 10, $gray);
+        
+        // Add card number
+        $fontSize = 5;
+        $textX = 50;
+        $textY = 150;
+        imagestring($image, $fontSize, $textX, $textY, 'Card Number: ' . $digitalCard->card_number, $black);
+        
+        // Add user name
+        $userName = $user->full_name ?? $user->name;
+        $textY += 50;
+        imagestring($image, $fontSize, $textX, $textY, 'Name: ' . $userName, $black);
+        
+        // Add expiry date
+        $textY += 50;
+        imagestring($image, $fontSize, $textX, $textY, 'Expires: ' . $digitalCard->expiry_date->format('Y-m-d'), $black);
+        
+        // Add QR code if exists
+        if ($digitalCard->qr_code) {
+            $qrPath = storage_path('app/public/' . str_replace('/storage/', '', $digitalCard->qr_code));
+            if (file_exists($qrPath)) {
+                $qrImage = imagecreatefrompng($qrPath);
+                if ($qrImage) {
+                    $qrSize = 200;
+                    imagecopyresampled($image, $qrImage, $width - $qrSize - 50, $height - $qrSize - 50, 0, 0, $qrSize, $qrSize, imagesx($qrImage), imagesy($qrImage));
+                    imagedestroy($qrImage);
+                }
+            }
+        }
+        
+        // Output as PNG
+        ob_start();
+        imagepng($image);
+        $imageData = ob_get_contents();
+        ob_end_clean();
+        
+        imagedestroy($image);
+        
+        return $imageData;
     }
 }
 

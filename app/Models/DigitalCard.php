@@ -25,6 +25,10 @@ class DigitalCard extends Model
         'expiry_date',
         'status',
         'user_id',
+        'is_frozen',
+        'frozen_reason',
+        'frozen_by',
+        'frozen_at',
     ];
 
     /**
@@ -36,6 +40,8 @@ class DigitalCard extends Model
         'discount_percentage' => 'decimal:2',
         'loyalty_points' => 'integer',
         'expiry_date' => 'date',
+        'is_frozen' => 'boolean',
+        'frozen_at' => 'datetime',
     ];
 
     /**
@@ -79,11 +85,27 @@ class DigitalCard extends Model
     }
 
     /**
+     * Check if card is frozen.
+     */
+    public function isFrozen(): bool
+    {
+        return $this->is_frozen === true;
+    }
+
+    /**
+     * Get the admin who froze the card.
+     */
+    public function frozenBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'frozen_by');
+    }
+
+    /**
      * Generate unique card number.
      */
-    public static function generateUniqueCardNumber(string $type): string
+    public static function generateUniqueCardNumber(string $type = 'standard'): string
     {
-        $prefix = strtoupper(substr($type, 0, 1));
+        $prefix = 'DC'; // Digital Card prefix
         
         do {
             $number = $prefix . str_pad(mt_rand(1, 999999999), 9, '0', STR_PAD_LEFT);
@@ -102,41 +124,14 @@ class DigitalCard extends Model
 
     /**
      * Get card benefits based on type.
+     * Note: Cards no longer have discounts, only points system as configured by admin.
      */
     public function getBenefits(): array
     {
-        $benefits = [
-            'silver' => [
-                'discount_percentage' => 5,
-                'loyalty_points_multiplier' => 1.0,
-                'description' => '5% discount on all purchases',
-            ],
-            'gold' => [
-                'discount_percentage' => 10,
-                'loyalty_points_multiplier' => 1.5,
-                'description' => '10% discount on all purchases + 50% bonus loyalty points',
-            ],
-            'platinum' => [
-                'discount_percentage' => 15,
-                'loyalty_points_multiplier' => 2.0,
-                'description' => '15% discount on all purchases + 100% bonus loyalty points',
-            ],
+        return [
+            'description' => __('Earn loyalty points on every purchase'),
+            'points_system' => __('Points are calculated based on admin settings'),
         ];
-
-        return $benefits[$this->type] ?? $benefits['silver'];
-    }
-
-    /**
-     * Calculate discount for a given amount.
-     */
-    public function calculateDiscount(float $amount): float
-    {
-        if (!$this->isActive()) {
-            return 0;
-        }
-
-        $benefits = $this->getBenefits();
-        return ($amount * $benefits['discount_percentage']) / 100;
     }
 
     /**

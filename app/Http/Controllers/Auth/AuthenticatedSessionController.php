@@ -29,11 +29,26 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // Redirect to localized role-based dashboard
+        $user = Auth::user();
         $locale = session(config('localization.locale_session_key'))
             ?? $request->route('locale')
             ?? app()->getLocale()
             ?? config('localization.default_locale', 'en');
+
+        // Check if email is verified
+        if (!$user->hasVerifiedEmail()) {
+            return redirect()->route('verification.notice', ['locale' => $locale])
+                ->with('status', __('Please verify your email address before accessing your account.'));
+        }
+
+        // Redirect to localized role-based dashboard based on user type
+        if ($user->hasRole('super-admin') || $user->hasRole('admin')) {
+            return redirect()->route('admin.dashboard', ['locale' => $locale]);
+        } elseif ($user->hasRole('merchant')) {
+            return redirect()->route('merchant.dashboard', ['locale' => $locale]);
+        } elseif ($user->hasRole('customer')) {
+            return redirect()->route('customer.dashboard', ['locale' => $locale]);
+        }
 
         return redirect()->intended(route('dashboard', ['locale' => $locale]));
     }

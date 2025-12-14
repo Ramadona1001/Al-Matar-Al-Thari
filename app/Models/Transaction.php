@@ -18,6 +18,7 @@ class Transaction extends Model
     protected $fillable = [
         'transaction_id',
         'amount',
+        'original_price',
         'discount_amount',
         'final_amount',
         'loyalty_points_earned',
@@ -32,6 +33,7 @@ class Transaction extends Model
         'branch_id',
         'coupon_id',
         'digital_card_id',
+        'product_id',
     ];
 
     /**
@@ -41,6 +43,7 @@ class Transaction extends Model
      */
     protected $casts = [
         'amount' => 'decimal:2',
+        'original_price' => 'decimal:2',
         'discount_amount' => 'decimal:2',
         'final_amount' => 'decimal:2',
         'loyalty_points_earned' => 'integer',
@@ -85,6 +88,14 @@ class Transaction extends Model
     public function digitalCard(): BelongsTo
     {
         return $this->belongsTo(DigitalCard::class);
+    }
+
+    /**
+     * Get the product that was purchased.
+     */
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
     }
 
     /**
@@ -136,26 +147,29 @@ class Transaction extends Model
      */
     public function complete(): bool
     {
+        // Allow completing even if already completed (for event triggering)
+        if ($this->status === 'completed') {
+            // Just trigger the event if already completed
+            event(new \App\Events\OrderCompleted($this));
+            return true;
+        }
+
         if ($this->status !== 'pending') {
             return false;
         }
 
+        // Set original_price if not set (for backward compatibility)
+        if (!$this->original_price) {
+            $this->original_price = $this->amount;
+        }
+
         $this->update([
             'status' => 'completed',
+            'original_price' => $this->original_price ?? $this->amount,
         ]);
 
-        // Award loyalty points if applicable
-        if ($this->loyalty_points_earned > 0) {
-            LoyaltyPoint::create([
-                'user_id' => $this->user_id,
-                'company_id' => $this->company_id,
-                'points' => $this->loyalty_points_earned,
-                'type' => 'earned',
-                'source_type' => self::class,
-                'source_id' => $this->id,
-                'description' => 'Points earned from transaction ' . $this->transaction_id,
-            ]);
-        }
+        // Dispatch event for automated points calculation
+        event(new \App\Events\OrderCompleted($this));
 
         return true;
     }

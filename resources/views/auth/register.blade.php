@@ -1,4 +1,17 @@
-@extends('layouts.new-design')
+@extends('layouts.auth')
+
+@php
+    try {
+        $site = \App\Models\SiteSetting::getSettings();
+    } catch (\Exception $e) {
+        $site = new \App\Models\SiteSetting();
+    }
+
+    $currentLocale = app()->getLocale();
+    $brandName = is_array($site->brand_name ?? null)
+        ? ($site->brand_name[$currentLocale] ?? reset($site->brand_name ?? []))
+        : ($site->brand_name ?? config('app.name'));
+@endphp
 
 @section('meta_title', __('Register'))
 @section('meta_description', __('Create your account'))
@@ -15,9 +28,15 @@
                 <!-- Left Side - Branding (Desktop Only) -->
                 <div class="auth-branding d-none d-lg-flex">
                     <div class="branding-content">
-                        <div class="brand-logo">
-                            <i class="bi bi-cloud-rain"></i>
-                        </div>
+                        <a href="{{ route('public.home', ['locale' => app()->getLocale()]) }}" class="brand-logo-link">
+                            <div class="brand-logo">
+                                @if(!empty($site->logo_path))
+                                    <img src="{{ asset('storage/'.$site->logo_path) }}" alt="{{ $brandName }}" >
+                                @else
+                                    <i class="bi bi-cloud-rain"></i>
+                                @endif
+                            </div>
+                        </a>
                         <h1 class="brand-title">{{ __('Join Us Today') }}</h1>
                         <p class="brand-subtitle">{{ __('Create your account and start enjoying exclusive benefits and rewards') }}</p>
                         <div class="brand-features">
@@ -89,7 +108,7 @@
                         </div>
 
                         <!-- Register Form -->
-                        <form method="POST" action="{{ route('register', ['locale' => app()->getLocale()]) }}" class="auth-form" id="registerForm">
+                        <form method="POST" action="{{ route('register', ['locale' => app()->getLocale()]) }}" class="auth-form" id="registerForm" enctype="multipart/form-data">
                             @csrf
                             
                             <!-- Hidden user_type field -->
@@ -334,6 +353,32 @@
                                         </div>
                                     @enderror
                                 </div>
+
+                                <div class="form-field">
+                                    <label for="agreement" class="field-label">
+                                        <i class="fas fa-file-contract field-label-icon"></i>
+                                        {{ __('Agreement Contract') }}
+                                        <span class="field-required">*</span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <input type="file" 
+                                               id="agreement" 
+                                               name="agreement" 
+                                               class="form-input @error('agreement') is-invalid @enderror" 
+                                               accept=".pdf,.doc,.docx"
+                                               required>
+                                        <span class="input-focus-line"></span>
+                                        <small class="form-text text-muted d-block mt-1">
+                                            {{ __('Upload the agreement contract file (PDF, DOC, DOCX, Max: 10MB)') }}
+                                        </small>
+                                    </div>
+                                    @error('agreement')
+                                        <div class="field-error">
+                                            <i class="fas fa-exclamation-circle"></i>
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
                             </div>
 
                             <!-- Password Fields (Common) -->
@@ -474,6 +519,7 @@
             const merchantNameField = document.getElementById('merchant_name');
             const merchantEmailField = document.getElementById('merchant_email');
             const merchantPhoneField = document.getElementById('merchant_phone');
+            const agreementField = document.getElementById('agreement');
 
             function toggleFields() {
                 if (customerRadio.checked) {
@@ -487,6 +533,7 @@
                     merchantNameField?.removeAttribute('required');
                     merchantEmailField?.removeAttribute('required');
                     merchantPhoneField?.removeAttribute('required');
+                    agreementField?.removeAttribute('required');
                 } else if (merchantRadio.checked) {
                     customerFields.style.display = 'none';
                     merchantFields.style.display = 'block';
@@ -498,6 +545,7 @@
                     merchantNameField?.setAttribute('required', 'required');
                     merchantEmailField?.setAttribute('required', 'required');
                     merchantPhoneField?.setAttribute('required', 'required');
+                    agreementField?.setAttribute('required', 'required');
                 }
             }
 

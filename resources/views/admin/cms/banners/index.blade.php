@@ -96,11 +96,18 @@
                 </thead>
                 <tbody>
                     @foreach($banners as $banner)
+                        @php
+                            $currentTranslation = $banner->translate(app()->getLocale());
+                            $enTranslation = $banner->translate('en');
+                            $arTranslation = $banner->translate('ar');
+                            $title = ($currentTranslation && $currentTranslation->title) ? $currentTranslation->title : (($enTranslation && $enTranslation->title) ? $enTranslation->title : __('No Title'));
+                            $subtitle = ($currentTranslation && $currentTranslation->subtitle) ? $currentTranslation->subtitle : (($enTranslation && $enTranslation->subtitle) ? $enTranslation->subtitle : null);
+                        @endphp
                         <tr class="table-row-modern">
                             <td>
                                 @if($banner->image_path)
                                     <img src="{{ asset('storage/' . $banner->image_path) }}" 
-                                         alt="{{ ($banner->translate(app()->getLocale()) && $banner->translate(app()->getLocale())->title) ? $banner->translate(app()->getLocale())->title : (($banner->translate('en') && $banner->translate('en')->title) ? $banner->translate('en')->title : __('Banner')) }}" 
+                                         alt="{{ $title }}" 
                                          class="rounded" 
                                          style="width: 80px; height: 50px; object-fit: cover;">
                                 @else
@@ -110,18 +117,20 @@
                                 @endif
                             </td>
                             <td>
-                                <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1 fw-semibold">
-                                    <i class="fas fa-globe me-1"></i>
-                                    {{ strtoupper($banner->locale ?? 'en') }}
-                                </span>
+                                <div class="d-flex flex-column gap-1">
+                                    @if($enTranslation && $enTranslation->title)
+                                        <span class="badge bg-primary-subtle text-primary rounded-pill px-2 py-1 fw-semibold small">
+                                            <i class="fas fa-globe me-1"></i>EN
+                                        </span>
+                                    @endif
+                                    @if($arTranslation && $arTranslation->title)
+                                        <span class="badge bg-success-subtle text-success rounded-pill px-2 py-1 fw-semibold small">
+                                            <i class="fas fa-globe me-1"></i>AR
+                                        </span>
+                                    @endif
+                                </div>
                             </td>
                             <td>
-                                @php
-                                    $currentTranslation = $banner->translate(app()->getLocale());
-                                    $enTranslation = $banner->translate('en');
-                                    $title = ($currentTranslation && $currentTranslation->title) ? $currentTranslation->title : (($enTranslation && $enTranslation->title) ? $enTranslation->title : __('No Title'));
-                                    $subtitle = ($currentTranslation && $currentTranslation->subtitle) ? $currentTranslation->subtitle : (($enTranslation && $enTranslation->subtitle) ? $enTranslation->subtitle : null);
-                                @endphp
                                 <div class="fw-semibold text-gray-900">{{ $title }}</div>
                                 @if($subtitle)
                                     <small class="text-muted d-block mt-1">{{ \Illuminate\Support\Str::limit($subtitle, 50) }}</small>

@@ -35,6 +35,10 @@ html {
   scroll-behavior: smooth;
 }
 
+.dropdown-item {
+    color: var(--bs-dropdown-link-color) !important;
+}
+
 /* Navbar Styles */
 .navbar {
   background: var(--white) !important;

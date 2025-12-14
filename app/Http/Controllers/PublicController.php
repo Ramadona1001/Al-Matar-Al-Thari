@@ -417,6 +417,7 @@ class PublicController extends Controller
     {
         $companies = class_exists(Company::class)
             ? Company::where('status', 'approved')
+                ->withCount(['offers', 'products'])
                 ->latest()
                 ->paginate(12)
             : collect();
@@ -428,9 +429,15 @@ class PublicController extends Controller
         if ($company->status !== 'approved') {
             abort(404);
         }
-        $company->load(['branches', 'offers' => function($q) {
-            $q->active()->latest()->limit(6);
-        }]);
+        $company->load([
+            'branches', 
+            'offers' => function($q) {
+                $q->active()->latest()->limit(6);
+            },
+            'products' => function($q) {
+                $q->where('status', 'active')->latest()->limit(12);
+            }
+        ]);
         return view('public.companies.show', compact('company'));
     }
 

@@ -28,11 +28,16 @@ class Company extends Model
         'country',
         'tax_number',
         'commercial_register',
+        'agreement_file',
         'status',
         'affiliate_commission_rate',
         'user_id',
         'network_id',
         'can_display_cards_on_homepage',
+        'is_frozen',
+        'frozen_reason',
+        'frozen_by',
+        'frozen_at',
     ];
 
     /**
@@ -43,6 +48,8 @@ class Company extends Model
     protected $casts = [
         'affiliate_commission_rate' => 'decimal:2',
         'status' => 'string',
+        'is_frozen' => 'boolean',
+        'frozen_at' => 'datetime',
         // Store multilingual fields as JSON arrays
         'name' => 'array',
         'description' => 'array',
@@ -88,6 +95,14 @@ class Company extends Model
     public function coupons(): HasMany
     {
         return $this->hasMany(Coupon::class);
+    }
+
+    /**
+     * Get the products for the company.
+     */
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
     }
 
     /**
@@ -228,5 +243,21 @@ class Company extends Model
     public function scopeActive($query)
     {
         return $query->where('status', 'approved');
+    }
+
+    /**
+     * Get the admin who froze the company account.
+     */
+    public function frozenBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'frozen_by');
+    }
+
+    /**
+     * Get tickets raised against the company.
+     */
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class);
     }
 }

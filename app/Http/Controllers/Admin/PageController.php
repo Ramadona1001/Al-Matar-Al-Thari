@@ -12,18 +12,16 @@ class PageController extends Controller
     {
         $query = Page::query();
         
-        // Filter by locale if provided
-        if ($request->has('locale') && $request->locale !== '') {
-            $query->where('locale', $request->locale);
-        }
-        
-        // Search functionality
+        // Search functionality (search in translations)
         if ($request->has('search') && $request->search !== '') {
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('slug', 'like', "%{$search}%")
-                  ->orWhereRaw("JSON_SEARCH(title, 'one', '%{$search}%') IS NOT NULL")
-                  ->orWhereRaw("JSON_SEARCH(content, 'one', '%{$search}%') IS NOT NULL");
+                  ->orWhereHas('translations', function($tq) use ($search) {
+                      $tq->where('title', 'like', "%{$search}%")
+                         ->orWhere('content', 'like', "%{$search}%")
+                         ->orWhere('excerpt', 'like', "%{$search}%");
+                  });
             });
         }
         
@@ -36,13 +34,10 @@ class PageController extends Controller
             }
         }
         
-        $pages = $query->orderBy('created_at', 'desc')->get();
-        
-        // Get available locales for filter
-        $availableLocales = Page::select('locale')->distinct()->pluck('locale')->toArray();
+        $pages = $query->ordered()->get();
         $locales = config('localization.supported_locales', ['en', 'ar']);
         
-        return view('admin.pages.index', compact('pages', 'availableLocales', 'locales'));
+        return view('admin.pages.index', compact('pages', 'locales'));
     }
 
     public function create()
@@ -57,7 +52,6 @@ class PageController extends Controller
         
         $validated = $request->validate([
             'slug' => 'required|string|max:100',
-            'locale' => 'required|string|in:' . implode(',', $locales),
             'is_published' => 'nullable|boolean',
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'template' => 'nullable|string|max:100',
@@ -78,15 +72,6 @@ class PageController extends Controller
             ]);
         }
         
-        // Build multi-language arrays
-        $validated['title'] = $request->input('title', []);
-        $validated['content'] = $request->input('content', []);
-        $validated['meta_title'] = $request->input('meta_title', []);
-        $validated['meta_description'] = $request->input('meta_description', []);
-        $validated['meta_keywords'] = $request->input('meta_keywords', []);
-        $validated['excerpt'] = $request->input('excerpt', []);
-        $validated['menu_label'] = $request->input('menu_label', []);
-        
         $validated['is_published'] = (bool)($request->input('is_published', false));
         $validated['show_in_menu'] = (bool)($request->input('show_in_menu', false));
         $validated['order'] = $request->input('order', 0);
@@ -97,12 +82,22 @@ class PageController extends Controller
             $validated['featured_image'] = $request->file('featured_image')->store('pages', 'public');
         }
 
-        // Unique slug per locale
-        if (Page::where('slug', $validated['slug'])->where('locale', $validated['locale'])->exists()) {
-            return back()->withErrors(['slug' => __('This slug already exists for the selected locale.')])->withInput();
-        }
+        // Create page (non-translatable fields only)
+        $page = Page::create($validated);
 
-        Page::create($validated);
+        // Save translations for each locale
+        foreach ($locales as $locale) {
+            $translation = $page->translateOrNew($locale);
+            $translation->title = $request->input("title.{$locale}") ?? '';
+            $translation->content = $request->input("content.{$locale}") ?? '';
+            $translation->meta_title = $request->input("meta_title.{$locale}") ?? '';
+            $translation->meta_description = $request->input("meta_description.{$locale}") ?? '';
+            $translation->meta_keywords = $request->input("meta_keywords.{$locale}") ?? '';
+            $translation->excerpt = $request->input("excerpt.{$locale}") ?? '';
+            $translation->menu_label = $request->input("menu_label.{$locale}") ?? '';
+            $translation->save();
+        }
+        
         return redirect()->route('admin.pages.index')->with('success', __('Page created successfully.'));
     }
 
@@ -118,7 +113,6 @@ class PageController extends Controller
         
         $validated = $request->validate([
             'slug' => 'required|string|max:100',
-            'locale' => 'required|string|in:' . implode(',', $locales),
             'is_published' => 'nullable|boolean',
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'template' => 'nullable|string|max:100',
@@ -139,15 +133,6 @@ class PageController extends Controller
             ]);
         }
         
-        // Build multi-language arrays
-        $validated['title'] = $request->input('title', []);
-        $validated['content'] = $request->input('content', []);
-        $validated['meta_title'] = $request->input('meta_title', []);
-        $validated['meta_description'] = $request->input('meta_description', []);
-        $validated['meta_keywords'] = $request->input('meta_keywords', []);
-        $validated['excerpt'] = $request->input('excerpt', []);
-        $validated['menu_label'] = $request->input('menu_label', []);
-        
         $validated['is_published'] = (bool)($request->input('is_published', false));
         $validated['show_in_menu'] = (bool)($request->input('show_in_menu', false));
         $validated['order'] = $request->input('order', $page->order ?? 0);
@@ -161,18 +146,22 @@ class PageController extends Controller
             $validated['featured_image'] = $request->file('featured_image')->store('pages', 'public');
         }
 
-        // Check slug uniqueness if changed
-        if ($validated['slug'] !== $page->slug || $validated['locale'] !== $page->locale) {
-            $exists = Page::where('slug', $validated['slug'])
-                ->where('locale', $validated['locale'])
-                ->where('id', '!=', $page->id)
-                ->exists();
-            if ($exists) {
-                return back()->withErrors(['slug' => __('This slug already exists for the selected locale.')])->withInput();
-            }
-        }
-
+        // Update page (non-translatable fields only)
         $page->update($validated);
+
+        // Save translations for each locale
+        foreach ($locales as $locale) {
+            $translation = $page->translateOrNew($locale);
+            $translation->title = $request->input("title.{$locale}") ?? '';
+            $translation->content = $request->input("content.{$locale}") ?? '';
+            $translation->meta_title = $request->input("meta_title.{$locale}") ?? '';
+            $translation->meta_description = $request->input("meta_description.{$locale}") ?? '';
+            $translation->meta_keywords = $request->input("meta_keywords.{$locale}") ?? '';
+            $translation->excerpt = $request->input("excerpt.{$locale}") ?? '';
+            $translation->menu_label = $request->input("menu_label.{$locale}") ?? '';
+            $translation->save();
+        }
+        
         return redirect()->route('admin.pages.index')->with('success', __('Page updated successfully.'));
     }
 

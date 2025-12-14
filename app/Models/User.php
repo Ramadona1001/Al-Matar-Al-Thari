@@ -30,6 +30,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'locale',
         'user_type',
         'is_active',
+        'is_frozen',
+        'frozen_reason',
+        'frozen_by',
+        'frozen_at',
+        'referred_by_user_id',
         'password',
     ];
 
@@ -52,6 +57,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'date_of_birth' => 'date',
         'is_active' => 'boolean',
+        'is_frozen' => 'boolean',
+        'frozen_at' => 'datetime',
     ];
 
     /**
@@ -170,6 +177,30 @@ class User extends Authenticatable implements MustVerifyEmail
     public function affiliateSales()
     {
         return $this->hasMany(AffiliateSale::class);
+    }
+
+    /**
+     * Get the wallet for the user.
+     */
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class);
+    }
+
+    /**
+     * Get the admin who froze the user account.
+     */
+    public function frozenBy()
+    {
+        return $this->belongsTo(User::class, 'frozen_by');
+    }
+
+    /**
+     * Get tickets created by the user.
+     */
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
     }
 
     /**
@@ -295,5 +326,16 @@ class User extends Authenticatable implements MustVerifyEmail
         // Return placeholder with initials
         $initials = strtoupper(substr($this->first_name, 0, 1) . substr($this->last_name, 0, 1));
         return "https://ui-avatars.com/api/?name={$initials}&background=random&color=fff&size=128";
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new \App\Notifications\ResetPasswordNotification($token));
     }
 }

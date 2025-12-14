@@ -28,7 +28,7 @@
 
                     <div class="mb-3">
                         <label for="redeem_rate" class="form-label">{{ __('Currency per Point (redeeming)') }}</label>
-                        <input type="number" step="0.01" min="0.0001" class="form-control @error('redeem_rate') is-invalid @enderror" id="redeem_rate" name="redeem_rate" value="{{ old('redeem_rate', $settings->redeem_rate ?? 0.1) }}" required>
+                        <input type="number" step="0.01" min="0.01" class="form-control @error('redeem_rate') is-invalid @enderror" id="redeem_rate" name="redeem_rate" value="{{ old('redeem_rate', $settings->redeem_rate ?? 0.1) }}" required>
                         @error('redeem_rate')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

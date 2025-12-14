@@ -1,4 +1,17 @@
-@extends('layouts.new-design')
+@extends('layouts.auth')
+
+@php
+    try {
+        $site = \App\Models\SiteSetting::getSettings();
+    } catch (\Exception $e) {
+        $site = new \App\Models\SiteSetting();
+    }
+
+    $currentLocale = app()->getLocale();
+    $brandName = is_array($site->brand_name ?? null)
+        ? ($site->brand_name[$currentLocale] ?? reset($site->brand_name ?? []))
+        : ($site->brand_name ?? config('app.name'));
+@endphp
 
 @section('meta_title', __('Forgot Password'))
 @section('meta_description', __('Reset your password'))
@@ -15,9 +28,15 @@
                 <!-- Left Side - Branding (Desktop Only) -->
                 <div class="auth-branding d-none d-lg-flex">
                     <div class="branding-content">
-                        <div class="brand-logo">
-                            <i class="fas fa-key"></i>
-                        </div>
+                        <a href="{{ route('public.home', ['locale' => app()->getLocale()]) }}" class="brand-logo-link">
+                            <div class="brand-logo">
+                                @if(!empty($site->logo_path))
+                                    <img src="{{ asset('storage/'.$site->logo_path) }}" alt="{{ $brandName }}" >
+                                @else
+                                    <i class="fas fa-key"></i>
+                                @endif
+                            </div>
+                        </a>
                         <h1 class="brand-title">{{ __('Reset Password') }}</h1>
                         <p class="brand-subtitle">{{ __("No worries! Enter your email address and we'll send you a link to reset your password.") }}</p>
                         <div class="brand-features">

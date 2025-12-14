@@ -163,17 +163,20 @@ class PosController extends Controller
             $transaction = Transaction::create([
                 'transaction_id' => $posTransaction->transaction_id,
                 'amount' => $originalAmount,
+                'original_price' => $originalAmount, // Store original price for points calculation
                 'discount_amount' => $discountAmount,
                 'final_amount' => $finalAmount,
-                'status' => 'completed',
+                'status' => 'pending', // Set as pending first
                 'payment_method' => $request->payment_method,
                 'user_id' => $user?->id,
                 'company_id' => $device->company_id,
                 'branch_id' => $device->branch_id,
                 'coupon_id' => $coupon?->id,
                 'digital_card_id' => $digitalCard?->id,
-                'loyalty_points_earned' => $this->pointsService->calculateEarnedPoints($finalAmount),
             ]);
+
+            // Complete transaction to trigger events
+            $transaction->complete();
 
             // Complete POS transaction
             $posTransaction->complete();

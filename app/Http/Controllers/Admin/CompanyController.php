@@ -27,17 +27,26 @@ class CompanyController extends Controller
         $query = Company::with('user', 'branches');
 
         // Filter by status
-        if ($request->has('status') && $request->status !== '') {
+        if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
         // Search
-        if ($request->has('search') && $request->search !== '') {
+        if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
+                // Search in JSON name field (both en and ar)
+                // MySQL JSON_EXTRACT syntax
+                $q->whereRaw("JSON_UNQUOTE(JSON_EXTRACT(name, '$.en')) LIKE ?", ["%{$search}%"])
+                  ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(name, '$.ar')) LIKE ?", ["%{$search}%"])
                   ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%");
+                  ->orWhere('phone', 'like', "%{$search}%")
+                  // Also search in user name if user is loaded
+                  ->orWhereHas('user', function($userQuery) use ($search) {
+                      $userQuery->where('first_name', 'like', "%{$search}%")
+                                ->orWhere('last_name', 'like', "%{$search}%")
+                                ->orWhere('email', 'like', "%{$search}%");
+                  });
             });
         }
 
@@ -127,7 +136,7 @@ class CompanyController extends Controller
             'total_coupons' => $company->coupons()->count(),
             'used_coupons' => $company->coupons()->whereHas('couponUsages')->count(),
             'total_transactions' => $company->transactions()->count(),
-            'total_revenue' => $company->transactions()->where('status', 'completed')->sum('final_amount'),
+            'total_revenue' => $company->transactions()->where('transactions.status', 'completed')->sum('transactions.final_amount'),
         ];
 
         return view('admin.companies.show', compact('company', 'stats'));

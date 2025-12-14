@@ -64,8 +64,8 @@
                         <td>{{ $coupon->total_usage_limit ?? __('Unlimited') }}</td>
                     </tr>
                     <tr>
-                        <th>{{ __('Offer') }}:</th>
-                        <td>{{ $coupon->offer->localized_title ?? '-' }}</td>
+                        <th>{{ __('Product') }}:</th>
+                        <td>{{ $coupon->product->localized_name ?? '-' }}</td>
                     </tr>
                     <tr>
                         <th>{{ __('Status') }}:</th>

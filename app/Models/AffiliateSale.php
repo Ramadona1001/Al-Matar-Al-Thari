@@ -29,6 +29,7 @@ class AffiliateSale extends Model
         'company_id',
         'offer_id',
         'coupon_id',
+        'transaction_id',
     ];
 
     /**
@@ -74,6 +75,14 @@ class AffiliateSale extends Model
     public function offer(): BelongsTo
     {
         return $this->belongsTo(Offer::class);
+    }
+
+    /**
+     * Get the transaction that generated this affiliate sale.
+     */
+    public function transaction(): BelongsTo
+    {
+        return $this->belongsTo(Transaction::class);
     }
 
     /**

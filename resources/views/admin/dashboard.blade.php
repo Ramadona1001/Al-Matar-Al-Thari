@@ -5,49 +5,49 @@
 @section('content')
 @php($metricCards = [
     [
-        'label' => __('Total Users'),
+        'label' => __('total_users'),
         'value' => number_format($stats['total_users']),
         'icon' => 'fas fa-users',
         'gradient' => 'indigo',
-        'trend' => __('+:count new this week', ['count' => $stats['new_users_week'] ?? 0]),
+        'trend' => __(':count_new_this_week', ['count' => $stats['new_users_week'] ?? 0]),
     ],
     [
-        'label' => __('Total Companies'),
+        'label' => __('total_companies'),
         'value' => number_format($stats['total_companies']),
         'icon' => 'fas fa-building',
         'gradient' => 'pink',
-        'trend' => __(':percentage% approved', ['percentage' => $stats['total_companies'] > 0 ? number_format(($stats['approved_companies'] / max($stats['total_companies'], 1)) * 100, 0) : 0]),
+        'trend' => __(':percentage_approved', ['percentage' => $stats['total_companies'] > 0 ? number_format(($stats['approved_companies'] / max($stats['total_companies'], 1)) * 100, 0) : 0]),
     ],
     [
-        'label' => __('Total Offers'),
+        'label' => __('total_offers'),
         'value' => number_format($stats['total_offers']),
         'icon' => 'fas fa-tags',
         'gradient' => 'teal',
-        'trend' => __(':percentage% active', ['percentage' => $stats['total_offers'] > 0 ? number_format(($stats['active_offers'] / max($stats['total_offers'], 1)) * 100, 0) : 0]),
+        'trend' => __(':percentage_active', ['percentage' => $stats['total_offers'] > 0 ? number_format(($stats['active_offers'] / max($stats['total_offers'], 1)) * 100, 0) : 0]),
     ],
     [
-        'label' => __('Total Revenue'),
+        'label' => __('total_revenue'),
         'value' => '$' . number_format($stats['total_revenue'], 2),
         'icon' => 'fas fa-dollar-sign',
         'gradient' => 'emerald',
-        'trend' => __('Monthly target: $:amount', ['amount' => number_format($stats['monthly_revenue_target'] ?? 0, 0)]),
+        'trend' => __('monthly_target_amount', ['amount' => number_format($stats['monthly_revenue_target'] ?? 0, 0)]),
     ],
 ])
 @php($engagementStats = [
     [
-        'title' => __('Active Users'),
+        'title' => __('active_users'),
         'value' => number_format($stats['active_users']),
         'percent' => $stats['total_users'] > 0 ? round(($stats['active_users'] / max($stats['total_users'], 1)) * 100) : 0,
         'color' => 'bg-success',
     ],
     [
-        'title' => __('Approved Companies'),
+        'title' => __('approved_companies'),
         'value' => number_format($stats['approved_companies']),
         'percent' => $stats['total_companies'] > 0 ? round(($stats['approved_companies'] / max($stats['total_companies'], 1)) * 100) : 0,
         'color' => 'bg-info',
     ],
     [
-        'title' => __('Used Coupons'),
+        'title' => __('used_coupons'),
         'value' => number_format($stats['used_coupons']),
         'percent' => $stats['total_coupons'] > 0 ? round(($stats['used_coupons'] / max($stats['total_coupons'], 1)) * 100) : 0,
         'color' => 'bg-primary',
@@ -58,26 +58,26 @@
     <div class="row g-4 align-items-center">
         <div class="col-xl-8">
             <div class="text-white">
-                <span class="badge rounded-pill bg-white text-primary bg-opacity-15 mb-3">{{ __('System Overview') }}</span>
-                <h2 class="display-6 fw-semibold mb-3">{{ __('Stay on top of platform performance at a glance') }}</h2>
-                <p class="text-white-50 mb-0">{{ __('Monitor user growth, merchant onboarding, and revenue trends from a unified control center. All metrics refresh in real-time so you can act with confidence.') }}</p>
+                <span class="badge rounded-pill bg-white text-primary bg-opacity-15 mb-3">{{ __('system_overview') }}</span>
+                <h2 class="display-6 fw-semibold mb-3">{{ __('stay_on_top_of_platform_performance_at_a_glance') }}</h2>
+                <p class="text-white-50 mb-0">{{ __('monitor_user_growth_merchant_onboarding_and_revenue_trends') }}</p>
             </div>
         </div>
         <div class="col-xl-4">
             <div class="glass-card p-4 h-100 text-white fade-in-up delay-1">
                 <div class="d-flex align-items-center justify-content-between mb-3">
                     <div>
-                        <p class="text-white-50 text-uppercase small fw-semibold mb-1">{{ __('Live Snapshot') }}</p>
-                        <h4 class="fw-semibold mb-0">{{ __('This week') }}</h4>
+                        <p class="text-white-50 text-uppercase small fw-semibold mb-1">{{ __('live_snapshot') }}</p>
+                        <h4 class="fw-semibold mb-0">{{ __('this_week') }}</h4>
                     </div>
                     <div class="icon-circle bg-white bg-opacity-25 text-white">
                         <i class="fas fa-chart-line"></i>
                     </div>
                 </div>
                 <ul class="list-unstyled small text-white-50 mb-0 d-flex flex-column gap-2">
-                    <li class="d-flex justify-content-between"><span>{{ __('New users') }}</span><span class="fw-semibold text-white">+{{ number_format($stats['new_users_week'] ?? 0) }}</span></li>
-                    <li class="d-flex justify-content-between"><span>{{ __('New companies') }}</span><span class="fw-semibold text-white">+{{ number_format($stats['new_companies_week'] ?? 0) }}</span></li>
-                    <li class="d-flex justify-content-between"><span>{{ __('Revenue captured') }}</span><span class="fw-semibold text-white">${{ number_format($stats['revenue_week'] ?? 0, 2) }}</span></li>
+                    <li class="d-flex justify-content-between"><span>{{ __('new_users') }}</span><span class="fw-semibold text-white">+{{ number_format($stats['new_users_week'] ?? 0) }}</span></li>
+                    <li class="d-flex justify-content-between"><span>{{ __('new_companies') }}</span><span class="fw-semibold text-white">+{{ number_format($stats['new_companies_week'] ?? 0) }}</span></li>
+                    <li class="d-flex justify-content-between"><span>{{ __('revenue_captured') }}</span><span class="fw-semibold text-white">${{ number_format($stats['revenue_week'] ?? 0, 2) }}</span></li>
                 </ul>
             </div>
         </div>
@@ -119,8 +119,8 @@
                                 <i class="fas fa-chart-line text-primary"></i>
                             </div>
                             <div>
-                                <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('Engagement Trend') }}</p>
-                                <h5 class="fw-bold mb-0 text-gray-900">{{ __('User Growth') }}</h5>
+                                <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('engagement_trend') }}</p>
+                                <h5 class="fw-bold mb-0 text-gray-900">{{ __('user_growth') }}</h5>
                             </div>
                         </div>
                     </div>
@@ -148,8 +148,8 @@
                         <i class="fas fa-heartbeat text-success"></i>
                     </div>
                     <div>
-                        <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('Platform Health') }}</p>
-                        <h5 class="fw-bold mb-0 text-gray-900">{{ __('Metrics') }}</h5>
+                        <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('platform_health') }}</p>
+                        <h5 class="fw-bold mb-0 text-gray-900">{{ __('metrics') }}</h5>
                     </div>
                 </div>
             </div>
@@ -170,7 +170,7 @@
                             <div class="d-flex justify-content-between align-items-center mt-2">
                                 <span class="text-muted small">
                                     <i class="fas fa-signal me-1"></i>
-                                    {{ $engagement['percent'] }}% {{ __('of total') }}
+                                    {{ $engagement['percent'] }}% {{ __('of_total') }}
                                 </span>
                                 <span class="badge bg-light text-dark small">{{ $engagement['percent'] }}%</span>
                             </div>
@@ -194,12 +194,12 @@
                             <i class="fas fa-users text-info"></i>
                         </div>
                         <div>
-                            <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('Latest Accounts') }}</p>
-                            <h5 class="fw-bold mb-0 text-gray-900">{{ __('Recent Users') }}</h5>
+                            <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('latest_accounts') }}</p>
+                            <h5 class="fw-bold mb-0 text-gray-900">{{ __('recent_users') }}</h5>
                         </div>
                     </div>
                     <a href="{{ route('admin.users.index') }}" class="btn btn-sm btn-primary btn-animated shadow-sm">
-                        <i class="fas fa-arrow-up-right-from-square me-2"></i>{{ __('View All') }}
+                        <i class="fas fa-arrow-up-right-from-square me-2"></i>{{ __('view_all') }}
                     </a>
                 </div>
             </div>
@@ -208,10 +208,10 @@
                     <table class="table table-modern align-middle mb-0">
                         <thead class="table-header-modern">
                             <tr>
-                                <th class="fw-semibold text-gray-700">{{ __('Name') }}</th>
-                                <th class="fw-semibold text-gray-700">{{ __('Email') }}</th>
-                                <th class="fw-semibold text-gray-700">{{ __('Role') }}</th>
-                                <th class="fw-semibold text-gray-700 text-end">{{ __('Status') }}</th>
+                                <th class="fw-semibold text-gray-700">{{ __('name') }}</th>
+                                <th class="fw-semibold text-gray-700">{{ __('email') }}</th>
+                                <th class="fw-semibold text-gray-700">{{ __('role') }}</th>
+                                <th class="fw-semibold text-gray-700 text-end">{{ __('status') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -247,7 +247,7 @@
                                     <td class="text-end">
                                         <span class="badge {{ $user->is_active ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }} rounded-pill px-3 py-2 fw-semibold">
                                             <i class="fas fa-circle me-1" style="font-size: 0.5rem;"></i>
-                                            {{ $user->is_active ? __('Active') : __('Inactive') }}
+                                            {{ $user->is_active ? __('active') : __('inactive') }}
                                         </span>
                                     </td>
                                 </tr>
@@ -258,7 +258,7 @@
                                             <div class="empty-icon-wrapper mb-3">
                                                 <i class="fas fa-users-slash"></i>
                                             </div>
-                                            <p class="text-muted mb-0 fw-semibold">{{ __('No users found') }}</p>
+                                            <p class="text-muted mb-0 fw-semibold">{{ __('no_users_found') }}</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -280,12 +280,12 @@
                             <i class="fas fa-building text-warning"></i>
                         </div>
                         <div>
-                            <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('Merchant Onboarding') }}</p>
-                            <h5 class="fw-bold mb-0 text-gray-900">{{ __('Recent Companies') }}</h5>
+                            <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('merchant_onboarding') }}</p>
+                            <h5 class="fw-bold mb-0 text-gray-900">{{ __('recent_companies') }}</h5>
                         </div>
                     </div>
                     <a href="{{ route('admin.companies.index') }}" class="btn btn-sm btn-primary btn-animated shadow-sm">
-                        <i class="fas fa-arrow-up-right-from-square me-2"></i>{{ __('View All') }}
+                        <i class="fas fa-arrow-up-right-from-square me-2"></i>{{ __('view_all') }}
                     </a>
                 </div>
             </div>
@@ -294,9 +294,9 @@
                     <table class="table table-modern align-middle mb-0">
                         <thead class="table-header-modern">
                             <tr>
-                                <th class="fw-semibold text-gray-700">{{ __('Company') }}</th>
-                                <th class="fw-semibold text-gray-700">{{ __('Owner') }}</th>
-                                <th class="fw-semibold text-gray-700 text-end">{{ __('Status') }}</th>
+                                <th class="fw-semibold text-gray-700">{{ __('company') }}</th>
+                                <th class="fw-semibold text-gray-700">{{ __('owner') }}</th>
+                                <th class="fw-semibold text-gray-700 text-end">{{ __('status') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -311,7 +311,7 @@
                                                 <div class="fw-semibold text-gray-900">{{ $company->localized_name }}</div>
                                                 <small class="text-muted d-flex align-items-center gap-1">
                                                     <i class="fas fa-industry" style="font-size: 0.7rem;"></i>
-                                                    {{ $company->industry ?? __('N/A') }}
+                                                    {{ $company->industry ?? __('n/a') }}
                                                 </small>
                                             </div>
                                         </div>
@@ -342,7 +342,7 @@
                                             <div class="empty-icon-wrapper mb-3">
                                                 <i class="fas fa-building-circle-xmark"></i>
                                             </div>
-                                            <p class="text-muted mb-0 fw-semibold">{{ __('No companies found') }}</p>
+                                            <p class="text-muted mb-0 fw-semibold">{{ __('no_companies_found') }}</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -366,8 +366,8 @@
                             <i class="fas fa-chart-bar text-emerald"></i>
                         </div>
                         <div>
-                            <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('Revenue Insight') }}</p>
-                            <h5 class="fw-bold mb-0 text-gray-900">{{ __('Revenue Overview') }}</h5>
+                            <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('revenue_insight') }}</p>
+                            <h5 class="fw-bold mb-0 text-gray-900">{{ __('revenue_overview') }}</h5>
                         </div>
                     </div>
                     <div class="btn-group btn-group-sm shadow-sm" role="group">
@@ -398,12 +398,12 @@
                             <i class="fas fa-cog text-purple"></i>
                         </div>
                         <div>
-                            <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('Content Management') }}</p>
-                            <h5 class="fw-bold mb-0 text-gray-900">{{ __('CMS Overview') }}</h5>
+                            <p class="text-muted text-uppercase small fw-semibold mb-1">{{ __('content_management') }}</p>
+                            <h5 class="fw-bold mb-0 text-gray-900">{{ __('cms_overview') }}</h5>
                         </div>
                     </div>
                     <a href="{{ route('admin.sections.index') }}" class="btn btn-sm btn-primary btn-animated shadow-sm">
-                        <i class="fas fa-cog me-2"></i>{{ __('Manage CMS') }}
+                        <i class="fas fa-cog me-2"></i>{{ __('manage_cms') }}
                     </a>
                 </div>
             </div>
@@ -413,7 +413,7 @@
                         <div class="mini-stat-card">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <p class="text-muted small mb-1">{{ __('Sections') }}</p>
+                                    <p class="text-muted small mb-1">{{ __('sections') }}</p>
                                     <h5 class="mb-0 fw-bold">{{ number_format($cmsStats['total_sections'] ?? 0) }}</h5>
                                     <small class="text-success">{{ number_format($cmsStats['visible_sections'] ?? 0) }} {{ __('visible') }}</small>
                                 </div>
@@ -427,7 +427,7 @@
                         <div class="mini-stat-card">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <p class="text-muted small mb-1">{{ __('Banners') }}</p>
+                                    <p class="text-muted small mb-1">{{ __('banners') }}</p>
                                     <h5 class="mb-0 fw-bold">{{ number_format($cmsStats['total_banners'] ?? 0) }}</h5>
                                     <small class="text-success">{{ number_format($cmsStats['active_banners'] ?? 0) }} {{ __('active') }}</small>
                                 </div>
@@ -441,7 +441,7 @@
                         <div class="mini-stat-card">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <p class="text-muted small mb-1">{{ __('Services') }}</p>
+                                    <p class="text-muted small mb-1">{{ __('services') }}</p>
                                     <h5 class="mb-0 fw-bold">{{ number_format($cmsStats['total_services'] ?? 0) }}</h5>
                                     <small class="text-success">{{ number_format($cmsStats['active_services'] ?? 0) }} {{ __('active') }}</small>
                                 </div>
@@ -455,7 +455,7 @@
                         <div class="mini-stat-card">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <p class="text-muted small mb-1">{{ __('Blog Posts') }}</p>
+                                    <p class="text-muted small mb-1">{{ __('blog_posts') }}</p>
                                     <h5 class="mb-0 fw-bold">{{ number_format($cmsStats['total_blogs'] ?? 0) }}</h5>
                                     <small class="text-success">{{ number_format($cmsStats['published_blogs'] ?? 0) }} {{ __('published') }}</small>
                                 </div>
@@ -469,7 +469,7 @@
                         <div class="mini-stat-card">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <p class="text-muted small mb-1">{{ __('Testimonials') }}</p>
+                                    <p class="text-muted small mb-1">{{ __('testimonials') }}</p>
                                     <h5 class="mb-0 fw-bold">{{ number_format($cmsStats['total_testimonials'] ?? 0) }}</h5>
                                     <small class="text-success">{{ number_format($cmsStats['active_testimonials'] ?? 0) }} {{ __('active') }}</small>
                                 </div>
@@ -483,7 +483,7 @@
                         <div class="mini-stat-card">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <p class="text-muted small mb-1">{{ __('Statistics') }}</p>
+                                    <p class="text-muted small mb-1">{{ __('statistics') }}</p>
                                     <h5 class="mb-0 fw-bold">{{ number_format($cmsStats['total_statistics'] ?? 0) }}</h5>
                                     <small class="text-success">{{ number_format($cmsStats['active_statistics'] ?? 0) }} {{ __('active') }}</small>
                                 </div>
@@ -497,7 +497,7 @@
                         <div class="mini-stat-card">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <p class="text-muted small mb-1">{{ __('Menus') }}</p>
+                                    <p class="text-muted small mb-1">{{ __('menus') }}</p>
                                     <h5 class="mb-0 fw-bold">{{ number_format($cmsStats['total_menus'] ?? 0) }}</h5>
                                     <small class="text-success">{{ number_format($cmsStats['active_menus'] ?? 0) }} {{ __('active') }}</small>
                                 </div>
@@ -511,7 +511,7 @@
                         <div class="mini-stat-card">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <p class="text-muted small mb-1">{{ __('Pages') }}</p>
+                                    <p class="text-muted small mb-1">{{ __('pages') }}</p>
                                     <h5 class="mb-0 fw-bold">{{ number_format($cmsStats['total_pages'] ?? 0) }}</h5>
                                     <small class="text-success">{{ number_format($cmsStats['published_pages'] ?? 0) }} {{ __('published') }}</small>
                                 </div>
@@ -525,19 +525,19 @@
                 <div class="mt-4 pt-4 border-top">
                     <div class="d-flex flex-wrap gap-2">
                         <a href="{{ route('admin.sections.index') }}" class="btn btn-sm btn-outline-primary shadow-sm">
-                            <i class="fas fa-th-large me-2"></i>{{ __('Manage Sections') }}
+                            <i class="fas fa-th-large me-2"></i>{{ __('manage_sections') }}
                         </a>
                         <a href="{{ route('admin.banners.index') }}" class="btn btn-sm btn-outline-primary shadow-sm">
-                            <i class="fas fa-images me-2"></i>{{ __('Manage Banners') }}
+                            <i class="fas fa-images me-2"></i>{{ __('manage_banners') }}
                         </a>
                         <a href="{{ route('admin.menus.index') }}" class="btn btn-sm btn-outline-primary shadow-sm">
-                            <i class="fas fa-bars me-2"></i>{{ __('Manage Menus') }}
+                            <i class="fas fa-bars me-2"></i>{{ __('manage_menus') }}
                         </a>
                         <a href="{{ route('admin.services.index') }}" class="btn btn-sm btn-outline-primary shadow-sm">
-                            <i class="fas fa-concierge-bell me-2"></i>{{ __('Manage Services') }}
+                            <i class="fas fa-concierge-bell me-2"></i>{{ __('manage_services') }}
                         </a>
                         <a href="{{ route('admin.blogs.index') }}" class="btn btn-sm btn-outline-primary shadow-sm">
-                            <i class="fas fa-blog me-2"></i>{{ __('Manage Blogs') }}
+                            <i class="fas fa-blog me-2"></i>{{ __('manage_blogs') }}
                         </a>
                     </div>
                 </div>
@@ -598,7 +598,7 @@
         data: {
             labels: {!! json_encode(array_keys($chartData['user_growth']->toArray())) !!},
             datasets: [{
-                label: '{{ __('New Users') }}',
+                label: '{{ __('new_users') }}',
                 data: {!! json_encode(array_values($chartData['user_growth']->toArray())) !!},
                 borderColor: 'rgb(59, 130, 246)',
                 backgroundColor: 'rgba(59, 130, 246, 0.1)',
@@ -636,7 +636,7 @@
         data: {
             labels: {!! json_encode(array_keys($chartData['transaction_data']->toArray())) !!},
             datasets: [{
-                label: '{{ __('Revenue') }}',
+                label: '{{ __('revenue') }}',
                 data: {!! json_encode(array_values($chartData['transaction_data']->toArray())) !!},
                 backgroundColor: 'rgba(16, 185, 129, 0.8)',
                 borderColor: 'rgba(16, 185, 129, 1)',

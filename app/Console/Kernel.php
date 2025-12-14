@@ -12,7 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Settle affiliate points daily (convert pending to approved after settlement period)
+        $schedule->job(new \App\Jobs\SettleAffiliatePointsJob)->daily();
     }
 
     /**

@@ -12,6 +12,6 @@ class EncryptCookies extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        'referral_code', // Allow referral code to be readable (for affiliate tracking)
     ];
 }
