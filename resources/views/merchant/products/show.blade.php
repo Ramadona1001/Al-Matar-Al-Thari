@@ -82,9 +82,9 @@
                         <strong>{{ __('Price') }}:</strong>
                     </div>
                     <div class="col-md-8">
-                        <strong>{{ number_format($product->price, 2) }} {{ __('SAR') }}</strong>
+                        <strong>﷼{{ number_format($product->price, 2) }}</strong>
                         @if($product->compare_price && $product->compare_price > $product->price)
-                            <br><small class="text-muted text-decoration-line-through">{{ number_format($product->compare_price, 2) }} {{ __('SAR') }}</small>
+                            <br><small class="text-muted text-decoration-line-through">﷼{{ number_format($product->compare_price, 2) }}</small>
                         @endif
                     </div>
                 </div>

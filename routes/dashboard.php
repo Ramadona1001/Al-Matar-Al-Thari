@@ -19,6 +19,8 @@ use App\Http\Controllers\Merchant\BranchController as MerchantBranchController;
 use App\Http\Controllers\Merchant\AffiliateController as MerchantAffiliateController;
 use App\Http\Controllers\Merchant\ProductController as MerchantProductController;
 use App\Http\Controllers\Merchant\SalesController as MerchantSalesController;
+use App\Http\Controllers\Merchant\CustomerController as MerchantCustomerController;
+use App\Http\Controllers\Merchant\TransactionController as MerchantTransactionController;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
 use App\Http\Controllers\Customer\DigitalCardController as CustomerDigitalCardController;
 use App\Http\Controllers\Customer\ScanController as CustomerScanController;
@@ -216,6 +218,12 @@ Route::middleware(['auth', 'verified', 'role:merchant', 'frozen'])->prefix('merc
     Route::get('members', [MerchantMemberController::class, 'index'])->name('members.index');
     Route::get('members/{member}/cards/{loyaltyCard}', [MerchantMemberController::class, 'showCard'])->name('members.cards.show');
     Route::post('members/{member}/cards/{loyaltyCard}/revert-last', [MerchantMemberController::class, 'revertLast'])->name('members.cards.revert-last');
+
+    // Customers
+    Route::get('customers', [MerchantCustomerController::class, 'index'])->name('customers.index');
+
+    // Transactions
+    Route::get('transactions', [MerchantTransactionController::class, 'index'])->name('transactions.index');
 });
 
 // Customer Dashboard Routes

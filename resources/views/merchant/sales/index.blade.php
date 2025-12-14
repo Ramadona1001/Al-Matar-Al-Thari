@@ -28,7 +28,7 @@
                                     </div>
                                     <p class="text-muted small mb-2">{{ Str::limit($product->localized_description, 60) }}</p>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <strong class="text-primary">{{ number_format($product->price, 2) }} {{ __('SAR') }}</strong>
+                                        <strong class="text-primary">﷼{{ number_format($product->price, 2) }}</strong>
                                         @if($product->isAvailable())
                                             <span class="badge bg-success">{{ __('Available') }}</span>
                                             @if($product->track_stock)
@@ -363,7 +363,7 @@
                 <hr>
                 <p><strong>{{ __("Customer") }}:</strong> ${data.data.customer.full_name}</p>
                 <p><strong>{{ __("Product") }}:</strong> ${data.data.product.localized_name}</p>
-                <p><strong>{{ __("Amount") }}:</strong> ${parseFloat(data.data.amount).toFixed(2)} {{ __("SAR") }}</p>
+                <p><strong>{{ __("Amount") }}:</strong> ﷼${parseFloat(data.data.amount).toFixed(2)}</p>
                 <p><strong>{{ __("Points Earned") }}:</strong> ${data.data.points_earned || 0} {{ __("points") }}</p>
                 <p><strong>{{ __("Transaction ID") }}:</strong> ${data.data.transaction.transaction_id}</p>
             </div>

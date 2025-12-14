@@ -267,20 +267,18 @@
         </li>
     @endif
     
-    <li class="nav-item mt-2 text-uppercase small  px-3" style=" color: var(--bs-blue) !important; padding: 10px; font-weight: bold; ">{{ __('Reward Loyalty') }}</li>
-    @if(Route::has('merchant.loyalty-cards.index'))
+    <li class="nav-item mt-2 text-uppercase small  px-3" style=" color: var(--bs-blue) !important; padding: 10px; font-weight: bold; ">{{ __('Users & Management') }}</li>
+    @if(Route::has('merchant.customers.index'))
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('merchant.loyalty-cards.*') || request()->routeIs('merchant.rewards.*') ? 'active' : '' }}" href="{{ route('merchant.loyalty-cards.index') }}">
-                <i class="fas fa-id-card me-2"></i>{{ __('Loyalty Cards') }}
+            <a class="nav-link {{ request()->routeIs('merchant.customers.*') ? 'active' : '' }}" href="{{ route('merchant.customers.index') }}">
+                <i class="fas fa-users me-2"></i>{{ __('Customers') }}
             </a>
         </li>
     @endif
-
-    <li class="nav-item mt-2 text-uppercase small  px-3" style=" color: var(--bs-blue) !important; padding: 10px; font-weight: bold; ">{{ __('Users & Management') }}</li>
-    @if(Route::has('merchant.members.index'))
+    @if(Route::has('merchant.transactions.index'))
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('merchant.members.*') ? 'active' : '' }}" href="{{ route('merchant.members.index') }}">
-                <i class="fas fa-users me-2"></i>{{ __('Members') }}
+            <a class="nav-link {{ request()->routeIs('merchant.transactions.*') ? 'active' : '' }}" href="{{ route('merchant.transactions.index') }}">
+                <i class="fas fa-exchange-alt me-2"></i>{{ __('Transactions') }}
             </a>
         </li>
     @endif

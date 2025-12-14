@@ -20,7 +20,7 @@
     ],
     [
         'label' => __('total_revenue'),
-        'value' => '$' . number_format($stats['total_revenue'], 2),
+        'value' => '﷼' . number_format($stats['total_revenue'], 2),
         'icon' => 'fas fa-sack-dollar',
         'gradient' => 'emerald',
         'trend' => __('last_30_days_amount', ['amount' => number_format($stats['revenue_30_days'] ?? 0, 2)]),
@@ -53,7 +53,7 @@
         'value' => 75,
         'percent' => 75,
         'color' => 'bg-warning',
-        'hint' => __(':amount_achieved', ['amount' => '$' . number_format($stats['monthly_revenue'] ?? 0, 2)]),
+        'hint' => __(':amount_achieved', ['amount' => '﷼' . number_format($stats['monthly_revenue'] ?? 0, 2)]),
     ],
 ])
 
@@ -320,7 +320,7 @@
                                         <span class="badge bg-primary rounded-pill px-3 py-2 fw-semibold">{{ $customer->transaction_count }}</span>
                                     </td>
                                     <td class="text-end">
-                                        <span class="text-success fw-semibold">${{ number_format($customer->total_spent, 2) }}</span>
+                                        <span class="text-success fw-semibold">﷼{{ number_format($customer->total_spent, 2) }}</span>
                                     </td>
                                 </tr>
                             @empty
@@ -393,11 +393,11 @@
                                         <small class="text-muted">{{ $transaction->user->email }}</small>
                                     </td>
                                     <td>
-                                        <div class="fw-semibold text-gray-900">${{ number_format($transaction->amount, 2) }}</div>
+                                        <div class="fw-semibold text-gray-900">﷼{{ number_format($transaction->amount, 2) }}</div>
                                         @if($transaction->discount_amount > 0)
                                             <small class="text-success">
                                                 <i class="fas fa-tag me-1"></i>
-                                                {{ __('discount') }}: ${{ number_format($transaction->discount_amount, 2) }}
+                                                {{ __('discount') }}: ﷼{{ number_format($transaction->discount_amount, 2) }}
                                             </small>
                                         @endif
                                     </td>
