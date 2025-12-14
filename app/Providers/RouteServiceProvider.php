@@ -73,6 +73,12 @@ class RouteServiceProvider extends ServiceProvider
         });
         
         Route::bind('transaction', function ($value) {
+            // Try to find Transaction first (for invoice routes)
+            $transaction = \App\Models\Transaction::find($value);
+            if ($transaction) {
+                return $transaction;
+            }
+            // Fallback to PaymentTransaction for backward compatibility
             return \App\Models\PaymentTransaction::findOrFail($value);
         });
         

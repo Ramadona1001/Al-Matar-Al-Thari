@@ -11,8 +11,11 @@ class InvoiceController extends Controller
     /**
      * Generate and download invoice PDF for a transaction.
      */
-    public function download(Request $request, Transaction $transaction)
+    public function download(Request $request, $transaction)
     {
+        // Resolve transaction model
+        $transaction = Transaction::findOrFail($transaction);
+        
         // Check authorization based on user role
         $user = auth()->user();
         $userRole = $user->roles->first()->name ?? 'customer';
@@ -49,8 +52,11 @@ class InvoiceController extends Controller
     /**
      * View invoice PDF in browser.
      */
-    public function view(Request $request, Transaction $transaction)
+    public function view(Request $request, $transaction)
     {
+        // Resolve transaction model
+        $transaction = Transaction::findOrFail($transaction);
+        
         // Check authorization based on user role
         $user = auth()->user();
         $userRole = $user->roles->first()->name ?? 'customer';

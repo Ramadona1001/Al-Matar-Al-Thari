@@ -136,8 +136,8 @@ Route::middleware(['auth', 'role:super-admin|admin'])->prefix('admin')->name('ad
     Route::post('/cards/{card}/unfreeze', [AdminFreezeController::class, 'unfreezeCard'])->name('cards.unfreeze');
 
     // Invoice routes (Admin can view all transactions)
-    Route::get('/transactions/{transaction}/invoice', [InvoiceController::class, 'download'])->name('transactions.invoice.download');
-    Route::get('/transactions/{transaction}/invoice/view', [InvoiceController::class, 'view'])->name('transactions.invoice.view');
+    Route::get('/transactions/{transaction:id}/invoice', [InvoiceController::class, 'download'])->name('transactions.invoice.download');
+    Route::get('/transactions/{transaction:id}/invoice/view', [InvoiceController::class, 'view'])->name('transactions.invoice.view');
 });
 
 // Merchant Dashboard Routes
@@ -231,8 +231,8 @@ Route::middleware(['auth', 'verified', 'role:merchant', 'frozen'])->prefix('merc
     Route::get('transactions', [MerchantTransactionController::class, 'index'])->name('transactions.index');
 
     // Invoice routes
-    Route::get('transactions/{transaction}/invoice', [InvoiceController::class, 'download'])->name('transactions.invoice.download');
-    Route::get('transactions/{transaction}/invoice/view', [InvoiceController::class, 'view'])->name('transactions.invoice.view');
+    Route::get('transactions/{transaction:id}/invoice', [InvoiceController::class, 'download'])->name('transactions.invoice.download');
+    Route::get('transactions/{transaction:id}/invoice/view', [InvoiceController::class, 'view'])->name('transactions.invoice.view');
 });
 
 // Customer Dashboard Routes
@@ -295,8 +295,8 @@ Route::middleware(['auth', 'verified', 'role:customer', 'frozen'])->prefix('cust
     Route::get('/transactions', [CustomerDashboardController::class, 'transactions'])->name('transactions.index');
 
     // Invoice routes
-    Route::get('/transactions/{transaction}/invoice', [InvoiceController::class, 'download'])->name('transactions.invoice.download');
-    Route::get('/transactions/{transaction}/invoice/view', [InvoiceController::class, 'view'])->name('transactions.invoice.view');
+    Route::get('/transactions/{transaction:id}/invoice', [InvoiceController::class, 'download'])->name('transactions.invoice.download');
+    Route::get('/transactions/{transaction:id}/invoice/view', [InvoiceController::class, 'view'])->name('transactions.invoice.view');
     
     // Favorites Routes
     Route::get('/favorites', [CustomerDashboardController::class, 'favorites'])->name('favorites.index');
