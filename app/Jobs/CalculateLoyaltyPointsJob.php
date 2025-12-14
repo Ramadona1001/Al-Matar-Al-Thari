@@ -65,7 +65,7 @@ class CalculateLoyaltyPointsJob implements ShouldQueue
             );
 
             // Add points directly to balance (loyalty points don't need settlement period)
-            $wallet->approveLoyaltyPoints($points);
+            $wallet->addLoyaltyPointsDirectly($points);
 
             // Create wallet transaction as approved (loyalty points are immediately available)
             $walletTransaction = WalletTransaction::create([

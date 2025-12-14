@@ -68,11 +68,19 @@ class Wallet extends Model
     }
 
     /**
-     * Approve pending loyalty points.
+     * Approve pending loyalty points (converts from pending to balance).
      */
     public function approveLoyaltyPoints(int $points): void
     {
         $this->decrement('loyalty_points_pending', $points);
+        $this->increment('loyalty_points_balance', $points);
+    }
+
+    /**
+     * Add loyalty points directly to balance (no pending period).
+     */
+    public function addLoyaltyPointsDirectly(int $points): void
+    {
         $this->increment('loyalty_points_balance', $points);
     }
 
