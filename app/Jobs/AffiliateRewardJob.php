@@ -78,7 +78,7 @@ class AffiliateRewardJob implements ShouldQueue
             return;
         }
 
-        DB::transaction(function () use ($affiliate, $referrer) {
+        DB::transaction(function () use ($affiliate, $referrer, $user) {
             // Get admin settings for affiliate points
             $pointsSettings = \App\Models\PointsSetting::current();
             
