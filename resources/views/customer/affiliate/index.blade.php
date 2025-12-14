@@ -148,12 +148,14 @@
                                         <td class="text-end fw-semibold text-primary">{{ number_format($sale->sale_amount, 2) }}</td>
                                         <td class="text-end fw-semibold text-success">{{ number_format($sale->commission_amount, 0) }} {{ __('points') }}</td>
                                         <td class="text-center">
-                                            @php($statusClass = match($sale->status) {
-                                                'pending' => 'bg-warning-subtle text-warning',
-                                                'approved' => 'bg-success-subtle text-success',
-                                                'rejected' => 'bg-danger-subtle text-danger',
-                                                default => 'bg-info-subtle text-info'
-                                            })
+                                            @php
+                                                $statusClass = match($sale->status) {
+                                                    'pending' => 'bg-warning-subtle text-warning',
+                                                    'approved' => 'bg-success-subtle text-success',
+                                                    'rejected' => 'bg-danger-subtle text-danger',
+                                                    default => 'bg-info-subtle text-info'
+                                                };
+                                            @endphp
                                             <span class="badge rounded-pill {{ $statusClass }} px-3 py-2 text-uppercase small">{{ $sale->status }}</span>
                                         </td>
                                     </tr>
