@@ -142,6 +142,7 @@
                                             <div class="small text-muted">#{{ $sale->transaction->transaction_id ?? $sale->id }}</div>
                                         </td>
                                         <td class="text-end fw-semibold text-primary">{{ number_format($sale->sale_amount, 2) }}</td>
+                                        <td class="text-end fw-semibold text-success">{{ number_format($sale->commission_amount, 0) }} {{ __('points') }}</td>
                                         
                                     </tr>
                                 @empty
