@@ -43,4 +43,19 @@ class Testimonial extends Model
     {
         return $query->orderBy('order')->orderBy('created_at', 'asc');
     }
+
+    /**
+     * Boot the model
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // Ensure Translatable uses the current locale
+        static::retrieved(function ($testimonial) {
+            if (method_exists($testimonial, 'setLocale')) {
+                $testimonial->setLocale(app()->getLocale());
+            }
+        });
+    }
 }

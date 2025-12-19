@@ -104,14 +104,18 @@ class ServiceController extends Controller
         $service = Service::create($validated);
 
         foreach ($locales as $locale) {
-            $service->translateOrNew($locale)->title = $request->input("title.{$locale}");
-            $service->translateOrNew($locale)->short_description = $request->input("short_description.{$locale}");
-            $service->translateOrNew($locale)->description = $request->input("description.{$locale}");
-            $service->translateOrNew($locale)->meta_title = $request->input("meta_title.{$locale}");
-            $service->translateOrNew($locale)->meta_description = $request->input("meta_description.{$locale}");
-            $service->translateOrNew($locale)->meta_keywords = $request->input("meta_keywords.{$locale}");
+            $translation = $service->translateOrNew($locale);
+            $translation->title = $request->input("title.{$locale}");
+            $translation->short_description = $request->input("short_description.{$locale}");
+            $translation->description = $request->input("description.{$locale}");
+            $translation->meta_title = $request->input("meta_title.{$locale}");
+            $translation->meta_description = $request->input("meta_description.{$locale}");
+            $translation->meta_keywords = $request->input("meta_keywords.{$locale}");
+            $translation->save();
         }
-        $service->save();
+        
+        // Refresh the service to ensure translations are loaded
+        $service->refresh();
 
         return redirect()->route('admin.services.index')
             ->with('success', __('Service created successfully.'));
@@ -183,14 +187,18 @@ class ServiceController extends Controller
         $service->update($validated);
 
         foreach ($locales as $locale) {
-            $service->translateOrNew($locale)->title = $request->input("title.{$locale}");
-            $service->translateOrNew($locale)->short_description = $request->input("short_description.{$locale}");
-            $service->translateOrNew($locale)->description = $request->input("description.{$locale}");
-            $service->translateOrNew($locale)->meta_title = $request->input("meta_title.{$locale}");
-            $service->translateOrNew($locale)->meta_description = $request->input("meta_description.{$locale}");
-            $service->translateOrNew($locale)->meta_keywords = $request->input("meta_keywords.{$locale}");
+            $translation = $service->translateOrNew($locale);
+            $translation->title = $request->input("title.{$locale}");
+            $translation->short_description = $request->input("short_description.{$locale}");
+            $translation->description = $request->input("description.{$locale}");
+            $translation->meta_title = $request->input("meta_title.{$locale}");
+            $translation->meta_description = $request->input("meta_description.{$locale}");
+            $translation->meta_keywords = $request->input("meta_keywords.{$locale}");
+            $translation->save();
         }
-        $service->save();
+        
+        // Refresh the service to ensure translations are loaded
+        $service->refresh();
 
         return redirect()->route('admin.services.index')
             ->with('success', __('Service updated successfully.'));

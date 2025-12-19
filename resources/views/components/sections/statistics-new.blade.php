@@ -35,22 +35,11 @@
 @endphp
 
 @if($displayStats->count() > 0)
-    <section class="section statistics-section" style="padding: 80px 0;background: linear-gradient( color-mix(in srgb, var(--brand-primary) 70%, transparent), color-mix(in srgb, var(--gradient-end-color) 70%, transparent) );position: relative;overflow: hidden;">
-        
-        
+    <section class="section statistics-section" style="padding: 0 0 80px 0;  position: relative; overflow: hidden;">
         <div class="container" style="position: relative; z-index: 1;">
-            @if($title)
-                <div class="row justify-content-center mb-5">
-                    <div class="col-lg-8 text-center">
-                        <h2 style="font-size: 2.5rem; font-weight: 700; color: var(--bg-secondary-color); margin-bottom: 1rem;">{{ $title }}</h2>
-                        @if($subtitle)
-                            <p style="font-size: 1.2rem; color: rgba(255, 255, 255, 0.9);">{{ $subtitle }}</p>
-                        @endif
-                    </div>
-                </div>
-            @endif
-            
-            <div class="row align-items-center justify-content-center">
+           
+            {{-- Statistics Cards Grid - 4 cards per row --}}
+            <div class="row g-4">
                 @foreach($displayStats as $index => $stat)
                     @php
                         $statLabel = '';
@@ -73,30 +62,20 @@
                             $statDesc = is_array($stat->description ?? '') ? ($stat->description[$currentLocale] ?? $stat->description['en'] ?? '') : ($stat->description ?? '');
                         }
                         $statValue = $stat->value ?? '';
-                        $statIcon = $stat->icon ?? 'fas fa-chart-bar';
-                        $statSuffix = $stat->suffix ?? '';
+                        $statSuffix = $stat->suffix ?? '+';
                     @endphp
-                    <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
-                        <div class="stat-item text-center" style="padding: 0 1rem;">
-                            {{-- Icon Circle (Primary Color Background) --}}
-                            <div class="stat-icon-wrapper" style="width: 100px; height: 100px; background: var(--theme-secondary-color, #D4AF37); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); transition: all 0.3s ease;">
-                                @if($statIcon)
-                                    <i class="{{ $statIcon }}" style="font-size: 2.5rem; color: var(--bg-secondary-color);"></i>
-                                @else
-                                    <i class="fas fa-chart-bar" style="font-size: 2.5rem; color: var(--bg-secondary-color);"></i>
-                                @endif
-                            </div>
-                            
-                            {{-- Value (Large White Number) --}}
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <div class="stat-card" style="background: #fff; border-radius: 12px; padding: 2.5rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); transition: all 0.3s ease; height: 100%;">
+                            {{-- Value (Large Dark Number with +) --}}
                             @if($statValue)
-                                <div class="stat-value" style="font-size: 3.5rem; font-weight: 700; color: var(--bg-secondary-color); margin-bottom: 1rem; line-height: 1.2;">
-                                    {{ $statValue }}{{ $statSuffix }}
+                                <div class="stat-value" style="font-size: 3.5rem; font-weight: 700; color: #333; margin-bottom: 1rem; line-height: 1.2;">
+                                    {{ $statValue }}<span style="color: var(--brand-primary);">{{ $statSuffix }}</span>
                                 </div>
                             @endif
                             
-                            {{-- Label (White Text, Uppercase) --}}
+                            {{-- Label (Dark Text, Underlined) --}}
                             @if($statLabel)
-                                <div class="stat-label" style="font-size: 0.95rem; font-weight: 600; color: var(--bg-secondary-color); text-transform: uppercase; letter-spacing: 1px; line-height: 1.4;">
+                                <div class="stat-label" style="font-size: 0.9rem; font-weight: 500; color: #666; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4; border-bottom: 2px solid var(--brand-primary); padding-bottom: 0.5rem; display: inline-block;">
                                     {{ $statLabel }}
                                 </div>
                             @endif
@@ -109,17 +88,17 @@
 @endif
 
 <style>
-.statistics-section .stat-item {
-    transition: transform 0.3s ease;
+.statistics-section .stat-card {
+    transition: all 0.3s ease;
 }
 
-.statistics-section .stat-item:hover {
-    transform: translateY(-8px);
+.statistics-section .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12) !important;
 }
 
-.statistics-section .stat-item:hover .stat-icon-wrapper {
-    transform: scale(1.1);
-    box-shadow: 0 6px 25px rgba(212, 175, 55, 0.6);
+.statistics-section .stat-card:hover .stat-value {
+    color: var(--brand-primary) !important;
 }
 
 /* Responsive adjustments */
@@ -128,24 +107,41 @@
         padding: 60px 0 !important;
     }
     
-    .statistics-section .stat-icon-wrapper {
-        width: 80px !important;
-        height: 80px !important;
-        margin-bottom: 1.5rem !important;
+    .statistics-section .stat-value {
+        font-size: 2.8rem !important;
     }
     
-    .statistics-section .stat-icon-wrapper i {
-        font-size: 2rem !important;
+    .statistics-section .stat-card {
+        padding: 2rem 1.5rem !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .statistics-section h2 {
+        font-size: 1.75rem !important;
     }
     
     .statistics-section .stat-value {
         font-size: 2.5rem !important;
     }
+    
+    .statistics-section .stat-card {
+        padding: 1.5rem 1.25rem !important;
+        margin-bottom: 1rem;
+    }
 }
 
 @media (max-width: 575.98px) {
-    .statistics-section .stat-item {
-        margin-bottom: 2.5rem !important;
+    .statistics-section {
+        padding: 40px 0 !important;
+    }
+    
+    .statistics-section .stat-value {
+        font-size: 2rem !important;
+    }
+    
+    .statistics-section .stat-label {
+        font-size: 0.8rem !important;
     }
 }
 </style>

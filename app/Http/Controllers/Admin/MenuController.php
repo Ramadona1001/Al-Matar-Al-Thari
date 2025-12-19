@@ -76,9 +76,13 @@ class MenuController extends Controller
         ]);
 
         foreach ($locales as $locale) {
-            $menu->translateOrNew($locale)->label = $validated["label_{$locale}"];
+            $translation = $menu->translateOrNew($locale);
+            $translation->label = $validated["label_{$locale}"];
+            $translation->save();
         }
-        $menu->save();
+        
+        // Refresh the menu to ensure translations are loaded
+        $menu->refresh();
 
         return redirect()->route('admin.menus.index')
             ->with('success', __('Menu item created successfully.'));
@@ -136,9 +140,13 @@ class MenuController extends Controller
         ]);
 
         foreach ($locales as $locale) {
-            $menu->translateOrNew($locale)->label = $validated["label_{$locale}"];
+            $translation = $menu->translateOrNew($locale);
+            $translation->label = $validated["label_{$locale}"];
+            $translation->save();
         }
-        $menu->save();
+        
+        // Refresh the menu to ensure translations are loaded
+        $menu->refresh();
 
         return redirect()->route('admin.menus.index')
             ->with('success', __('Menu item updated successfully.'));

@@ -97,12 +97,12 @@
                                         @if($avatar)
                                             <img src="{{ asset('storage/'.$avatar) }}" alt="{{ $testimonialName }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #ffffff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
                                         @else
-                                            <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: #ffffff; font-weight: 700; font-size: 2rem; border: 3px solid #ffffff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                                            <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient( color-mix(in srgb, var(--brand-primary) 70%, transparent), color-mix(in srgb, var(--gradient-end-color) 70%, transparent) ); display: flex; align-items: center; justify-content: center; color: #ffffff; font-weight: 700; font-size: 2rem; border: 3px solid #ffffff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
                                                 {{ strtoupper(substr($testimonialName, 0, 1)) }}
                                             </div>
                                         @endif
                                         {{-- Quote Icon Overlay --}}
-                                        <div style="position: absolute; bottom: -5px; right: -5px; width: 32px; height: 32px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3); border: 2px solid #ffffff;">
+                                        <div style="position: absolute; bottom: -5px; right: -5px; width: 32px; height: 32px; background: var(--bs-danger-text-emphasis); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3); border: 2px solid #ffffff;">
                                             <i class="fas fa-quote-left" style="font-size: 0.75rem; color: #ffffff;"></i>
                                         </div>
                                     </div>
@@ -132,7 +132,7 @@
                                     {{-- Star Rating --}}
                                     <div style="text-align: center; margin-top: auto;">
                                         @for($i = 1; $i <= 5; $i++)
-                                            <i class="fas fa-star{{ $i <= $rating ? '' : '-o' }}" style="color: #2563eb; font-size: 1rem; margin: 0 2px;"></i>
+                                            <i class="fas fa-star{{ $i <= $rating ? '' : '-o' }}" style="color: var(--bs-danger-text-emphasis); font-size: 1rem; margin: 0 2px;"></i>
                                         @endfor
                                     </div>
                                 </div>
@@ -165,13 +165,13 @@
         .testimonials-swiper .swiper-pagination-bullet {
             width: 12px;
             height: 12px;
-            background: #2563eb;
+            background: var(--bs-danger-text-emphasis);
             opacity: 0.3;
         }
         
         .testimonials-swiper .swiper-pagination-bullet-active {
             opacity: 1;
-            background: #2563eb;
+            background: var(--bs-danger-text-emphasis);
         }
         
         .testimonial-card {

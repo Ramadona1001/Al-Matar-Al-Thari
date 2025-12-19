@@ -141,8 +141,16 @@
                         <div class="row">
                             @foreach($company->products as $product)
                                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                                    <a href="{{ route('customer.products.show', $product) }}" class="text-decoration-none">
-                                        <div class="product-card-modern" style="background: #ffffff; border-radius: 15px; overflow: hidden; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column;">
+                                    @php
+                                        $isCustomer = auth()->check() && auth()->user()->isCustomer();
+                                        $productUrl = $isCustomer ? route('customer.products.show', $product) : '#';
+                                    @endphp
+                                    @if($isCustomer)
+                                        <a href="{{ $productUrl }}" class="text-decoration-none product-link">
+                                    @else
+                                        <div class="product-non-clickable">
+                                    @endif
+                                        <div class="product-card-modern {{ !$isCustomer ? 'non-clickable' : '' }}" style="background: #ffffff; border-radius: 15px; overflow: hidden; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column; position: relative;">
                                             @if($product->image)
                                                 <div style="width: 100%; height: 200px; overflow: hidden; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
                                                     <img src="{{ asset('storage/' . $product->image) }}" 
@@ -164,9 +172,18 @@
                                                         <span style="font-size: 1.25rem; font-weight: 700; color: #3D4F60;">{{ number_format($product->price, 2) }} {{ __('SAR') }}</span>
                                                     </div>
                                                 @endif
+                                                @if(!$isCustomer)
+                                                    <div style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: #fff; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                                                        <i class="fas fa-lock me-1"></i>{{ __('Login Required') }}
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
-                                    </a>
+                                    @if($isCustomer)
+                                        </a>
+                                    @else
+                                        </div>
+                                    @endif
                                 </div>
                             @endforeach
                         </div>
@@ -213,13 +230,25 @@
                         <div class="row">
                             @foreach($company->offers as $offer)
                                 <div class="col-lg-4 col-md-6 mb-4">
-                                    <a href="{{ route('public.offers.show', $offer->slug) }}" class="text-decoration-none">
-                                        <div style="background: #ffffff; padding: 1.5rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column;">
+                                    @php
+                                        $isCustomer = auth()->check() && auth()->user()->isCustomer();
+                                        $offerUrl = $isCustomer ? route('public.offers.show', $offer->slug) : '#';
+                                    @endphp
+                                    @if($isCustomer)
+                                        <a href="{{ $offerUrl }}" class="text-decoration-none offer-link">
+                                    @else
+                                        <div class="offer-non-clickable">
+                                    @endif
+                                        <div class="offer-card-modern {{ !$isCustomer ? 'non-clickable' : '' }}" style="background: #ffffff; padding: 1.5rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column; position: relative;">
                                             @if($offer->image)
                                                 <div style="width: 100%; height: 150px; overflow: hidden; background: #f8f9fa; border-radius: 10px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center;">
                                                     <img src="{{ asset('storage/' . $offer->image) }}" 
                                                          alt="{{ $offer->localized_title }}" 
                                                          style="width: 100%; height: 100%; object-fit: cover;">
+                                                </div>
+                                            @else
+                                                <div style="width: 100%; height: 150px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 10px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center;">
+                                                    <i class="fas fa-tag" style="font-size: 3rem; color: #6c757d;"></i>
                                                 </div>
                                             @endif
                                             <h5 style="font-size: 1.25rem; font-weight: 700; color: #3D4F60; margin-bottom: 0.75rem;">{{ $offer->localized_title }}</h5>
@@ -228,11 +257,20 @@
                                             @endif
                                             <div style="margin-top: auto;">
                                                 <span style="color: #3D4F60; font-weight: 600; font-size: 0.95rem;">
-                                                    {{ __('View Offer') }} <i class="fas fa-arrow-left ms-1" style="transition: transform 0.3s ease;"></i>
+                                                    {{ __('View Offer') }} <i class="fas fa-arrow-left ms-1 offer-arrow" style="transition: transform 0.3s ease;"></i>
                                                 </span>
                                             </div>
+                                            @if(!$isCustomer)
+                                                <div style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: #fff; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                                                    <i class="fas fa-lock me-1"></i>{{ __('Login Required') }}
+                                                </div>
+                                            @endif
                                         </div>
-                                    </a>
+                                    @if($isCustomer)
+                                        </a>
+                                    @else
+                                        </div>
+                                    @endif
                                 </div>
                             @endforeach
                         </div>
@@ -243,14 +281,34 @@
     </section>
 
     <style>
-        .product-card-modern:hover,
-        a .product-card-modern:hover,
-        a > div[style*="box-shadow"]:hover {
+        /* Product and Offer Cards Hover Effects - Only for clickable items */
+        .product-link:hover .product-card-modern,
+        .offer-link:hover .offer-card-modern {
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
         }
-        a > div[style*="box-shadow"]:hover .fa-arrow-left {
+        
+        .offer-link:hover .offer-arrow {
             transform: translateX(-5px);
+        }
+        
+        /* Non-clickable cards styling */
+        .product-card-modern.non-clickable,
+        .offer-card-modern.non-clickable {
+            cursor: not-allowed;
+            opacity: 0.85;
+        }
+        
+        .product-card-modern.non-clickable:hover,
+        .offer-card-modern.non-clickable:hover {
+            transform: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        /* Login required badge */
+        .product-card-modern .fa-lock,
+        .offer-card-modern .fa-lock {
+            font-size: 0.75rem;
         }
     </style>
         </div>

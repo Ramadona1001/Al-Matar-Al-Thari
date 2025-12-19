@@ -486,7 +486,7 @@ Hero Section Styles
 Section Styles
 ============================================ */
 .section {
-    padding: 5rem 0;
+    /* padding: 5rem 0; */
 }
 
 .section-title {
@@ -582,7 +582,6 @@ Card Styles with Background Images
     font-weight: 600;
     color: white;
     margin-bottom: 0.5rem;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     font-size: 1.25rem;
 }
 

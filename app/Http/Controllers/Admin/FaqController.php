@@ -67,10 +67,14 @@ class FaqController extends Controller
         ]);
 
         foreach ($locales as $locale) {
-            $faq->translateOrNew($locale)->question = $validated["question_{$locale}"];
-            $faq->translateOrNew($locale)->answer = $validated["answer_{$locale}"];
+            $translation = $faq->translateOrNew($locale);
+            $translation->question = $validated["question_{$locale}"];
+            $translation->answer = $validated["answer_{$locale}"];
+            $translation->save();
         }
-        $faq->save();
+        
+        // Refresh the faq to ensure translations are loaded
+        $faq->refresh();
 
         return redirect()->route('admin.faqs.index')
             ->with('success', __('FAQ created successfully.'));
@@ -97,10 +101,14 @@ class FaqController extends Controller
         ]);
 
         foreach ($locales as $locale) {
-            $faq->translateOrNew($locale)->question = $validated["question_{$locale}"];
-            $faq->translateOrNew($locale)->answer = $validated["answer_{$locale}"];
+            $translation = $faq->translateOrNew($locale);
+            $translation->question = $validated["question_{$locale}"];
+            $translation->answer = $validated["answer_{$locale}"];
+            $translation->save();
         }
-        $faq->save();
+        
+        // Refresh the faq to ensure translations are loaded
+        $faq->refresh();
 
         return redirect()->route('admin.faqs.index')
             ->with('success', __('FAQ updated successfully.'));

@@ -53,4 +53,19 @@ class Page extends Model
     {
         return $query->orderBy('order')->orderBy('created_at', 'asc');
     }
+
+    /**
+     * Boot the model
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // Ensure Translatable uses the current locale
+        static::retrieved(function ($page) {
+            if (method_exists($page, 'setLocale')) {
+                $page->setLocale(app()->getLocale());
+            }
+        });
+    }
 }

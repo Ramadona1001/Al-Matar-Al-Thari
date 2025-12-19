@@ -102,6 +102,13 @@ class Service extends Model
     {
         parent::boot();
 
+        // Ensure Translatable uses the current locale
+        static::retrieved(function ($service) {
+            if (method_exists($service, 'setLocale')) {
+                $service->setLocale(app()->getLocale());
+            }
+        });
+
         static::creating(function ($service) {
             if (empty($service->slug)) {
                 $title = is_array($service->title) ? ($service->title[app()->getLocale()] ?? reset($service->title)) : $service->title;

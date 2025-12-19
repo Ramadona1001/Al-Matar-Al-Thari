@@ -35,7 +35,7 @@
 
 <!-- How It Works Section -->
 @if($displaySteps->count() > 0)
-    <section class="section" style="padding: 80px 0; background: #ffffff;" aria-labelledby="how-it-works-heading">
+    <section class="section how-it-works-heading-section" aria-labelledby="how-it-works-heading">
         <div class="container">
             @if($title)
                 <h2 class="section-title" id="how-it-works-heading" style="font-size: 2.5rem; font-weight: 700; color: #1a1a1a; margin-bottom: 1rem; text-align: center;">{{ $title }}</h2>
@@ -72,9 +72,9 @@
                             $isLast = $index === $displaySteps->count() - 1;
                         @endphp
                         <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 position-relative">
-                            <div class="how-it-works-step" style="text-align: center; padding: 0 1rem;">
+                            <div class="how-it-works-step" style="text-align: center; padding: 25px; background: var(--bg-secondary-color); border-radius: 20px;">
                                 {{-- Step Icon Circle --}}
-                                <div class="step-icon-circle" style="width: 80px; height: 80px; background: var(--bg-primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);">
+                                <div class="step-icon-circle" style="width: 80px; height: 80px; background: var(--bg-primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; ">
                                     @if($stepImage)
                                         <img src="{{ asset('storage/' . $stepImage) }}" alt="{{ $stepTitle }}" style="width: 50px; height: 50px; object-fit: contain; filter: brightness(0) invert(1);">
                                     @elseif($stepIcon)
@@ -90,7 +90,7 @@
                                 </h4>
                                 
                                 {{-- Step Description --}}
-                                <p class="step-description" style="color: #6b7280; font-size: 0.95rem; line-height: 1.7; margin: 0;">
+                                <p class="step-description" style="color: var(--bg-primary-color);font-size: 15px;margin: 0;font-weight: 400;">
                                     {{ $stepDesc }}
                                 </p>
                             </div>

@@ -75,10 +75,14 @@ class StatisticController extends Controller
         ]);
 
         foreach ($locales as $locale) {
-            $statistic->translateOrNew($locale)->label = $validated["label_{$locale}"];
-            $statistic->translateOrNew($locale)->description = $validated["description_{$locale}"] ?? null;
+            $translation = $statistic->translateOrNew($locale);
+            $translation->label = $validated["label_{$locale}"];
+            $translation->description = $validated["description_{$locale}"] ?? null;
+            $translation->save();
         }
-        $statistic->save();
+        
+        // Refresh the statistic to ensure translations are loaded
+        $statistic->refresh();
 
         return redirect()->route('admin.statistics.index')
             ->with('success', __('Statistic created successfully.'));
@@ -117,10 +121,14 @@ class StatisticController extends Controller
         ]);
 
         foreach ($locales as $locale) {
-            $statistic->translateOrNew($locale)->label = $validated["label_{$locale}"];
-            $statistic->translateOrNew($locale)->description = $validated["description_{$locale}"] ?? null;
+            $translation = $statistic->translateOrNew($locale);
+            $translation->label = $validated["label_{$locale}"];
+            $translation->description = $validated["description_{$locale}"] ?? null;
+            $translation->save();
         }
-        $statistic->save();
+        
+        // Refresh the statistic to ensure translations are loaded
+        $statistic->refresh();
 
         return redirect()->route('admin.statistics.index')
             ->with('success', __('Statistic updated successfully.'));

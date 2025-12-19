@@ -81,10 +81,14 @@ class SectionSettingController extends Controller
         ]);
 
         foreach ($locales as $locale) {
-            $setting->translateOrNew($locale)->title = $request->input("title.{$locale}");
-            $setting->translateOrNew($locale)->subtitle = $request->input("subtitle.{$locale}");
+            $translation = $setting->translateOrNew($locale);
+            $translation->title = $request->input("title.{$locale}");
+            $translation->subtitle = $request->input("subtitle.{$locale}");
+            $translation->save();
         }
-        $setting->save();
+        
+        // Refresh the setting to ensure translations are loaded
+        $setting->refresh();
 
         return redirect()->route('admin.section-settings.index')
             ->with('success', __('Section setting created successfully.'));
@@ -126,10 +130,14 @@ class SectionSettingController extends Controller
         ]);
 
         foreach ($locales as $locale) {
-            $sectionSetting->translateOrNew($locale)->title = $request->input("title.{$locale}");
-            $sectionSetting->translateOrNew($locale)->subtitle = $request->input("subtitle.{$locale}");
+            $translation = $sectionSetting->translateOrNew($locale);
+            $translation->title = $request->input("title.{$locale}");
+            $translation->subtitle = $request->input("subtitle.{$locale}");
+            $translation->save();
         }
-        $sectionSetting->save();
+        
+        // Refresh the setting to ensure translations are loaded
+        $sectionSetting->refresh();
 
         return redirect()->route('admin.section-settings.index')
             ->with('success', __('Section setting updated successfully.'));

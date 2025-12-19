@@ -69,10 +69,14 @@ class HowItWorksStepController extends Controller
         ]);
 
         foreach ($locales as $locale) {
-            $step->translateOrNew($locale)->title = $validated["title_{$locale}"];
-            $step->translateOrNew($locale)->description = $validated["description_{$locale}"];
+            $translation = $step->translateOrNew($locale);
+            $translation->title = $validated["title_{$locale}"];
+            $translation->description = $validated["description_{$locale}"];
+            $translation->save();
         }
-        $step->save();
+        
+        // Refresh the step to ensure translations are loaded
+        $step->refresh();
 
         return redirect()->route('admin.how-it-works-steps.index')
             ->with('success', __('Step created successfully.'));
@@ -112,10 +116,14 @@ class HowItWorksStepController extends Controller
         ]);
 
         foreach ($locales as $locale) {
-            $howItWorksStep->translateOrNew($locale)->title = $validated["title_{$locale}"];
-            $howItWorksStep->translateOrNew($locale)->description = $validated["description_{$locale}"];
+            $translation = $howItWorksStep->translateOrNew($locale);
+            $translation->title = $validated["title_{$locale}"];
+            $translation->description = $validated["description_{$locale}"];
+            $translation->save();
         }
-        $howItWorksStep->save();
+        
+        // Refresh the step to ensure translations are loaded
+        $howItWorksStep->refresh();
 
         return redirect()->route('admin.how-it-works-steps.index')
             ->with('success', __('Step updated successfully.'));

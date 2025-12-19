@@ -38,4 +38,30 @@ class Banner extends Model
     {
         return $query->orderBy('order')->orderBy('created_at', 'desc');
     }
+
+    /**
+     * Get the banner with translations for current locale
+     */
+    public function scopeWithCurrentLocale($query)
+    {
+        return $query->with(['translations' => function($query) {
+            $query->where('locale', app()->getLocale());
+        }]);
+    }
+
+    /**
+     * Boot the model
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // Ensure Translatable uses the current locale
+        static::retrieved(function ($banner) {
+            // This ensures Translatable uses the current app locale
+            if (method_exists($banner, 'setLocale')) {
+                $banner->setLocale(app()->getLocale());
+            }
+        });
+    }
 }

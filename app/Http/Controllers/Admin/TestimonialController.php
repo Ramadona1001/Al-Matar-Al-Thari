@@ -76,12 +76,16 @@ class TestimonialController extends Controller
         ]);
 
         foreach ($locales as $locale) {
-            $testimonial->translateOrNew($locale)->name = $validated["name_{$locale}"];
-            $testimonial->translateOrNew($locale)->position = $validated["position_{$locale}"] ?? null;
-            $testimonial->translateOrNew($locale)->company = $validated["company_{$locale}"] ?? null;
-            $testimonial->translateOrNew($locale)->testimonial = $validated["testimonial_{$locale}"];
+            $translation = $testimonial->translateOrNew($locale);
+            $translation->name = $validated["name_{$locale}"];
+            $translation->position = $validated["position_{$locale}"] ?? null;
+            $translation->company = $validated["company_{$locale}"] ?? null;
+            $translation->testimonial = $validated["testimonial_{$locale}"];
+            $translation->save();
         }
-        $testimonial->save();
+        
+        // Refresh the testimonial to ensure translations are loaded
+        $testimonial->refresh();
 
         return redirect()->route('admin.testimonials.index')
             ->with('success', __('Testimonial created successfully.'));
@@ -130,12 +134,16 @@ class TestimonialController extends Controller
         $testimonial->update($updateData);
 
         foreach ($locales as $locale) {
-            $testimonial->translateOrNew($locale)->name = $validated["name_{$locale}"];
-            $testimonial->translateOrNew($locale)->position = $validated["position_{$locale}"] ?? null;
-            $testimonial->translateOrNew($locale)->company = $validated["company_{$locale}"] ?? null;
-            $testimonial->translateOrNew($locale)->testimonial = $validated["testimonial_{$locale}"];
+            $translation = $testimonial->translateOrNew($locale);
+            $translation->name = $validated["name_{$locale}"];
+            $translation->position = $validated["position_{$locale}"] ?? null;
+            $translation->company = $validated["company_{$locale}"] ?? null;
+            $translation->testimonial = $validated["testimonial_{$locale}"];
+            $translation->save();
         }
-        $testimonial->save();
+        
+        // Refresh the testimonial to ensure translations are loaded
+        $testimonial->refresh();
 
         return redirect()->route('admin.testimonials.index')
             ->with('success', __('Testimonial updated successfully.'));

@@ -11,6 +11,10 @@ body {
     font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-image: url('/pattern.png');
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 /* Utility classes similar to Tailwind */
@@ -116,4 +120,7 @@ select:focus {
         transform: translateY(0);
     }
 }
+
+/* Section Separator - Break Image */
+
 

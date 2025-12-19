@@ -101,14 +101,18 @@ class BlogController extends Controller
         $blog = Blog::create($validated);
 
         foreach ($locales as $locale) {
-            $blog->translateOrNew($locale)->title = $request->input("title.{$locale}");
-            $blog->translateOrNew($locale)->excerpt = $request->input("excerpt.{$locale}");
-            $blog->translateOrNew($locale)->content = $request->input("content.{$locale}");
-            $blog->translateOrNew($locale)->meta_title = $request->input("meta_title.{$locale}");
-            $blog->translateOrNew($locale)->meta_description = $request->input("meta_description.{$locale}");
-            $blog->translateOrNew($locale)->meta_keywords = $request->input("meta_keywords.{$locale}");
+            $translation = $blog->translateOrNew($locale);
+            $translation->title = $request->input("title.{$locale}");
+            $translation->excerpt = $request->input("excerpt.{$locale}");
+            $translation->content = $request->input("content.{$locale}");
+            $translation->meta_title = $request->input("meta_title.{$locale}");
+            $translation->meta_description = $request->input("meta_description.{$locale}");
+            $translation->meta_keywords = $request->input("meta_keywords.{$locale}");
+            $translation->save();
         }
-        $blog->save();
+        
+        // Refresh the blog to ensure translations are loaded
+        $blog->refresh();
 
         return redirect()->route('admin.blogs.index')
             ->with('success', __('Blog post created successfully.'));
@@ -171,14 +175,18 @@ class BlogController extends Controller
         $blog->update($validated);
 
         foreach ($locales as $locale) {
-            $blog->translateOrNew($locale)->title = $request->input("title.{$locale}");
-            $blog->translateOrNew($locale)->excerpt = $request->input("excerpt.{$locale}");
-            $blog->translateOrNew($locale)->content = $request->input("content.{$locale}");
-            $blog->translateOrNew($locale)->meta_title = $request->input("meta_title.{$locale}");
-            $blog->translateOrNew($locale)->meta_description = $request->input("meta_description.{$locale}");
-            $blog->translateOrNew($locale)->meta_keywords = $request->input("meta_keywords.{$locale}");
+            $translation = $blog->translateOrNew($locale);
+            $translation->title = $request->input("title.{$locale}");
+            $translation->excerpt = $request->input("excerpt.{$locale}");
+            $translation->content = $request->input("content.{$locale}");
+            $translation->meta_title = $request->input("meta_title.{$locale}");
+            $translation->meta_description = $request->input("meta_description.{$locale}");
+            $translation->meta_keywords = $request->input("meta_keywords.{$locale}");
+            $translation->save();
         }
-        $blog->save();
+        
+        // Refresh the blog to ensure translations are loaded
+        $blog->refresh();
 
         return redirect()->route('admin.blogs.index')
             ->with('success', __('Blog post updated successfully.'));

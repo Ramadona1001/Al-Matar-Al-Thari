@@ -30,6 +30,13 @@
     
     <!-- Dynamic Theme Colors -->
     <style>
+        body {
+            background-image: url('{{ asset('pattern.png') }}');
+            background-repeat: repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }
+        
         @php
             echo \App\Services\ThemeService::generateThemeStyles();
         @endphp

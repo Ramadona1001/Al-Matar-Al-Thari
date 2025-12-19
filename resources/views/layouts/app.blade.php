@@ -58,7 +58,11 @@
     </head>
     <style>
         body { 
-            font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif; 
+            font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+            background-image: url('{{ asset('pattern.png') }}');
+            background-repeat: repeat;
+            background-attachment: fixed;
+            background-position: center;
         }
         
         @php

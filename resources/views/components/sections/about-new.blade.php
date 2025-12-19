@@ -108,7 +108,7 @@
     $isInGrid = isset($section->columns_per_row) && $section->columns_per_row > 1;
     $sectionClass = $isInGrid ? 'about-section-grid' : 'about-section-full';
 @endphp
-<section class="about-section-modern {{ $sectionClass }} py-4 h-100" style="background: #fff; height: 100%;">
+<section class="about-section-modern {{ $sectionClass }} py-4 h-100 mt-4">
     <div class="container">
         <div class="h-100 d-flex flex-column">
             @if ($isInGrid)
@@ -151,11 +151,11 @@
                 <!-- Full Width Layout -->
                 <div class="row align-items-center g-4 g-lg-5 h-100">
                     <!-- Image Column -->
-                    <div class="col-lg-4 order-2 order-lg-1">
+                    <div class="col-lg-3 order-2 order-lg-1">
                         <div class="about-image-wrapper position-relative">
                             @if ($mainImage)
                                 <img src="{{ asset('storage/' . $mainImage) }}" alt="{{ $title }}"
-                                    class="img-fluid rounded-4 shadow-lg"
+                                    class="img-fluid rounded-4 img-thumbnail"
                                     style="width: 100%; height: auto; object-fit: cover;">
                             @else
                                 <!-- Placeholder with decorative elements -->
@@ -178,7 +178,7 @@
                     </div>
 
                     <!-- Content Column -->
-                    <div class="col-lg-8 order-1 order-lg-2">
+                    <div class="col-lg-9 order-1 order-lg-2">
                         <div class="about-content-modern ps-lg-4">
                             @if ($title)
                                 <h2 class="about-title-modern mb-4"
@@ -189,19 +189,19 @@
 
                             @if (!empty($paragraphs))
                                 @foreach ($paragraphs as $index => $paragraph)
-                                    <p class="about-text-modern mb-3"
-                                        style="font-size: 1.1rem; line-height: 1.8; color: var(--brand-secondary);">
+                                    <p class="about-text-modern mb-3 fw-bold"
+                                        style="font-size: 1.1rem; line-height: 1.8; color: var(--bs-danger-text-emphasis);">
                                         {{ trim($paragraph) }}
                                     </p>
                                 @endforeach
                             @else
                                 <!-- Default content if no content provided -->
                                 <p class="about-text-modern mb-3"
-                                    style="font-size: 1.1rem; line-height: 1.8; color: var(--brand-secondary);">
+                                    style="font-size: 1.1rem; line-height: 1.8; color: var(--bs-danger-text-emphasis);">
                                     {{ __('Things go wrong. You\'ll have questions. We understand. So we have people, not bots, on hand to help.') }}
                                 </p>
                                 <p class="about-text-modern mb-3"
-                                    style="font-size: 1.1rem; line-height: 1.8; color: var(--brand-secondary);">
+                                    style="font-size: 1.1rem; line-height: 1.8; color: var(--bs-danger-text-emphasis);">
                                     {{ __('We aim to answer any query in less than 10 minutes.') }}
                                 </p>
                             @endif

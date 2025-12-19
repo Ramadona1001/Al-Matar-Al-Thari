@@ -37,4 +37,19 @@ class HowItWorksStep extends Model
     {
         return $query->orderBy('step_number')->orderBy('order');
     }
+
+    /**
+     * Boot the model
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // Ensure Translatable uses the current locale
+        static::retrieved(function ($step) {
+            if (method_exists($step, 'setLocale')) {
+                $step->setLocale(app()->getLocale());
+            }
+        });
+    }
 }

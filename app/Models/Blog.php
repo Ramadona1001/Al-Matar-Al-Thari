@@ -81,6 +81,13 @@ class Blog extends Model
     {
         parent::boot();
 
+        // Ensure Translatable uses the current locale
+        static::retrieved(function ($blog) {
+            if (method_exists($blog, 'setLocale')) {
+                $blog->setLocale(app()->getLocale());
+            }
+        });
+
         static::creating(function ($blog) {
             if (empty($blog->slug)) {
                 $title = is_array($blog->title) ? ($blog->title[app()->getLocale()] ?? reset($blog->title)) : $blog->title;

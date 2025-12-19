@@ -30,6 +30,12 @@
     <!-- Main Stylesheet -->
     @if (app()->getLocale() === 'ar')
         <link rel="stylesheet" href="{{ asset('assets/css/styles-rtl.css') }}">
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&display=swap');
+            *:not(i){
+                font-family: 'Alexandria', sans-serif !important;
+            }
+        </style>
     @else
         <link rel="stylesheet" href="{{ asset('assets/css/styles-ltr.css') }}">
     @endif
@@ -45,7 +51,31 @@
         @php
             echo \App\Services\ThemeService::generateThemeStyles();
         @endphp
+
+        body{
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-image: url('{{ asset("pattern.png") }}');
+            background-repeat: repeat;
+            background-position: center;
+        }
         
+        .about-section-modern::after,
+        .services-section::after,
+        .how-it-works-heading-section::after {
+            content: '';
+            display: block;
+            height: auto;
+            background-image: url('{{ asset("break.png") }}');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            margin: 3rem 0 1rem 0;
+            min-height: 10px;
+            padding: 13px 0
+        }
+
+
         /* Apply theme colors to website elements */
         :root {
             --brand-primary: var(--theme-primary-color, #1B4332);

@@ -31,7 +31,7 @@
 @endphp
 
 @if($displayOffers->count() > 0)
-    <section class="section" style="padding: 80px 0;">
+    <section class="section" >
         <div class="container">
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-8 text-center">

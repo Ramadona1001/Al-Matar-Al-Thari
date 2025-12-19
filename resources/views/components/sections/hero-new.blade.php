@@ -2,20 +2,29 @@
 
 @php
     // Helper function to get localized value
+    // Supports both JSON arrays and Translatable models
     if (!function_exists('getLocalizedValue')) {
         function getLocalizedValue($value, $locale = null) {
             if (empty($value)) return '';
             $locale = $locale ?? app()->getLocale();
+            
+            // If value is already a string (from Translatable), return it directly
+            if (is_string($value) && !empty($value)) {
+                // Try to decode as JSON first
+                $decoded = json_decode($value, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                    // It's JSON, get the locale value
+                    return $decoded[$locale] ?? $decoded['en'] ?? ($decoded[array_key_first($decoded)] ?? '');
+                }
+                // It's a plain string, return it
+                return $value;
+            }
+            
+            // If value is an array (from JSON cast)
             if (is_array($value)) {
                 return $value[$locale] ?? $value['en'] ?? ($value[array_key_first($value)] ?? '');
             }
-            if (is_string($value)) {
-                $decoded = json_decode($value, true);
-                if (is_array($decoded)) {
-                    return $decoded[$locale] ?? $decoded['en'] ?? ($decoded[array_key_first($decoded)] ?? '');
-                }
-                return $value;
-            }
+            
             return '';
         }
     }
@@ -38,27 +47,27 @@
                                 <div class="row justify-content-center">
                                     <div class="col-lg-8 text-center hero-content">
                                         <h1 class="hero-title">
-                                            {{ getLocalizedValue($banner->title) ?? $title }}
+                                            {{ $banner->title ?? $title }}
                                         </h1>
-                                        @if(isset($banner->subtitle) && $banner->subtitle)
-                                            <h2 class="hero-subtitle">{{ getLocalizedValue($banner->subtitle) }}</h2>
+                                        @if($banner->subtitle)
+                                            <h2 class="hero-subtitle">{{ $banner->subtitle }}</h2>
                                         @elseif($subtitle)
                                             <h2 class="hero-subtitle">{{ $subtitle }}</h2>
                                         @endif
-                                        @if(isset($banner->description) && $banner->description)
+                                        @if($banner->description)
                                             <p class="hero-description">
-                                                {{ getLocalizedValue($banner->description) }}
+                                                {{ $banner->description }}
                                             </p>
                                         @endif
                                         <div class="hero-buttons">
-                                            @if(isset($banner->button_text) && isset($banner->button_link))
-                                                <a href="{{ $banner->button_link }}" class="btn btn-primary-custom me-3">{{ getLocalizedValue($banner->button_text) }}</a>
+                                            @if($banner->button_text && $banner->button_link)
+                                                <a href="{{ $banner->button_link }}" class="btn btn-primary-custom me-3">{{ $banner->button_text }}</a>
                                             @else
                                                 <a href="{{ route('public.contact') }}" class="btn btn-primary-custom me-3">{{ __('Get a Quote') }}</a>
                                             @endif
                                             
                                             @if(isset($banner->secondary_button_text) && isset($banner->secondary_button_link))
-                                                <a href="{{ $banner->secondary_button_link }}" class="btn btn-outline-custom">{{ getLocalizedValue($banner->secondary_button_text) }}</a>
+                                                <a href="{{ $banner->secondary_button_link }}" class="btn btn-outline-custom">{{ $banner->secondary_button_text }}</a>
                                             @else
                                                 <a href="{{ route('public.about') }}" class="btn btn-outline-custom">{{ __('About Us') }}</a>
                                             @endif

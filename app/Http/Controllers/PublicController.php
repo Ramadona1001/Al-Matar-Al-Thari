@@ -16,6 +16,7 @@ class PublicController extends Controller
         $banners = class_exists(\App\Models\Banner::class)
             ? \App\Models\Banner::active()
                 ->ordered()
+                ->with('translations')
                 ->get()
             : collect();
         

@@ -38,4 +38,19 @@ class Faq extends Model
     {
         return $query->where('category', $category);
     }
+
+    /**
+     * Boot the model
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // Ensure Translatable uses the current locale
+        static::retrieved(function ($faq) {
+            if (method_exists($faq, 'setLocale')) {
+                $faq->setLocale(app()->getLocale());
+            }
+        });
+    }
 }

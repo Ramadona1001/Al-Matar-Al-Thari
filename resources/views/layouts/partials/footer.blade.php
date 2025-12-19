@@ -422,8 +422,6 @@
 
 .footer-cta-primary-btn:hover {
     transform: translateY(-3px) !important;
-    box-shadow: 0 6px 20px rgba(75, 181, 67, 0.4) !important;
-    background: #3a9a32 !important;
 }
 
 .footer-cta-secondary-btn:hover {

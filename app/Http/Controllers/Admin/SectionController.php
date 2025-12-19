@@ -73,11 +73,15 @@ class SectionController extends Controller
 
         // Save translations
         foreach ($locales as $locale) {
-            $section->translateOrNew($locale)->title = $request->input("title.{$locale}");
-            $section->translateOrNew($locale)->subtitle = $request->input("subtitle.{$locale}");
-            $section->translateOrNew($locale)->content = $request->input("content.{$locale}");
+            $translation = $section->translateOrNew($locale);
+            $translation->title = $request->input("title.{$locale}");
+            $translation->subtitle = $request->input("subtitle.{$locale}");
+            $translation->content = $request->input("content.{$locale}");
+            $translation->save();
         }
-        $section->save();
+        
+        // Refresh the section to ensure translations are loaded
+        $section->refresh();
 
         return redirect()->route('admin.sections.index')
             ->with('success', __('Section created successfully.'));
@@ -136,11 +140,15 @@ class SectionController extends Controller
 
         // Update translations
         foreach ($locales as $locale) {
-            $section->translateOrNew($locale)->title = $request->input("title.{$locale}");
-            $section->translateOrNew($locale)->subtitle = $request->input("subtitle.{$locale}");
-            $section->translateOrNew($locale)->content = $request->input("content.{$locale}");
+            $translation = $section->translateOrNew($locale);
+            $translation->title = $request->input("title.{$locale}");
+            $translation->subtitle = $request->input("subtitle.{$locale}");
+            $translation->content = $request->input("content.{$locale}");
+            $translation->save();
         }
-        $section->save();
+        
+        // Refresh the section to ensure translations are loaded
+        $section->refresh();
 
         return redirect()->route('admin.sections.index')
             ->with('success', __('Section updated successfully.'));

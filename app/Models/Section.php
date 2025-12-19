@@ -62,4 +62,19 @@ class Section extends Model
     {
         return $this->hasMany(SectionItem::class)->active()->ordered();
     }
+
+    /**
+     * Boot the model
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // Ensure Translatable uses the current locale
+        static::retrieved(function ($section) {
+            if (method_exists($section, 'setLocale')) {
+                $section->setLocale(app()->getLocale());
+            }
+        });
+    }
 }

@@ -65,7 +65,7 @@
 @endphp
 
 <!-- services area start  -->
-<section class="section" style="padding: 80px 0;">
+<section class="section services-section" >
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
@@ -140,13 +140,13 @@
                 @endforeach
             @endif
         </div>
-        @if($actionText)
+        {{-- @if($actionText)
             <div class="text-center mt-5">
                 <a href="{{ $actionLink }}" class="btn btn-primary-custom" style="background: var(--brand-primary); border: none; padding: 0.75rem 2rem; font-size: 1.1rem; font-weight: 600; border-radius: 50px; color: #ffffff; text-decoration: none; transition: all 0.3s ease;">
                     {{ $actionText }}
                 </a>
             </div>
-        @endif
+        @endif --}}
     </div>
 </section>
 <!-- services area end  -->

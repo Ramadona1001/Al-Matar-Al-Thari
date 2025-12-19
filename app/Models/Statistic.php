@@ -36,4 +36,19 @@ class Statistic extends Model
     {
         return $query->orderBy('order')->orderBy('created_at', 'asc');
     }
+
+    /**
+     * Boot the model
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // Ensure Translatable uses the current locale
+        static::retrieved(function ($statistic) {
+            if (method_exists($statistic, 'setLocale')) {
+                $statistic->setLocale(app()->getLocale());
+            }
+        });
+    }
 }

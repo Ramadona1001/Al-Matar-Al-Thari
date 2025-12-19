@@ -40,4 +40,19 @@ class SectionSetting extends Model
     {
         return static::where('section_key', $key)->active()->first();
     }
+
+    /**
+     * Boot the model
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // Ensure Translatable uses the current locale
+        static::retrieved(function ($setting) {
+            if (method_exists($setting, 'setLocale')) {
+                $setting->setLocale(app()->getLocale());
+            }
+        });
+    }
 }

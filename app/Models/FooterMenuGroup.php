@@ -47,4 +47,19 @@ class FooterMenuGroup extends Model
     {
         return $query->orderBy('order')->orderBy('created_at', 'asc');
     }
+
+    /**
+     * Boot the model
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // Ensure Translatable uses the current locale
+        static::retrieved(function ($group) {
+            if (method_exists($group, 'setLocale')) {
+                $group->setLocale(app()->getLocale());
+            }
+        });
+    }
 }

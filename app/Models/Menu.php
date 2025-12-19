@@ -82,4 +82,19 @@ class Menu extends Model
         }
         return $this->url ?? '#';
     }
+
+    /**
+     * Boot the model
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // Ensure Translatable uses the current locale
+        static::retrieved(function ($menu) {
+            if (method_exists($menu, 'setLocale')) {
+                $menu->setLocale(app()->getLocale());
+            }
+        });
+    }
 }

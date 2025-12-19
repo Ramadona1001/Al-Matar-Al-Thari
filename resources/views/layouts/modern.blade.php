@@ -143,6 +143,15 @@
             {!! $site->custom_styles !!}
         </style>
     @endif
+    
+    <style>
+        body {
+            background-image: url('{{ asset('pattern.png') }}');
+            background-repeat: repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }
+    </style>
 </head>
 
 <body>

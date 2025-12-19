@@ -130,77 +130,97 @@
         
         {{-- Show statistics if not already shown in CMS sections --}}
         @if(!$hasStatisticsSection && isset($statistics) && $statistics->count() > 0)
-            <x-sections.statistics-new 
-                :section="(object)['title' => __('Our Impact'), 'subtitle' => __('By The Numbers'), 'activeItems' => collect()]" 
-                :statistics="$statistics" 
-            />
+            <div class="website-section">
+                <x-sections.statistics-new 
+                    :section="(object)['title' => __('Our Impact'), 'subtitle' => __('By The Numbers'), 'activeItems' => collect()]" 
+                    :statistics="$statistics" 
+                />
+            </div>
         @endif
         
         {{-- Show testimonials if not already shown in CMS sections --}}
         @if(!$hasTestimonialsSection && isset($testimonials) && $testimonials->count() > 0)
-            <x-sections.testimonials-new 
-                :section="(object)['title' => __('What Our Clients Say'), 'subtitle' => __('Testimonials'), 'activeItems' => collect()]" 
-                :testimonials="$testimonials" 
-            />
+            <div class="website-section">
+                <x-sections.testimonials-new 
+                    :section="(object)['title' => __('What Our Clients Say'), 'subtitle' => __('Testimonials'), 'activeItems' => collect()]" 
+                    :testimonials="$testimonials" 
+                />
+            </div>
         @endif
     @else
         <!-- Default Sections (when no CMS content exists) -->
         
         <!-- Hero/Banner Section -->
-        <x-sections.hero-new 
-            :section="(object)['title' => __('Transform Your Business with Innovation'), 'subtitle' => __('Welcome'), 'content' => __('The end-to-end solution built to simplify complexity and accelerate transformation.'), 'button_text' => __('Let\'s Start'), 'button_link' => route('register', ['type' => 'customer'])]" 
-            :banners="collect()" 
-        />
+        <div class="website-section">
+            <x-sections.hero-new 
+                :section="(object)['title' => __('Transform Your Business with Innovation'), 'subtitle' => __('Welcome'), 'content' => __('The end-to-end solution built to simplify complexity and accelerate transformation.'), 'button_text' => __('Let\'s Start'), 'button_link' => route('register', ['type' => 'customer'])]" 
+                :banners="collect()" 
+            />
+        </div>
 
         <!-- Services Section -->
-        <x-sections.services-new 
-            :section="(object)['title' => __('Our Services'), 'subtitle' => __('What We Offer'), 'activeItems' => collect()]" 
-            :services="$services ?? collect()" 
-        />
+        <div class="website-section">
+            <x-sections.services-new 
+                :section="(object)['title' => __('Our Services'), 'subtitle' => __('What We Offer'), 'activeItems' => collect()]" 
+                :services="$services ?? collect()" 
+            />
+        </div>
 
-        <!-- About Section -->
-        <x-sections.about-new 
-            :section="(object)['title' => __('About Us'), 'subtitle' => __('Who We Are'), 'content' => __('We are a leading platform built to simplify complexity and accelerate transformation.'), 'activeItems' => collect()]" 
-        />
+        <!-- Statistics Section (Counter Impact) -->
+        @if(isset($statistics) && $statistics->count() > 0)
+            <div class="website-section">
+                <x-sections.statistics-new 
+                    :section="(object)['title' => __('Our Impact'), 'subtitle' => __('By The Numbers'), 'activeItems' => collect()]" 
+                    :statistics="$statistics" 
+                />
+            </div>
+        @endif
 
         <!-- How It Works Section -->
         @if(isset($steps) && $steps->count() > 0)
-            <x-sections.how-it-works-new 
-                :section="(object)['title' => __('How It Works'), 'subtitle' => __('Simple Steps to Get Started'), 'activeItems' => collect()]" 
-                :steps="$steps" 
-            />
+            <div class="website-section">
+                <x-sections.how-it-works-new 
+                    :section="(object)['title' => __('How It Works'), 'subtitle' => __('Simple Steps to Get Started'), 'activeItems' => collect()]" 
+                    :steps="$steps" 
+                />
+            </div>
         @endif
 
-        <!-- Statistics Section -->
-        @if(isset($statistics) && $statistics->count() > 0)
-            <x-sections.statistics-new 
-                :section="(object)['title' => __('Our Impact'), 'subtitle' => __('By The Numbers'), 'activeItems' => collect()]" 
-                :statistics="$statistics" 
+        <!-- About Section -->
+        <div class="website-section">
+            <x-sections.about-new 
+                :section="(object)['title' => __('About Us'), 'subtitle' => __('Who We Are'), 'content' => __('We are a leading platform built to simplify complexity and accelerate transformation.'), 'activeItems' => collect()]" 
             />
-        @endif
+        </div>
 
         <!-- Testimonials Section -->
         @if(isset($testimonials) && $testimonials->count() > 0)
-            <x-sections.testimonials-new 
-                :section="(object)['title' => __('What Our Clients Say'), 'subtitle' => __('Testimonials'), 'activeItems' => collect()]" 
-                :testimonials="$testimonials" 
-            />
+            <div class="website-section">
+                <x-sections.testimonials-new 
+                    :section="(object)['title' => __('What Our Clients Say'), 'subtitle' => __('Testimonials'), 'activeItems' => collect()]" 
+                    :testimonials="$testimonials" 
+                />
+            </div>
         @endif
 
         <!-- Companies/Partners Section -->
         @if(isset($partners) && $partners->count() > 0)
-            <x-sections.companies-partners-new 
-                :section="(object)['title' => __('Our Partners'), 'subtitle' => __('Trusted by Leading Companies'), 'activeItems' => collect()]" 
-                :partners="$partners" 
-            />
+            <div class="website-section">
+                <x-sections.companies-partners-new 
+                    :section="(object)['title' => __('Our Partners'), 'subtitle' => __('Trusted by Leading Companies'), 'activeItems' => collect()]" 
+                    :partners="$partners" 
+                />
+            </div>
         @endif
 
         <!-- Latest News/Blogs Section -->
         @if(isset($blogs) && $blogs->count() > 0)
-            <x-sections.blogs-new 
-                :section="(object)['title' => __('Latest News'), 'subtitle' => __('Stay Updated'), 'activeItems' => collect()]" 
-                :blogs="$blogs" 
-            />
+            <div class="website-section">
+                <x-sections.blogs-new 
+                    :section="(object)['title' => __('Latest News'), 'subtitle' => __('Stay Updated'), 'activeItems' => collect()]" 
+                    :blogs="$blogs" 
+                />
+            </div>
         @endif
     @endif
 

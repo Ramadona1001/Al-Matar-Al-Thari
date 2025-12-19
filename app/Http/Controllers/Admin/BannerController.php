@@ -95,6 +95,15 @@ class BannerController extends Controller
             $translation->button_text = $request->input("button_text.{$locale}") ?? '';
             $translation->save();
         }
+        
+        // Refresh the banner to ensure translations are loaded
+        $banner->refresh();
+        
+        // Verify translations were saved
+        \Log::info('Banner created', [
+            'banner_id' => $banner->id,
+            'translations' => $banner->translations->pluck('locale', 'title')->toArray()
+        ]);
 
         return redirect()->route('admin.banners.index')
             ->with('success', __('Banner created successfully.'));
@@ -160,6 +169,15 @@ class BannerController extends Controller
             $translation->button_text = $request->input("button_text.{$locale}") ?? '';
             $translation->save();
         }
+        
+        // Refresh the banner to ensure translations are loaded
+        $banner->refresh();
+        
+        // Verify translations were updated
+        \Log::info('Banner updated', [
+            'banner_id' => $banner->id,
+            'translations' => $banner->translations->pluck('locale', 'title')->toArray()
+        ]);
 
         return redirect()->route('admin.banners.index')
             ->with('success', __('Banner updated successfully.'));

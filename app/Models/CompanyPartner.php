@@ -34,4 +34,19 @@ class CompanyPartner extends Model
     {
         return $query->orderBy('order');
     }
+
+    /**
+     * Boot the model
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // Ensure Translatable uses the current locale
+        static::retrieved(function ($partner) {
+            if (method_exists($partner, 'setLocale')) {
+                $partner->setLocale(app()->getLocale());
+            }
+        });
+    }
 }

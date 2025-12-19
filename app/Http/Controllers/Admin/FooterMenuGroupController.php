@@ -57,9 +57,13 @@ class FooterMenuGroupController extends Controller
         ]);
 
         foreach ($locales as $locale) {
-            $group->translateOrNew($locale)->name = $validated["name_{$locale}"];
+            $translation = $group->translateOrNew($locale);
+            $translation->name = $validated["name_{$locale}"];
+            $translation->save();
         }
-        $group->save();
+        
+        // Refresh the group to ensure translations are loaded
+        $group->refresh();
 
         return redirect()->route('admin.footer-menu-groups.index')
             ->with('success', __('Footer menu group created successfully.'));
@@ -83,9 +87,13 @@ class FooterMenuGroupController extends Controller
         ]);
 
         foreach ($locales as $locale) {
-            $footerMenuGroup->translateOrNew($locale)->name = $validated["name_{$locale}"];
+            $translation = $footerMenuGroup->translateOrNew($locale);
+            $translation->name = $validated["name_{$locale}"];
+            $translation->save();
         }
-        $footerMenuGroup->save();
+        
+        // Refresh the group to ensure translations are loaded
+        $footerMenuGroup->refresh();
 
         return redirect()->route('admin.footer-menu-groups.index')
             ->with('success', __('Footer menu group updated successfully.'));
